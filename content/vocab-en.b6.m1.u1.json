@@ -1,0 +1,234 @@
+{
+  "id": "vocab-en.b6.m1.u1",
+  "course": "vocab-en",
+  "level": "b6",
+  "module": 1,
+  "unit": "1.1",
+  "version": 1,
+  "title": "Small piece, big change",
+  "focus": "Prefixes un-, re-, dis-",
+  "lesson": {
+    "title": "Small piece, big change",
+    "intro": "A prefix is a word part stuck to the front of a word that changes its meaning. Learn a handful and you can work out hundreds of words you've never seen.",
+    "prefixes": [
+      {"p": "un-", "means": "not", "from": "aware", "to": "unaware", "gloss": "not aware"},
+      {"p": "re-", "means": "again or back", "from": "consider", "to": "reconsider", "gloss": "consider again"},
+      {"p": "dis-", "means": "not, or the opposite of", "from": "courage", "to": "discourage", "gloss": "take courage away"}
+    ],
+    "test": "The cover-up test: cover the prefix with your thumb. Is what's left a real word with a related meaning?",
+    "examples": [
+      {"word": "unaware", "cut": 2, "left": "aware", "ok": true, "note": "A real word with a related meaning. It's a prefix."},
+      {"word": "uncle", "cut": 2, "left": "cle", "ok": false, "note": "Not a word. Just letters."},
+      {"word": "ready", "cut": 2, "left": "ady", "ok": false, "note": "Not a word. Just letters."}
+    ]
+  },
+  "words": [
+    {
+      "key": "unfamiliar", "word": "unfamiliar", "pos": "adjective", "session": 1,
+      "parts": [{"t": "un", "m": "not"}, {"t": "familiar"}],
+      "def": "If something is unfamiliar, you don't know it well because you haven't seen or done it much.",
+      "everyday": "The trail was unfamiliar, so we checked the map at every fork.",
+      "academic": "The article uses several unfamiliar terms, so the author explains each one.",
+      "family": ["familiarity", "familiarize"],
+      "opposite": [{"w": "familiar", "note": "drop the un-"}],
+      "watch": "A place or thing is unfamiliar to a person. Say \"The city was unfamiliar to her,\" not \"She was unfamiliar.\"",
+      "think": "What's something that was unfamiliar to you a year ago but isn't now?",
+      "spelling": [{"slip": "unfamilar", "tip": "Same ending as familiar: -iar."}]
+    },
+    {
+      "key": "unreliable", "word": "unreliable", "pos": "adjective", "session": 1,
+      "parts": [{"t": "un", "m": "not"}, {"t": "reli", "m": "rely"}, {"t": "able", "m": "can be"}],
+      "def": "If someone or something is unreliable, you can't count on it to work or do what it says.",
+      "everyday": "My old phone charger is unreliable. Sometimes it works and sometimes it doesn't.",
+      "academic": "Scientists threw out the readings from the broken sensor because they were unreliable.",
+      "family": ["rely", "reliability", "reliance"],
+      "opposite": [{"w": "reliable", "note": "drop the un-"}, {"w": "dependable"}],
+      "watch": "Three parts: un + rely + able. The y in rely changes to i.",
+      "think": "Why might a random website be an unreliable source for a school report?",
+      "spelling": [{"slip": "unrelyable", "tip": "Rely changes y to i before -able."}, {"slip": "unrelable", "tip": "Three parts: un + reli + able. Don't drop the i."}]
+    },
+    {
+      "key": "unaware", "word": "unaware", "pos": "adjective", "session": 1,
+      "parts": [{"t": "un", "m": "not"}, {"t": "aware"}],
+      "def": "If you are unaware of something, you don't know it is happening or that it exists.",
+      "everyday": "She was unaware that her mic was still on during the call.",
+      "academic": "Many people are unaware of how much water it takes to grow their food.",
+      "family": ["awareness"],
+      "opposite": [{"w": "aware", "note": "drop the un-"}, {"w": "informed"}],
+      "watch": "Usually followed by of or that: unaware of the change, unaware that it moved.",
+      "think": "When were you unaware of something important? How did you find out?",
+      "spelling": [{"slip": "unawear", "tip": "Aware ends in -are, like care and share."}]
+    },
+    {
+      "key": "reconsider", "word": "reconsider", "pos": "verb", "session": 1,
+      "parts": [{"t": "re", "m": "again"}, {"t": "consider"}],
+      "def": "To reconsider is to think about a decision or idea again, often to change it.",
+      "everyday": "After seeing the storm forecast, we reconsidered the beach trip.",
+      "academic": "New evidence led the researchers to reconsider their first explanation.",
+      "family": ["consider", "reconsideration"],
+      "related": ["rethink", "review"],
+      "watch": "You reconsider decisions, plans or ideas, not objects.",
+      "think": "What's one choice you'd reconsider if you got new information?",
+      "spelling": [{"slip": "reconcider", "tip": "re + consider. Consider is spelled with an s."}]
+    },
+    {
+      "key": "reassess", "word": "reassess", "pos": "verb", "session": 1,
+      "parts": [{"t": "re", "m": "again"}, {"t": "assess"}],
+      "def": "To reassess something is to judge it again, usually because something has changed.",
+      "everyday": "When the rain started, we reassessed whether the hike was still a good idea.",
+      "academic": "After the flood, engineers reassessed how safe the bridge was.",
+      "family": ["assess", "assessment", "reassessment"],
+      "related": ["reconsider", "re-evaluate"],
+      "watch": "You reassess a situation (judge it) and reconsider a decision (maybe change it). They often happen together.",
+      "think": "What's something you reassessed after learning more about it?",
+      "spelling": [{"slip": "reasess", "tip": "re + assess. Assess has two pairs of double s: a-ss-e-ss."}, {"slip": "reasses", "tip": "re + assess. Assess has two pairs of double s: a-ss-e-ss."}]
+    },
+    {
+      "key": "reclaim", "word": "reclaim", "pos": "verb", "session": 2,
+      "parts": [{"t": "re", "m": "back"}, {"t": "claim"}],
+      "def": "To reclaim something is to take back something that was yours, or to make something useful again.",
+      "everyday": "After the tournament, she reclaimed her spot as the top scorer on the team.",
+      "academic": "The city reclaimed an empty lot and turned it into a community garden.",
+      "family": ["claim", "reclamation"],
+      "related": ["recover", "take back"],
+      "watch": "Here re- means back, not again.",
+      "think": "What's something you'd like to reclaim, like time, space or a habit?",
+      "spelling": [{"slip": "reclame", "tip": "re + claim. Keep claim's -aim."}]
+    },
+    {
+      "key": "disregard", "word": "disregard", "pos": "verb", "session": 2,
+      "parts": [{"t": "dis", "m": "not"}, {"t": "regard", "m": "pay attention to"}],
+      "def": "To disregard something is to ignore it on purpose or treat it as unimportant.",
+      "everyday": "He disregarded the \"wet paint\" sign and ended up with a green sleeve.",
+      "academic": "A fair summary does not disregard facts that disagree with the author's view.",
+      "family": ["regard", "regardless"],
+      "opposite": [{"w": "pay attention to"}, {"w": "heed"}],
+      "watch": "Disregarding is a choice. If you just didn't notice something, you overlooked it.",
+      "think": "When is it smart to disregard advice? When is it risky?",
+      "spelling": [{"slip": "disreguard", "tip": "dis + regard. The base is regard, with no u."}, {"slip": "disragard", "tip": "dis + regard. Regard starts with re-."}]
+    },
+    {
+      "key": "discourage", "word": "discourage", "pos": "verb", "session": 2,
+      "parts": [{"t": "dis", "m": "take away"}, {"t": "courage"}],
+      "def": "To discourage someone is to make them less confident, or less likely to do something.",
+      "everyday": "A tough first practice can discourage new players, so the coach starts easy.",
+      "academic": "Higher prices on sugary drinks may discourage people from buying them.",
+      "family": ["courage", "discouraging", "discouragement"],
+      "opposite": [{"w": "encourage", "note": "swap dis- for en-"}],
+      "watch": "Two related meanings: taking away someone's confidence, and trying to stop something from happening.",
+      "think": "What discourages you from trying something new, and what helps you push through?",
+      "spelling": [{"slip": "discurage", "tip": "dis + courage. The base word keeps its spelling: c-o-u-r."}, {"slip": "discourge", "tip": "dis + courage. Courage ends in -age."}]
+    },
+    {
+      "key": "disadvantage", "word": "disadvantage", "pos": "noun", "session": 2,
+      "parts": [{"t": "dis", "m": "opposite of"}, {"t": "advantage"}],
+      "def": "A disadvantage is something that makes a situation harder or puts you behind others.",
+      "everyday": "Playing away from home is a disadvantage because the crowd cheers for the other team.",
+      "academic": "One disadvantage of solar power is that it depends on sunny weather.",
+      "family": ["advantageous", "disadvantaged"],
+      "opposite": [{"w": "advantage", "note": "drop the dis-"}, {"w": "benefit"}],
+      "watch": "Common phrases: at a disadvantage, the disadvantage of.",
+      "think": "Name one advantage and one disadvantage of getting a phone at age 12.",
+      "spelling": [{"slip": "disadvantege", "tip": "dis + advantage. Same ending as advantage: -age."}, {"slip": "disadvatage", "tip": "dis + advantage. Advantage has an n before the t."}]
+    }
+  ],
+  "items": [
+    {"id": "qc-unfamiliar", "type": "binary", "use": "quick", "words": ["unfamiliar"], "prompt": "Does unfamiliar fit this sentence?", "text": "The new student was unfamiliar in the cafeteria.", "options": ["Fits", "Doesn't fit"], "answer": 1, "why": "Places and things are unfamiliar to a person. The cafeteria was unfamiliar to the student."},
+    {"id": "qc-unreliable", "type": "binary", "use": "quick", "words": ["unreliable"], "prompt": "Does unreliable fit this sentence?", "text": "The bus is unreliable, so I leave early just in case.", "options": ["Fits", "Doesn't fit"], "answer": 0, "why": "You can't count on the bus, so leaving early makes sense."},
+    {"id": "qc-unaware", "type": "binary", "use": "quick", "words": ["unaware"], "prompt": "Does unaware fit this sentence?", "text": "She was unaware of the surprise party until everyone yelled.", "options": ["Fits", "Doesn't fit"], "answer": 0, "why": "She didn't know about the party until that moment."},
+    {"id": "qc-reconsider", "type": "binary", "use": "quick", "words": ["reconsider"], "prompt": "Does reconsider fit this sentence?", "text": "He reconsidered his sandwich and ate it.", "options": ["Fits", "Doesn't fit"], "answer": 1, "why": "You reconsider decisions or ideas, not objects."},
+    {"id": "qc-reassess", "type": "binary", "use": "quick", "words": ["reassess"], "prompt": "Does reassess fit this sentence?", "text": "After the storm, the coach reassessed whether the field was safe to play on.", "options": ["Fits", "Doesn't fit"], "answer": 0, "why": "Something changed, so the coach judged the situation again."},
+    {"id": "qc-reclaim", "type": "binary", "use": "quick", "words": ["reclaim"], "prompt": "Does reclaim fit this sentence?", "text": "After the flood, the town reclaimed its main street and reopened the shops.", "options": ["Fits", "Doesn't fit"], "answer": 0, "why": "The town took the street back and made it useful again."},
+    {"id": "qc-disregard", "type": "binary", "use": "quick", "words": ["disregard"], "prompt": "Does disregard fit this sentence?", "text": "Mia disregarded the alarm because she never heard it go off.", "options": ["Fits", "Doesn't fit"], "answer": 1, "why": "Disregarding is on purpose. If she never heard it, she missed it."},
+    {"id": "qc-discourage", "type": "binary", "use": "quick", "words": ["discourage"], "prompt": "Does discourage fit this sentence?", "text": "The coach's praise discouraged the team, so they played harder.", "options": ["Fits", "Doesn't fit"], "answer": 1, "why": "Praise usually encourages, and discouraged players don't play harder."},
+    {"id": "qc-disadvantage", "type": "binary", "use": "quick", "words": ["disadvantage"], "prompt": "Does disadvantage fit this sentence?", "text": "Having the sun in your eyes is a disadvantage for a goalkeeper.", "options": ["Fits", "Doesn't fit"], "answer": 0, "why": "The sun makes the goalkeeper's job harder."},
+
+    {"id": "pf-unaware", "type": "binary", "use": "prefix", "words": [], "prompt": "Prefix or just letters?", "text": "unaware", "options": ["Prefix", "Just letters"], "answer": 0, "why": "Cover un- and you get aware, a real word with a related meaning."},
+    {"id": "pf-uncle", "type": "binary", "use": "prefix", "words": [], "prompt": "Prefix or just letters?", "text": "uncle", "options": ["Prefix", "Just letters"], "answer": 1, "why": "Cover un- and you get cle, which isn't a word."},
+    {"id": "pf-reconsider", "type": "binary", "use": "prefix", "words": [], "prompt": "Prefix or just letters?", "text": "reconsider", "options": ["Prefix", "Just letters"], "answer": 0, "why": "Consider is left, and reconsider means consider again."},
+    {"id": "pf-ready", "type": "binary", "use": "prefix", "words": [], "prompt": "Prefix or just letters?", "text": "ready", "options": ["Prefix", "Just letters"], "answer": 1, "why": "Cover re- and you get ady, which isn't a word."},
+    {"id": "pf-disregard", "type": "binary", "use": "prefix", "words": [], "prompt": "Prefix or just letters?", "text": "disregard", "options": ["Prefix", "Just letters"], "answer": 0, "why": "Regard means pay attention to. Disregard is the opposite."},
+    {"id": "pf-dish", "type": "binary", "use": "prefix", "words": [], "prompt": "Prefix or just letters?", "text": "dish", "options": ["Prefix", "Just letters"], "answer": 1, "why": "Cover dis- and only h is left."},
+
+    {"id": "wf-disadvantage", "type": "mcq", "use": "use", "words": ["disadvantage"], "stem": "Losing their best player put the team at a ___.", "options": ["disadvantage", "advantage", "disagreement", "discovery"], "answer": 0, "why": "Losing a player makes things harder. Advantage is the opposite."},
+    {"id": "wf-discourage", "type": "mcq", "use": "use", "words": ["discourage"], "stem": "Don't let one bad grade ___ you. Look at what to fix.", "options": ["discourage", "disregard", "reconsider", "reassess"], "answer": 0, "why": "A bad grade can take away your confidence. That's discouraging."},
+    {"id": "wf-reclaim", "type": "mcq", "use": "use", "words": ["reclaim"], "stem": "After two years of renters, the family finally ___ their garage from them.", "options": ["reclaimed", "reassessed", "reconsidered", "disregarded"], "answer": 0, "why": "They took the garage back. Re- here means back."},
+    {"id": "wf-disregard", "type": "mcq", "use": "use", "words": ["disregard"], "stem": "The judge told the jury to ___ the comment and act as if they never heard it.", "options": ["disregard", "reconsider", "reassess", "discourage"], "answer": 0, "why": "Acting as if they never heard it means ignoring it on purpose. Reconsidering would mean thinking about it again."},
+    {"id": "wf-unaware", "type": "mcq", "use": "use", "words": ["unaware"], "stem": "Nobody told me the meeting moved, so I was completely ___.", "options": ["unaware", "unfamiliar", "unreliable", "unwilling"], "answer": 0, "why": "Nobody told you, so you didn't know it happened."},
+
+    {"id": "rv-unfamiliar", "type": "mcq", "use": "review", "words": ["unfamiliar"], "stem": "In a new country, everything from the money to the food felt ___.", "options": ["unfamiliar", "unreliable", "unaware", "unwilling"], "answer": 0, "why": "New things you don't know well feel unfamiliar."},
+    {"id": "rv-unreliable", "type": "mcq", "use": "review", "words": ["unreliable"], "stem": "Our old car is so ___ that we never take it on long trips.", "options": ["unreliable", "unfamiliar", "unaware", "unwilling"], "answer": 0, "why": "You can't count on the car, so long trips are risky."},
+    {"id": "rv-unaware", "type": "mcq", "use": "review", "words": ["unaware"], "stem": "Until the deer jumped onto the road, the driver was completely ___.", "options": ["unaware", "unfamiliar", "unreliable", "unwilling"], "answer": 0, "why": "The driver didn't know the deer was there."},
+    {"id": "rv-reconsider", "type": "mcq", "use": "review", "words": ["reconsider"], "stem": "The new evidence made the scientist ___ her first idea and test it again.", "options": ["reconsider", "reclaim", "discourage", "disregard"], "answer": 0, "why": "She thought about the idea again. Disregarding it wouldn't lead to testing it."},
+    {"id": "rv-reassess", "type": "mcq", "use": "review", "words": ["reassess"], "stem": "When the river kept rising, the town had to ___ how safe the bridge was.", "options": ["reassess", "reclaim", "discourage", "disregard"], "answer": 0, "why": "Something changed, so the town judged the bridge again."},
+    {"id": "rv-reclaim", "type": "mcq", "use": "review", "words": ["reclaim"], "stem": "After years of neglect, volunteers ___ the old park and planted new trees.", "options": ["reclaimed", "reassessed", "discouraged", "disregarded"], "answer": 0, "why": "They made the park useful again."},
+    {"id": "rv-disregard", "type": "mcq", "use": "review", "words": ["disregard"], "stem": "The hikers ___ the \"trail closed\" sign on purpose and got lost.", "options": ["disregarded", "discouraged", "reclaimed", "reassessed"], "answer": 0, "why": "They ignored the sign on purpose."},
+    {"id": "rv-discourage", "type": "mcq", "use": "review", "words": ["discourage"], "stem": "Long lines at the museum may ___ some visitors from waiting.", "options": ["discourage", "disregard", "reconsider", "reassess"], "answer": 0, "why": "Long lines make people less likely to wait."},
+    {"id": "rv-disadvantage", "type": "mcq", "use": "review", "words": ["disadvantage"], "stem": "Not knowing the language can be a real ___ when you travel.", "options": ["disadvantage", "disagreement", "advantage", "discovery"], "answer": 0, "why": "It makes travel harder. Advantage is the opposite."},
+
+    {"id": "mx-unfamiliar", "type": "mcq", "use": "review", "words": ["unfamiliar"], "stem": "On my first day at the new school, every hallway and face felt ___.", "options": ["unfamiliar", "unreliable", "unwilling", "unaware"], "answer": 0, "why": "Places and people you haven't seen before feel unfamiliar."},
+    {"id": "mx-unreliable", "type": "mcq", "use": "review", "words": ["unreliable"], "stem": "The weather app was so ___ that we stopped trusting its forecasts.", "options": ["unreliable", "unfamiliar", "unaware", "unwilling"], "answer": 0, "why": "You couldn't count on the app to be right."},
+    {"id": "mx-reconsider", "type": "mcq", "use": "review", "words": ["reconsider"], "stem": "When the tickets doubled in price, we had to ___ whether the trip was worth it.", "options": ["reconsider", "reclaim", "disregard", "discourage"], "answer": 0, "why": "New information made you think about the decision again."},
+    {"id": "mx-reassess", "type": "mcq", "use": "review", "words": ["reassess"], "stem": "After her first quiz came back low, Ana ___ how she was studying and made a new plan.", "options": ["reassessed", "reclaimed", "disregarded", "discouraged"], "answer": 0, "why": "Something changed (a low score), so she judged her studying again."},
+
+    {"id": "ex-unreliable", "type": "binary", "use": "use", "words": ["unreliable"], "prompt": "Example or non-example of unreliable?", "text": "A watch that's sometimes 20 minutes off.", "options": ["Example", "Non-example"], "answer": 0, "why": "You can't count on it to tell the right time."},
+    {"id": "ex-reassess", "type": "binary", "use": "use", "words": ["reassess"], "prompt": "Example or non-example of reassessing?", "text": "Checking the forecast once in the morning and never again.", "options": ["Example", "Non-example"], "answer": 1, "why": "Reassessing means judging again, usually after something changes."},
+    {"id": "ex-disregard", "type": "binary", "use": "use", "words": ["disregard"], "prompt": "Example or non-example of disregarding?", "text": "Skipping the instructions on purpose because you think you know better.", "options": ["Example", "Non-example"], "answer": 0, "why": "It's a deliberate choice to ignore them."},
+
+    {"id": "bd-discourage", "type": "build", "use": "use", "words": ["discourage"], "prompt": "to make someone less confident", "prefixes": ["un", "re", "dis"], "bases": ["aware", "consider", "regard", "courage", "familiar"], "answer": ["dis", "courage"], "why": "dis (take away) + courage = discourage."},
+    {"id": "bd-unfamiliar", "type": "build", "use": "use", "words": ["unfamiliar"], "prompt": "not known well to you", "prefixes": ["un", "re", "dis"], "bases": ["aware", "consider", "regard", "courage", "familiar"], "answer": ["un", "familiar"], "why": "un (not) + familiar = unfamiliar."},
+    {"id": "bd-reconsider", "type": "build", "use": "use", "words": ["reconsider"], "prompt": "to think about a decision again", "prefixes": ["un", "re", "dis"], "bases": ["aware", "consider", "regard", "courage", "familiar"], "answer": ["re", "consider"], "why": "re (again) + consider = reconsider."},
+
+    {"id": "or-discourage", "type": "order", "use": "use", "words": ["discourage"], "prompt": "Tap these from gentlest to strongest.", "order": ["hint against", "discourage", "forbid"], "why": "Discourage sits in the middle. It pushes someone away from doing something but doesn't stop them the way forbid does."},
+
+    {"id": "tr-unbearable", "type": "binary", "use": "transfer", "words": [], "prompt": "New word. Prefix or just letters?", "text": "unbearable", "options": ["Prefix", "Just letters"], "answer": 0, "why": "Cover un- and you get bearable. Unbearable means not bearable: too much to put up with."},
+    {"id": "tr-rewind", "type": "binary", "use": "transfer", "words": [], "prompt": "New word. Prefix or just letters?", "text": "rewind", "options": ["Prefix", "Just letters"], "answer": 0, "why": "Cover re- and you get wind. Rewind means wind back."},
+    {"id": "tr-real", "type": "binary", "use": "transfer", "words": [], "prompt": "New word. Prefix or just letters?", "text": "real", "options": ["Prefix", "Just letters"], "answer": 1, "why": "Cover re- and you get al, which isn't a word."}
+  ],
+  "sentence": [
+    {
+      "id": "sn-discourage", "word": "discourage",
+      "typed": "Write a sentence using discourage that shows why someone lost confidence.",
+      "phone": {"id": "sp-unaware", "type": "mcq", "words": ["unaware"], "stem": "Pick the sentence that shows what unaware means.", "options": ["Maya was unaware the store had closed, so she walked there for nothing.", "Maya was unaware of the rain, so she packed an umbrella just in case.", "Maya was unaware of the quiz, so she studied for it all weekend."], "answer": 0, "why": "In the other two, the second half contradicts unaware. You can't prepare for something you don't know about."}
+    },
+    {
+      "id": "sn-disregard", "word": "disregard",
+      "typed": "Write a sentence using disregard that shows someone ignoring something on purpose.",
+      "phone": {"id": "sp-disregard", "type": "mcq", "words": ["disregard"], "stem": "Pick the sentence that shows what disregard means.", "options": ["Leo disregarded the coach's advice and kept dribbling on his own.", "Leo disregarded the coach's advice by following it exactly.", "Leo disregarded the coach's advice because he never heard it."], "answer": 0, "why": "Disregarding is ignoring on purpose. Following advice isn't ignoring it, and you can't ignore something you never heard."}
+    }
+  ],
+  "selfCheck": ["I used the word with the right meaning.", "The word is in the right form (for example discourage, discouraged, discouraging).", "Someone who didn't know the word could guess its meaning from my sentence."],
+  "passage": {
+    "title": "The Garden Behind the Library",
+    "paragraphs": [
+      "When Ms. Ortiz took over the garden behind the library, most neighbors were [unaware] it even existed. Weeds covered the paths, and the old water pump was so [unreliable] that volunteers hauled buckets from the parking lot. Some people tried to [discourage] her. \"It's too far gone,\" one man said. \"Without a working pump, you're at a [disadvantage] from day one.\"",
+      "Ms. Ortiz didn't [disregard] the warning. She [reconsidered|reconsider] her plan and started small: one bed of tomatoes near the door. She kept a notebook and [reassessed|reassess] her watering schedule every week based on what grew and what didn't. Slowly, volunteers joined, including kids who had never planted anything and found the work [unfamiliar] at first.",
+      "By the end of summer, the group had fixed the pump and [reclaimed|reclaim] all six beds from the weeds. The man who had warned her stopped by with a bag of seeds."
+    ],
+    "questions": [
+      {"id": "pq-1", "type": "mcq", "use": "passage", "words": ["unreliable"], "stem": "Why did volunteers haul buckets from the parking lot?", "options": ["The pump couldn't be counted on to work.", "The pump was too far from the garden beds.", "The pump water was too dirty for plants.", "The pump belonged to the library staff."], "answer": 0, "why": "The pump was unreliable: you couldn't count on it."},
+      {"id": "pq-2", "type": "mcq", "use": "passage", "words": ["disregard"], "stem": "\"Ms. Ortiz didn't disregard the warning\" means she...", "options": ["took it seriously", "argued against it", "brushed it aside", "forgot about it"], "answer": 0, "why": "Disregard means ignore on purpose, so didn't disregard means she paid attention."},
+      {"id": "pq-3", "type": "mcq", "use": "passage", "words": ["reconsider"], "stem": "What did reconsidering her plan lead Ms. Ortiz to do?", "options": ["Start with a single bed near the door", "Give the garden back to the library", "Ask the man to fix the water pump", "Wait until next summer to plant"], "answer": 0, "why": "After thinking again, she started small with one bed of tomatoes."},
+      {"id": "pq-4", "type": "mcq", "use": "passage", "words": ["discourage"], "stem": "Why does the last sentence matter?", "options": ["The man changed from discouraging her to supporting her.", "The man wanted to take the garden back from the volunteers.", "The man was selling seeds to everyone who worked there.", "The man had been right that the garden was too far gone."], "answer": 0, "why": "The man who tried to discourage her ended up helping. That's the story's turn."}
+    ]
+  },
+  "glossary": {
+    "advantage": "Something that helps you or puts you ahead of others.",
+    "disagreement": "When people don't agree about something.",
+    "discovery": "Finding something for the first time.",
+    "unwilling": "If you are unwilling, you don't want to do something and won't choose to."
+  },
+  "spellingTimes": {"slow": 3000, "normal": 1500, "fast": 500},
+  "parentPrompts": [
+    "At dinner, use reconsider about a real plan: \"Should we reconsider Saturday?\" See if they catch it.",
+    "Ask: \"What's something you'd like to reclaim, like time, space or a habit?\"",
+    "Share a time something discouraged you, and what helped you keep going."
+  ],
+  "sessions": [
+    {"n": 1, "title": "Meet", "about": "The prefix trick, then your first five words.", "plan": ["lesson", "meet:1", "prefix", "exit"]},
+    {"n": 2, "title": "Meet", "about": "Four more words, then your first spelling round.", "plan": ["warmup", "meet:2", "spell:learn", "exit"]},
+    {"n": 3, "title": "Use", "about": "Pick the right word, build words from parts, and sort by strength.", "plan": ["warmup", "use"]},
+    {"n": 4, "title": "Produce", "about": "Use the words yourself, then read a short story that uses all nine.", "plan": ["warmup", "sentence", "passage"]},
+    {"n": 5, "title": "Check", "about": "The weekly check, plus a spelling review.", "plan": ["check", "spell:review"]}
+  ]
+}

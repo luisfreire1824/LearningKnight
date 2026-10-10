@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Learning Knight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Gloock&display=swap">
+<style>
+/* Layout: one calm reading column (max 640px); the word itself is the hero of every screen, set like a dictionary entry. */
+:root{
+  --bg:#F3F5F1; --surface:#FFFFFF; --sunk:#E9ECE6; --ink:#1B2230; --muted:#596273; --line:#D8DDD4;
+  --accent:#2C4A9A; --accent-ink:#FFFFFF; --accent-soft:#E2E8F6;
+  --brass:#9A6A1C; --brass-soft:#F3E7D1;
+  --good:#2C7448; --good-soft:#DFF0E5; --bad:#B03A2B; --bad-soft:#F7E1DC;
+  --lvl0:#BCC3B8; --lvl1:#7C93C9; --lvl2:#2C4A9A; --lvl3:#9A6A1C;
+  --display:"Gloock", Georgia, "Times New Roman", serif;
+  --body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:10px; --shadow:0 1px 2px rgba(20,30,50,.06), 0 4px 16px rgba(20,30,50,.06);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#11151C; --surface:#1A202A; --sunk:#151A22; --ink:#E8EBF0; --muted:#9AA3B2; --line:#2C3441;
+  --accent:#8EA8F2; --accent-ink:#0E1424; --accent-soft:#1F2A45;
+  --brass:#D8A85B; --brass-soft:#3A2F1D;
+  --good:#72C995; --good-soft:#163225; --bad:#F08B7C; --bad-soft:#3B201C;
+  --lvl0:#4A5260; --lvl1:#5D74AE; --lvl2:#8EA8F2; --lvl3:#D8A85B;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#11151C; --surface:#1A202A; --sunk:#151A22; --ink:#E8EBF0; --muted:#9AA3B2; --line:#2C3441;
+  --accent:#8EA8F2; --accent-ink:#0E1424; --accent-soft:#1F2A45;
+  --brass:#D8A85B; --brass-soft:#3A2F1D;
+  --good:#72C995; --good-soft:#163225; --bad:#F08B7C; --bad-soft:#3B201C;
+  --lvl0:#4A5260; --lvl1:#5D74AE; --lvl2:#8EA8F2; --lvl3:#D8A85B;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark }
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:12px 64px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2rem} h2{font-size:1.5rem} h3{font-size:1.15rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+.label{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack-s{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.between{justify-content:space-between}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 18px;font-weight:700;min-height:44px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;border-color:transparent;padding-inline:10px}
+.btn.wide{width:100%}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-block:8px 16px}
+.brand{font-family:var(--display);font-size:1.25rem;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.topbar .row{flex-wrap:nowrap}
+.cover .btn{flex:none;white-space:nowrap}
+.brand svg{width:22px;height:22px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.875rem;background:var(--surface)}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.lv0{background:var(--sunk);color:var(--muted)}
+.lv1{background:var(--accent-soft);color:var(--lvl1)}
+.lv2{background:var(--accent-soft);color:var(--lvl2)}
+.lv3{background:var(--brass-soft);color:var(--brass)}
+.progress{height:6px;background:var(--sunk);border-radius:999px;overflow:hidden}
+.progress>i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
+.sessions{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.sess{border:1px solid var(--line);border-radius:8px;padding:8px 6px;text-align:center;font-size:.8rem;background:var(--surface);min-width:0}
+.sess b{display:block;font-size:1rem}
+.sess.done{background:var(--good-soft);border-color:transparent;color:var(--good)}
+.sess.next{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--sunk);border-radius:8px;padding:10px;text-align:center}
+.stat b{display:block;font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.wordlist{display:flex;flex-direction:column}
+.wordlist .wl{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.wordlist .wl:last-child{border-bottom:0}
+/* Dictionary-entry card */
+.entry .headword{font-family:var(--display);font-size:clamp(2.2rem,9vw,3.2rem);line-height:1;word-break:break-word}
+.entry .headword .pre{color:var(--accent)}
+.entry .headword .dot{color:var(--muted);padding-inline:2px}
+.pos{font-style:italic;color:var(--muted)}
+.parts{display:flex;flex-wrap:wrap;gap:6px}
+.part{border:1px dashed var(--line);border-radius:8px;padding:4px 10px;font-size:.9rem;background:var(--sunk)}
+.part b{color:var(--ink)}
+.part span{color:var(--muted)}
+.ex{border-left:3px solid var(--line);padding-left:12px}
+.ex .label{display:block;margin-bottom:2px}
+dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:0}
+dl.facts dt{font-weight:700;color:var(--muted);font-size:.875rem;padding-top:2px}
+dl.facts dd{margin:0}
+details summary{cursor:pointer;font-weight:700;color:var(--accent)}
+/* Questions */
+.quote{font-family:var(--display);font-size:1.35rem;line-height:1.35;background:var(--sunk);border-radius:8px;padding:16px}
+.blank{display:inline-block;min-width:3.5em;border-bottom:2px solid var(--ink);margin-inline:2px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px 16px;min-height:48px;font-size:1rem}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.picked{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.opt.right{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--ink)}
+.opts.two{grid-template-columns:1fr 1fr}
+.feedback{border-radius:var(--r);padding:14px 16px}
+.feedback.ok{background:var(--good-soft)}
+.feedback.no{background:var(--bad-soft)}
+.feedback b{display:block}
+.tiles{display:flex;flex-wrap:wrap;gap:8px}
+.tile{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 14px;font-weight:700;min-height:44px}
+.tile.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tile:disabled{opacity:.4}
+.built{font-family:var(--display);font-size:2rem;min-height:2.6rem;border-bottom:2px dashed var(--line)}
+/* Spelling */
+.flash{height:132px;display:flex;align-items:center;justify-content:center;background:var(--sunk);border-radius:var(--r);font-family:var(--display);font-size:clamp(2rem,10vw,3rem)}
+.speed{display:flex;gap:6px}
+.speed i{flex:1;height:6px;border-radius:999px;background:var(--sunk)}
+.speed i.on{background:var(--accent)}
+.speed i.done{background:var(--good)}
+input.spell,textarea{width:100%;font:inherit;font-size:1.25rem;padding:12px 14px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+textarea{font-size:1rem;min-height:96px;resize:vertical}
+.diff{font-family:var(--display);font-size:1.6rem;letter-spacing:.04em}
+.diff .x{background:var(--bad-soft);color:var(--bad);border-radius:3px;text-decoration:line-through}
+.diff .m{background:var(--brass-soft);color:var(--brass);border-radius:3px;text-decoration:underline}
+/* Lesson cover-up */
+.cover{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cover:last-child{border-bottom:0}
+.cover .w{font-family:var(--display);font-size:1.6rem}
+.cover .w .hide{background:var(--ink);color:var(--ink);border-radius:4px}
+/* Passage */
+.story p{font-size:1.06rem;line-height:1.7;margin-bottom:12px}
+.story p:last-child{margin-bottom:0}
+.tw{border:0;background:none;padding:0;font:inherit;color:var(--accent);text-decoration:underline dotted;text-underline-offset:3px}
+.pop{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:.95rem}
+.check{display:flex;gap:10px;align-items:flex-start}
+.check input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tablebox{overflow-x:auto}
+.note{background:var(--brass-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:.9rem}
+.sentence{border:1px solid var(--line);border-radius:8px;padding:12px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:420px){.opts.two{grid-template-columns:1fr} .sessions{gap:4px} .sess{font-size:.72rem;padding:6px 2px}}
+</style>
+
+<div class="wrap" id="app" aria-live="polite">
+  <div class="topbar"><div class="brand">Learning Knight</div></div>
+  <div class="panel stack"><h2>Opening your profiles…</h2><p class="muted">Loading Unit 1.1 and any saved progress.</p></div>
+</div>
+
+<script>
+(() => {
+"use strict";
+const CONTENT_URL = "content/vocab-en.b6.m1.u1.json";
+const LEVELS = ["New", "Learning", "Familiar", "Owned"];
+const DAY = 864e5;
+const app = document.getElementById("app");
+let C = null;            // unit content
+let store = null;        // storage adapter
+let P = null;            // current profile {id, data}
+let saveChain = Promise.resolve();
+
+/* ---------- tiny DOM helper ---------- */
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "html") e.innerHTML = v;
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k !== null && k !== undefined && k !== false) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  return e;
+}
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const wordByKey = k => C.words.find(w => w.key === k);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- clock (with a testing offset so a parent can jump ahead a day) ---------- */
+function today() {
+  const off = (P && P.data.dayOffset) || 0;
+  const d = new Date(Date.now() + off * DAY);
+  return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / DAY);
+}
+const dayLabel = n => { const d = new Date(n * DAY); return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }); };
+
+/* ---------- storage: claude.ai account (db) with a this-device fallback ---------- */
+const local = {
+  mode: "device",
+  read() { try { return JSON.parse(localStorage.getItem("lk.profiles") || "{}"); } catch { return {}; } },
+  write(all) { try { localStorage.setItem("lk.profiles", JSON.stringify(all)); return true; } catch { return false; } },
+  async list() { const all = this.read(); return Object.entries(all).map(([id, data]) => ({ id, data })); },
+  async save(id, data) { const all = this.read(); all[id] = data; this.write(all); },
+  async remove(id) { const all = this.read(); delete all[id]; this.write(all); }
+};
+async function makeStore() {
+  const cl = window.claude;
+  if (!cl || typeof cl.use !== "function") return local;
+  try {
+    const [db, user] = await Promise.all([cl.use("db"), cl.use("user")]);
+    const uid = user ? await user.id() : null;
+    if (!db || !uid) return local;
+    const col = db.collection("data/users/" + uid);
+    return {
+      mode: "account",
+      async list() { const s = await col.get(); return s.docs.filter(d => d.exists).map(d => ({ id: d.id, data: JSON.parse(JSON.stringify(d.data())) })); },
+      async save(id, data) { await col.doc(id).set(data); },
+      async remove(id) { await col.doc(id).delete(); }
+    };
+  } catch (e) { return local; }
+}
+function persist() {
+  if (!P) return;
+  const snapshot = JSON.parse(JSON.stringify(P.data));
+  const id = P.id;
+  saveChain = saveChain.then(() => store.save(id, snapshot)).catch(err => {
+    if (store.mode === "account") { showToast("Couldn't save to your account. Progress is kept on this device for now."); store = local; return local.save(id, snapshot); }
+  });
+  return saveChain;
+}
+let toastEl = null;
+function showToast(msg) {
+  if (toastEl) toastEl.remove();
+  toastEl = h("div", { class: "note", role: "status", style: "position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:600px;margin:auto;z-index:5" }, msg);
+  document.body.append(toastEl);
+  setTimeout(() => toastEl && toastEl.remove(), 5000);
+}
+
+/* ---------- profile model ---------- */
+function newProfile(name) {
+  return { name, created: Date.now(), dayOffset: 0, unit: C.id, sessions: {}, words: {}, attempts: [], sentences: [], missed: {} };
+}
+function ensure(p) { p.data.missed = p.data.missed || {}; p.data.sentences = p.data.sentences || []; return p; }
+/* Missed words: anything still wrong after its last chance. Cleared by getting it right in practice. */
+function missAdd(key, item, picked) {
+  const m = P.data.missed[key] || { times: 0 };
+  P.data.missed[key] = { item, picked, day: today(), times: m.times + 1 };
+}
+function missClear(key) { delete P.data.missed[key]; }
+/* A miss adds the word to the list. In practice, only a first-try right answer clears it. */
+function afterGrade(st, it, ok, picked, firstTry = true) {
+  (it.words || []).forEach(k => { if (!ok) missAdd(k, it.id, picked); else if (st.practice && firstTry) missClear(k); });
+  return ok ? [] : (it.words || []);
+}
+/* A multiple-choice question for a word, avoiding ones already used; falls back to a repeat only if the bank is thin. */
+function mcqFor(key, avoid) {
+  const all = C.items.filter(i => i.type === "mcq" && (i.words || []).includes(key));
+  return shuffle(all.filter(i => !avoid.has(i.id)))[0] || shuffle(all)[0] || null;
+}
+/* What a choice means: a unit word (any simple inflection) or a glossary entry */
+function defOf(opt) {
+  const w = opt.toLowerCase();
+  const cands = [w, w.replace(/ied$/, "y"), w.replace(/ed$/, ""), w.replace(/d$/, ""), w.replace(/s$/, "")];
+  for (const c of cands) {
+    const card = C.words.find(x => x.word === c);
+    if (card) return { word: opt, def: card.def };
+    if (C.glossary && C.glossary[c]) return { word: opt, def: C.glossary[c] };
+  }
+  return null;
+}
+function ws(key, skill) {
+  const d = P.data;
+  d.words[key] = d.words[key] || {};
+  d.words[key][skill] = d.words[key][skill] || { lvl: 0, next: null, intro: null, fam: null, types: [], prod: false, hits: 0, miss: 0 };
+  return d.words[key][skill];
+}
+function introduce(key, skill = "meaning") {
+  const s = ws(key, skill);
+  if (s.lvl === 0) { s.lvl = 1; s.intro = today(); s.next = today() + 1; }
+}
+/* Mastery rules (see Unit 1.1 doc): correct, spaced recall moves a word up; a miss steps it back one level. */
+function record(key, skill, correct, type, extra = {}) {
+  const t = today();
+  P.data.attempts.push({ at: Date.now(), day: t, w: key, s: skill, type, ok: !!correct, item: extra.item || null, resp: extra.resp ?? null });
+  if (P.data.attempts.length > 600) P.data.attempts.splice(0, P.data.attempts.length - 600);
+  if (!key) return null;
+  const s = ws(key, skill);
+  const before = s.lvl;
+  if (s.lvl === 0) introduce(key, skill);
+  // Right on the second try, with definitions shown: no credit, no penalty. It just comes back tomorrow.
+  if (extra.soft) { s.next = t + 1; return null; }
+  if (correct) {
+    s.hits++;
+    if (!s.types.includes(type)) s.types.push(type);
+    if (extra.production) s.prod = true;
+    const due = s.next !== null && t >= s.next && t > s.intro;
+    if (due) {
+      if (s.lvl === 1) { s.lvl = 2; s.fam = t; s.next = t + 3; }
+      else if (s.lvl === 2) {
+        const spaced = t - s.fam >= 7;
+        const ok = skill === "spelling" ? spaced : (spaced && s.types.length >= 2 && s.prod);
+        if (ok) { s.lvl = 3; s.next = t + 30; } else s.next = t + 4;
+      } else if (s.lvl === 3) s.next = t + 30;
+    }
+  } else {
+    s.miss++;
+    if (s.lvl >= 2) s.lvl -= 1;
+    s.next = t + 1;
+  }
+  return s.lvl !== before ? { key, skill, from: before, to: s.lvl } : null;
+}
+const lvlPill = l => h("span", { class: "pill lv" + l }, LEVELS[l]);
+function nextSession() { for (const s of C.sessions) if (!P.data.sessions[s.n]) return s; return null; }
+function dueWords(skill = "meaning") {
+  const t = today();
+  return C.words.map(w => w.key).filter(k => { const s = P.data.words[k] && P.data.words[k][skill]; return s && s.lvl > 0 && s.next !== null && s.next <= t; })
+    .sort((a, b) => P.data.words[a][skill].next - P.data.words[b][skill].next);
+}
+
+/* ---------- item bank helpers ---------- */
+// Story questions only make sense right after the story, so they never appear in reviews or practice.
+const bankUses = ["quick", "use", "review"];
+function bankFor(key, avoid = new Set()) {
+  const all = [...C.items, ...C.passage.questions].filter(i => (i.words || []).includes(key) && bankUses.includes(i.use) && !avoid.has(i.id));
+  const recent = new Set(P.data.attempts.slice(-60).map(a => a.item));
+  const fresh = all.filter(i => !recent.has(i.id));
+  const pool = fresh.length ? fresh : all;
+  return pool.find(i => i.use === "review") || shuffle(pool)[0] || null;
+}
+function needsProduction(key) {
+  const s = P.data.words[key] && P.data.words[key].meaning;
+  return s && s.lvl === 2 && !s.prod && today() - s.fam >= 7;
+}
+
+/* ---------- speech ---------- */
+function say(text) {
+  try {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text); u.rate = 0.9; u.lang = "en-US";
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+const hasSpeech = () => { try { return "speechSynthesis" in window; } catch { return false; } };
+const isPhone = () => window.matchMedia("(pointer: coarse)").matches && window.innerWidth < 760;
+
+/* ================= SCREENS ================= */
+let inSession = false;
+function frame(...kids) {
+  app.replaceChildren(topbar(), ...kids);
+  window.scrollTo(0, 0);
+}
+function topbar() {
+  const right = h("div", { class: "row" });
+  if (P && !inSession) {
+    right.append(h("button", { class: "chip", onclick: () => showProfiles(true), "aria-label": "Switch learner" }, P.data.name, " ▾"));
+    right.append(h("button", { class: "btn ghost small", onclick: showParent }, "Parent view"));
+  }
+  return h("div", { class: "topbar" },
+    h("div", { class: "brand", html: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11h8M12 7v10" stroke="currentColor" stroke-width="1.8"/></svg><span>Learning Knight</span>' }),
+    right);
+}
+
+/* ---------- profiles ---------- */
+const remember = id => { try { localStorage.setItem("lk.last", id); } catch (e) {} };
+const lastId = () => { try { return localStorage.getItem("lk.last"); } catch (e) { return null; } };
+function openProfile(p) { P = ensure(p); remember(p.id); showHome(); }
+async function showProfiles(force) {
+  P = null;
+  let list = [];
+  try { list = await store.list(); } catch (e) { list = []; }
+  // Reopening the page goes straight back to the last learner on this device.
+  if (!force) { const p = list.find(x => x.id === lastId()); if (p) return openProfile(p); }
+  const nameInput = h("input", { class: "spell", id: "new-name", placeholder: "First name", maxlength: "24", autocomplete: "off", style: "font-size:1rem" });
+  const add = async () => {
+    const name = nameInput.value.trim();
+    if (!name) { nameInput.focus(); return; }
+    const id = "p-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 16) + "-" + Math.random().toString(36).slice(2, 7);
+    P = { id, data: newProfile(name) };
+    await persist();
+    openProfile(P);
+  };
+  nameInput.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
+  const saveNote = store.mode === "account"
+    ? "Progress saves to this claude.ai account, so it follows you between phone and laptop."
+    : "Progress saves on this device only. Open this page signed in to claude.ai to keep it across devices.";
+  frame(h("div", { class: "stack" },
+    h("h1", null, "Who's learning?"),
+    list.length ? h("div", { class: "stack-s" }, list.sort((a, b) => a.data.created - b.data.created).map(p => {
+      const owned = Object.values(p.data.words || {}).filter(w => w.meaning && w.meaning.lvl === 3).length;
+      const done = Object.keys(p.data.sessions || {}).length;
+      return h("button", { class: "opt", onclick: () => openProfile(p) },
+        h("div", { class: "row between" }, h("b", null, p.data.name), h("span", { class: "muted small" }, `Session ${Math.min(done + 1, 5)} of 5 · ${owned} owned`)));
+    })) : h("p", { class: "muted" }, "Add a learner to start. Each person gets their own placement and progress."),
+    h("div", { class: "panel stack-s" },
+      h("label", { for: "new-name", class: "label" }, "Add a learner"),
+      h("div", { class: "row" }, h("div", { style: "flex:1;min-width:0" }, nameInput), h("button", { class: "btn primary", onclick: add }, "Add"))),
+    h("p", { class: "muted small" }, saveNote)
+  ));
+}
+
+/* ---------- home ---------- */
+function showHome() {
+  ensure(P);
+  const d = P.data, nx = nextSession(), t = today();
+  const words = C.words.map(w => ({ w, m: (d.words[w.key] || {}).meaning, s: (d.words[w.key] || {}).spelling }));
+  const met = words.filter(x => x.m && x.m.lvl > 0).length;
+  const fam = words.filter(x => x.m && x.m.lvl >= 2).length;
+  const owned = words.filter(x => x.m && x.m.lvl === 3).length;
+  const due = dueWords().length + dueWords("spelling").length;
+  const lastDay = Math.max(-1, ...Object.values(d.sessions).map(s => s.day));
+  let action;
+  if (d.run) {
+    const run = d.run;
+    action = h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
+      h("span", { class: "label" }, "In progress"),
+      h("button", { class: "btn primary wide", onclick: continueRun }, `Resume ${run.title}`),
+      h("p", { class: "muted small" }, `You're on step ${Math.min(run.i + 1, run.steps.length)} of ${run.steps.length}. Everything you've answered is saved.`),
+      h("button", { class: "btn ghost small", onclick: async () => { delete d.run; await persist(); showHome(); } }, "Start over instead"));
+  } else if (nx) {
+    const sameDay = lastDay === t;
+    action = h("div", { class: "stack-s" },
+      h("button", { class: "btn primary wide", onclick: () => runSession(nx) }, `Start Session ${nx.n}: ${nx.title}`),
+      h("p", { class: "muted small" }, sameDay ? "You already did a session today. Words stick better if you wait until tomorrow, but it's your call." : nx.about));
+  } else {
+    action = h("div", { class: "stack-s" },
+      h("button", { class: "btn primary wide", onclick: runReview, disabled: due ? null : true }, due ? `Review ${due} due word${due === 1 ? "" : "s"}` : "Nothing due today"),
+      h("p", { class: "muted small" }, "Unit 1.1 is complete. Words come back for review on a spaced schedule until they're owned."));
+  }
+  const missedKeys = Object.keys(d.missed || {});
+  const missedPanel = missedKeys.length ? h("div", { class: "panel stack-s", style: "border-color:var(--bad)" },
+    h("div", { class: "row between" }, h("h3", null, "Missed words"), h("span", { class: "pill", style: "background:var(--bad-soft);color:var(--bad)" }, missedKeys.length)),
+    h("p", { class: "small muted" }, "Words you got wrong after your last chance. See each one again, then try a new question. Get it right and it comes off the list."),
+    h("div", { class: "wordlist" }, missedKeys.map(k => h("div", { class: "wl" },
+      h("span", null, wordByKey(k).word), h("span", { class: "small muted" }, "missed " + dayLabel(d.missed[k].day))))),
+    h("button", { class: "btn wide", onclick: runMissed }, "Practice missed words")) : null;
+  frame(h("div", { class: "stack" },
+    h("div", { class: "stack-s" },
+      h("span", { class: "label" }, `Band 6 · Module 1 · Unit ${C.unit}`),
+      h("h1", null, C.title),
+      h("p", { class: "muted" }, C.focus)),
+    h("div", { class: "sessions", role: "list" }, C.sessions.map(s => {
+      const done = d.sessions[s.n];
+      return h("div", { class: "sess" + (done ? " done" : "") + (nx && nx.n === s.n ? " next" : ""), role: "listitem" },
+        h("b", null, s.n), s.title, done ? h("div", { class: "small" }, "✓") : null);
+    })),
+    action,
+    missedPanel,
+    h("div", { class: "stats" },
+      h("div", { class: "stat" }, h("b", null, met), h("span", { class: "small muted" }, "words met")),
+      h("div", { class: "stat" }, h("b", null, fam), h("span", { class: "small muted" }, "familiar")),
+      h("div", { class: "stat" }, h("b", null, owned), h("span", { class: "small muted" }, "owned"))),
+    h("div", { class: "panel" },
+      h("div", { class: "row between", style: "margin-bottom:4px" }, h("h3", null, "Your words"), h("span", { class: "small muted" }, "meaning · spelling")),
+      h("div", { class: "wordlist" }, words.map(x => h("div", { class: "wl" },
+        h("span", null, x.m && x.m.lvl > 0 ? x.w.word : h("span", { class: "muted" }, x.w.word)),
+        h("span", { class: "row" }, lvlPill(x.m ? x.m.lvl : 0), lvlPill(x.s ? x.s.lvl : 0)))))),
+    h("p", { class: "muted small" }, "Owned means right on spaced days, in more than one way, including using the word yourself. That takes at least a week by design.")
+  ));
+}
+
+/* ================= SESSION RUNNER ================= */
+function buildSteps(sess) {
+  const steps = [];
+  const today_ = new Set();
+  const pushItem = (it, label) => { if (it && !today_.has(it.id)) { today_.add(it.id); steps.push({ kind: it.type, item: it, label }); } };
+  for (const part of sess.plan) {
+    const [what, arg] = part.split(":");
+    if (what === "lesson") steps.push({ kind: "lesson", label: "The prefix trick" });
+    if (what === "meet") {
+      for (const w of C.words.filter(w => w.session === Number(arg))) {
+        steps.push({ kind: "card", word: w, label: "New word" });
+        pushItem(C.items.find(i => i.use === "quick" && i.words[0] === w.key), "Quick check");
+      }
+    }
+    if (what === "prefix") shuffle(C.items.filter(i => i.use === "prefix")).forEach(i => pushItem(i, "Prefix or just letters?"));
+    if (what === "warmup") steps.push({ kind: "warmup", label: "Warm-up" });
+    if (what === "exit") steps.push({ kind: "exit", session: sess.n, label: "Exit check" });
+    if (what === "use") C.items.filter(i => i.use === "use").forEach(i => pushItem(i, { mcq: "Which word fits?", binary: "Example or non-example?", build: "Build the word", order: "Shades of meaning" }[i.type]));
+    if (what === "sentence") C.sentence.forEach(s => steps.push({ kind: "sentence", task: s, label: "Use it yourself" }));
+    if (what === "passage") { steps.push({ kind: "passage", label: "Read" }); C.passage.questions.forEach(q => pushItem(q, "About the story")); }
+    if (what === "check") {
+      const items = [];
+      for (const w of C.words) { const it = bankFor(w.key, today_); if (it) { today_.add(it.id); items.push(it); } }
+      C.items.filter(i => i.use === "transfer").forEach(i => items.push(i));
+      shuffle(items).forEach(i => steps.push({ kind: i.type, item: i, label: "Weekly check", check: true }));
+    }
+    if (what === "spell") steps.push({ kind: "spell", mode: arg, label: arg === "learn" ? "Spelling: learn" : "Spelling: review" });
+  }
+  return { steps, used: today_ };
+}
+
+/* ---------- runs: sessions, reviews and practice save their place after every step,
+   so "Save and leave", closing the page or an app update all resume where you were ---------- */
+const findItem = id => [...C.items, ...C.passage.questions, ...C.sentence.map(s => s.phone)].find(i => i.id === id) || null;
+function ser(st) {
+  const o = { kind: st.kind, label: typeof st.label === "string" ? st.label : "" };
+  for (const k of ["check", "practice", "production", "key", "mode", "dueOnly", "max", "session", "text", "wi", "keys", "first", "right"]) if (st[k] !== undefined) o[k] = st[k];
+  if (st.item) o.item = st.item.id;
+  if (st.word) o.word = st.word.key;
+  if (st.task) o.task = st.task.id;
+  return o;
+}
+function hyd(o) {
+  const st = { ...o };
+  if (o.item) { st.item = findItem(o.item); if (!st.item) return null; }
+  if (o.word) { st.word = wordByKey(o.word); if (!st.word) return null; }
+  if (o.task) { st.task = C.sentence.find(s => s.id === o.task); if (!st.task) return null; }
+  if (o.key && !wordByKey(o.key)) return null;
+  return st;
+}
+const emptyResults = () => ({ right: 0, total: 0, second: 0, changes: [], checkRight: 0, checkTotal: 0, missed: [] });
+
+async function startRun(meta, steps, used) {
+  P.data.run = { ...meta, day: today(), i: 0, used: [...used], results: emptyResults(), steps: steps.map(ser) };
+  await persist();
+  return continueRun();
+}
+function runSession(sess) {
+  const { steps, used } = buildSteps(sess);
+  return startRun({ type: "session", n: sess.n, title: `Session ${sess.n} · ${sess.title}` }, steps, used);
+}
+function runReview() {
+  const steps = [{ kind: "warmup", label: "Review", max: 8 }];
+  if (dueWords("spelling").length) steps.push({ kind: "spell", mode: "review", dueOnly: true, label: "Spelling: review" });
+  return startRun({ type: "review", title: "Review" }, steps, new Set());
+}
+/* Missed words practice (Luis): study every missed word's card first, then one mixed multiple-choice
+   check at the end. Missed words are shuffled in with words the learner already knows, and every
+   question has the same label, so the learner can't tell which is which. First-try right clears a word. */
+function runMissed() {
+  const missedKeys = Object.keys(P.data.missed).filter(k => wordByKey(k));
+  const steps = [], used = new Set(), quiz = [];
+  missedKeys.forEach((k, i) => steps.push({ kind: "card", word: wordByKey(k), label: `Missed word ${i + 1} of ${missedKeys.length}: study it` }));
+  const lvl = k => ((P.data.words[k] || {}).meaning || {}).lvl || 0;
+  const others = C.words.map(w => w.key).filter(k => !P.data.missed[k]);
+  const known = others.filter(k => lvl(k) >= 2);                     // Familiar or Owned
+  const pool = known.length >= 2 ? known : others.filter(k => lvl(k) >= 1);
+  for (const k of missedKeys) {
+    const it = mcqFor(k, new Set([P.data.missed[k].item, ...used]));
+    if (it) { used.add(it.id); quiz.push({ kind: "mcq", item: it, label: "Mixed check", practice: true }); }
+  }
+  for (const k of shuffle(pool).slice(0, Math.max(2, missedKeys.length))) {
+    const it = mcqFor(k, used);
+    if (it && !used.has(it.id)) { used.add(it.id); quiz.push({ kind: "mcq", item: it, label: "Mixed check" }); }
+  }
+  steps.push({ kind: "note", label: "Mixed check", text: `Now a mixed check: ${quiz.length} questions. Some are on the words you just studied and some are on words you already know, in random order.` });
+  steps.push(...orderMixed(quiz, missedKeys[missedKeys.length - 1]));
+  return startRun({ type: "missed", title: "Missed words" }, steps, used);
+}
+/* Order the mixed check so it isn't a memory echo of the cards (Luis):
+   open with a word they already know, and keep the word studied last out of the first two questions. */
+function orderMixed(quiz, lastKey) {
+  const order = shuffle(quiz);
+  const firstKnown = order.findIndex(q => !q.practice);
+  if (firstKnown > 0) order.unshift(order.splice(firstKnown, 1)[0]);
+  const li = order.findIndex(q => q.practice && q.item.words.includes(lastKey));
+  if (li > -1 && li < 2) {
+    if (order.length > 2) {
+      const [q] = order.splice(li, 1);
+      order.splice(2 + Math.floor(Math.random() * (order.length - 1)), 0, q);
+    } else if (order.length === 2 && li === 0) order.reverse();
+  }
+  return order;
+}
+
+async function continueRun() {
+  const run = P.data.run;
+  if (!run) return showHome();
+  const used = new Set(run.used || []);
+  const R = run.results;
+  inSession = true;
+  try {
+    for (let i = run.i; i < run.steps.length; i++) {
+      run.i = i;
+      const o = run.steps[i];
+      // Warm-ups and exit checks expand into questions when reached, so they use current due dates.
+      if (o.kind === "warmup") {
+        const items = [];
+        for (const k of dueWords().slice(0, o.max || 5)) {
+          if (needsProduction(k)) { items.push({ kind: "produce", key: k, label: o.label }); continue; }
+          const it = bankFor(k, used); if (it) { used.add(it.id); items.push(ser({ kind: it.type, item: it, label: o.label })); }
+        }
+        run.steps.splice(i, 1, ...(items.length ? items : [{ kind: "note", label: o.label, text: "Nothing is due for review yet, so there's no warm-up today." }]));
+        run.used = [...used]; i--; continue;
+      }
+      if (o.kind === "exit") {
+        const keys = C.words.filter(w => w.session === o.session || (o.session > 1 && w.session < o.session)).map(w => w.key);
+        const picks = shuffle(keys).slice(0, 3).map(k => bankFor(k, used)).filter(Boolean);
+        picks.forEach(it => used.add(it.id));
+        run.steps.splice(i, 1, ...picks.map(it => ser({ kind: it.type, item: it, label: "Exit check" })));
+        run.used = [...used]; i--; continue;
+      }
+      const st = hyd(o);
+      if (!st) continue;  // content changed since this run was saved; skip the missing piece
+      st.save = () => { o.wi = st.wi; o.keys = st.keys; o.first = st.first; o.right = st.right; persist(); };
+      const out = await renderStep(st, { i, n: run.steps.length, title: run.title });
+      if (out === "leave") { await persist(); inSession = false; showHome(); return; }
+      if (out && typeof out === "object") {
+        if (out.graded) { R.total++; if (out.ok) R.right++; if (st.check) { R.checkTotal++; if (out.ok) R.checkRight++; } }
+        (out.changes || []).forEach(c => c && R.changes.push(c));
+        if (out.second) R.second++;
+        (out.missed || []).forEach(k => { if (!R.missed.includes(k)) R.missed.push(k); });
+      }
+      run.i = i + 1;
+      run.used = [...used];
+      await persist();
+    }
+  } finally { inSession = false; }
+  delete P.data.run;
+  const sess = run.type === "session" ? C.sessions.find(s => s.n === run.n) : null;
+  if (sess) P.data.sessions[sess.n] = { day: today(), at: Date.now() };
+  await persist();
+  summary(sess, { ...R, missed: new Set(R.missed) }, run.type === "missed" ? "Missed words practice" : run.type === "review" ? "Review" : null);
+}
+
+function stepShell(meta, label, body) {
+  const pct = Math.round((meta.i / meta.n) * 100);
+  return h("div", { class: "stack" },
+    h("div", { class: "stack-s" },
+      h("div", { class: "row between" }, h("span", { class: "label" }, meta.title), h("button", { class: "btn ghost small", onclick: () => body.dispatchEvent(new CustomEvent("leave")) }, "Save and leave")),
+      h("div", { class: "progress", role: "progressbar", "aria-valuenow": pct, "aria-valuemin": "0", "aria-valuemax": "100" }, h("i", { style: `width:${pct}%` }))),
+    label ? h("span", { class: "label" }, label) : null,
+    body);
+}
+function renderStep(st, meta) {
+  return new Promise(resolve => {
+    const body = h("div", { class: "stack" });
+    body.addEventListener("leave", () => resolve("leave"));
+    const done = v => resolve(v);
+    frame(stepShell(meta, typeof st.label === "string" ? st.label : "", body));
+    const r = RENDER[st.kind];
+    if (r) r(st, body, done); else done(null);
+  });
+}
+
+function feedbackBox(ok, why, answerText) {
+  return h("div", { class: "feedback " + (ok ? "ok" : "no"), role: "status" },
+    h("b", null, ok ? "Right." : "Not quite."),
+    !ok && answerText ? h("p", null, "Answer: ", h("strong", null, answerText)) : null,
+    why ? h("p", null, why) : null);
+}
+function missNote(st, ok, missed) {
+  if (missed.length) return h("p", { class: "note" }, st.practice ? "Still on your Missed words list. It'll come back." : "Added to your Missed words list so you can come back to it.");
+  if (ok && st.practice) return h("p", { class: "note" }, "Cleared from your Missed words list.");
+  return null;
+}
+function continueBtn(onClick, text = "Continue") {
+  const b = h("button", { class: "btn primary wide", onclick: onClick }, text);
+  setTimeout(() => b.focus(), 30);
+  return b;
+}
+function stemNode(stem) {
+  const parts = stem.split("___");
+  const n = h("p", { class: "quote" });
+  parts.forEach((p, i) => { n.append(p); if (i < parts.length - 1) n.append(h("span", { class: "blank", "aria-label": "blank" }, " ")); });
+  return n;
+}
+
+const RENDER = {
+  note(st, body, done) { body.append(h("p", { class: "panel muted" }, st.text), continueBtn(() => done(null))); },
+
+  lesson(st, body, done) {
+    const L = C.lesson;
+    body.append(
+      h("h2", null, L.title),
+      h("p", null, L.intro),
+      h("div", { class: "panel stack-s" }, L.prefixes.map(p => h("div", { class: "row between" },
+        h("span", null, h("b", { style: "font-family:var(--display);font-size:1.3rem;color:var(--accent)" }, p.p), " means ", h("b", null, p.means)),
+        h("span", { class: "muted" }, `${p.from} → ${p.to}`)))),
+      h("p", null, h("b", null, L.test)),
+      h("div", { class: "panel" }, L.examples.map(ex => {
+        const wEl = h("span", { class: "w" }, h("span", null, ex.word.slice(0, ex.cut)), h("span", null, ex.word.slice(ex.cut)));
+        const verdict = h("span", { class: "small" });
+        const btn = h("button", { class: "btn small" }, "Cover it");
+        btn.addEventListener("click", () => { wEl.firstChild.className = "hide"; verdict.replaceChildren(h("b", { style: `color:var(--${ex.ok ? "good" : "bad"})` }, `"${ex.left}" `), ex.note); btn.disabled = true; });
+        return h("div", { class: "cover" }, h("div", { class: "stack-s", style: "min-width:0" }, wEl, verdict), btn);
+      })),
+      continueBtn(() => done(null), "Meet the first words"));
+  },
+
+  card(st, body, done) {
+    const w = st.word;
+    introduce(w.key);
+    const head = h("div", { class: "headword" });
+    w.parts.forEach((p, i) => { if (i) head.append(h("span", { class: "dot" }, "·")); head.append(h("span", { class: i === 0 && p.m ? "pre" : "" }, p.t)); });
+    const facts = h("dl", { class: "facts" });
+    if (w.family && w.family.length) facts.append(h("dt", null, "Family"), h("dd", null, w.family.join(", ")));
+    if (w.opposite) facts.append(h("dt", null, "Opposite"), h("dd", null, w.opposite.map(o => o.note ? `${o.w} (${o.note})` : o.w).join(", ")));
+    if (w.related) facts.append(h("dt", null, "Related"), h("dd", null, w.related.join(", ")));
+    body.append(h("article", { class: "panel entry stack" },
+      h("div", { class: "stack-s" },
+        head,
+        h("div", { class: "row" }, h("span", { class: "pos" }, w.pos), hasSpeech() ? h("button", { class: "btn small", onclick: () => say(w.word) }, "▶ Hear it") : null)),
+      h("div", { class: "parts" }, w.parts.filter(p => p.m).map(p => h("span", { class: "part" }, h("b", null, p.t), h("span", null, " = " + p.m)))),
+      h("p", { style: "font-size:1.1rem" }, w.def),
+      h("div", { class: "stack-s" },
+        h("p", { class: "ex" }, h("span", { class: "label" }, "Everyday"), w.everyday),
+        h("p", { class: "ex" }, h("span", { class: "label" }, "In school"), w.academic)),
+      facts,
+      h("p", { class: "note" }, h("b", null, "Watch out: "), w.watch),
+      h("details", null, h("summary", null, "Think about it"), h("p", { style: "margin-top:8px" }, w.think))),
+      continueBtn(() => done(null), "Got it"));
+  },
+
+  binary(st, body, done) {
+    const it = st.item;
+    body.append(h("p", { class: "muted" }, it.prompt), h("p", { class: "quote" }, it.text));
+    const opts = h("div", { class: "opts two" });
+    it.options.forEach((o, idx) => opts.append(h("button", { class: "opt", onclick: () => answer(idx) }, o)));
+    body.append(opts);
+    function answer(idx) {
+      [...opts.children].forEach((b, j) => { b.disabled = true; if (j === it.answer) b.classList.add("right"); else if (j === idx) b.classList.add("wrong"); });
+      const ok = idx === it.answer;
+      const changes = (it.words.length ? it.words : [null]).map(k => record(k, "meaning", ok, "binary", { item: it.id, resp: it.options[idx] }));
+      const missed = afterGrade(st, it, ok, it.options[idx]);
+      body.append(feedbackBox(ok, it.why), missNote(st, ok, missed), continueBtn(() => done({ graded: true, ok, changes, missed })));
+    }
+  },
+
+  /* Multiple choice: one more chance after a wrong answer, with what each choice means.
+     Still wrong after that: the words go on the Missed words list. */
+  mcq(st, body, done) {
+    const it = st.item;
+    const type = it.use === "passage" ? "passage" : "mcq";
+    if (it.stem.includes("___")) body.append(stemNode(it.stem)); else body.append(h("p", { class: "quote" }, it.stem));
+    const order = shuffle(it.options.map((_, i) => i));
+    const opts = h("div", { class: "opts" });
+    order.forEach(idx => opts.append(h("button", { class: "opt", "data-i": idx, onclick: () => answer(idx) }, it.options[idx])));
+    const status = h("div", { class: "stack-s" });
+    body.append(opts, status);
+    let tries = 0; const picks = [];
+    function hintPanel() {
+      const single = it.options.every(o => /^[A-Za-z-]+$/.test(o));
+      const rows = single
+        ? order.map(i => defOf(it.options[i])).filter(Boolean)
+        : it.words.map(k => wordByKey(k)).filter(Boolean).map(w => ({ word: w.word, def: w.def }));
+      return h("div", { class: "panel stack-s" },
+        h("span", { class: "label" }, single ? "What each choice means" : "Remember"),
+        rows.map(r => h("p", null, h("b", null, r.word + ": "), r.def)));
+    }
+    function answer(idx) {
+      const ok = idx === it.answer;
+      picks.push(it.options[idx]);
+      const btn = opts.querySelector(`[data-i="${idx}"]`);
+      if (!ok && tries === 0 && it.options.length > 2) {
+        tries = 1;
+        btn.disabled = true; btn.classList.add("wrong");
+        P.data.attempts.push({ at: Date.now(), day: today(), w: it.words[0] || null, s: "meaning", type: type + "-try1", ok: false, item: it.id, resp: it.options[idx] });
+        status.replaceChildren(
+          h("div", { class: "feedback no", role: "status" }, h("b", null, "Not quite. One more try."), h("p", null, "Read what each choice means, then pick again.")),
+          hintPanel());
+        return;
+      }
+      const second = tries === 1;
+      [...opts.children].forEach(b => { b.disabled = true; const j = Number(b.dataset.i); if (j === it.answer) b.classList.add("right"); else if (j === idx) b.classList.add("wrong"); });
+      const changes = it.words.map(k => record(k, "meaning", ok, type, { item: it.id, resp: picks.join(" → "), production: st.production && ok && !second, soft: ok && second }));
+      const missed = afterGrade(st, it, ok, picks.join(", then "), !second);
+      const kids = [feedbackBox(ok, (ok && second ? "Right on the second try. " : "") + it.why, it.options[it.answer])];
+      if (missed.length) kids.push(h("p", { class: "note" }, st.practice ? "Still on your Missed words list. It'll come back." : "Added to your Missed words list so you can come back to it."));
+      else if (ok && st.practice && second) kids.push(h("p", { class: "note" }, "It stays on your Missed words list until you get it on the first try."));
+      else if (ok && st.practice) kids.push(h("p", { class: "note" }, "Cleared from your Missed words list."));
+      status.replaceChildren(...kids);
+      body.append(continueBtn(() => done({ graded: true, ok: ok && !second, second: ok && second, changes, missed })));
+    }
+  },
+
+  build(st, body, done) {
+    const it = st.item; let pre = null, base = null;
+    const out = h("div", { class: "built", "aria-live": "polite" });
+    const check = h("button", { class: "btn primary wide", disabled: true }, "Check");
+    const row = (list, setter, getSel) => {
+      const r = h("div", { class: "tiles" });
+      list.forEach(x => r.append(h("button", { class: "tile", onclick: e => { setter(x); [...r.children].forEach(b => b.classList.toggle("on", b === e.currentTarget)); paint(); } }, x)));
+      return r;
+    };
+    const paint = () => { out.textContent = (pre || "") + (base || ""); check.disabled = !(pre && base); };
+    body.append(h("p", { class: "muted" }, "Build the word that means:"), h("p", { class: "quote" }, it.prompt),
+      h("span", { class: "label" }, "Prefix"), row(it.prefixes, v => pre = v), h("span", { class: "label" }, "Base word"), row(it.bases, v => base = v), out, check);
+    check.addEventListener("click", () => {
+      const ok = pre === it.answer[0] && base === it.answer[1];
+      body.querySelectorAll(".tile").forEach(b => b.disabled = true); check.remove();
+      const changes = it.words.map(k => record(k, "meaning", ok, "build", { item: it.id, resp: pre + base }));
+      const missed = afterGrade(st, it, ok, pre + base);
+      body.append(feedbackBox(ok, it.why, it.answer.join("")), missNote(st, ok, missed), continueBtn(() => done({ graded: true, ok, changes, missed })));
+    });
+  },
+
+  order(st, body, done) {
+    const it = st.item; const picked = [];
+    const slots = h("ol", { class: "stack-s", style: "padding-left:20px;margin:0;min-height:5rem" });
+    const tiles = h("div", { class: "tiles" });
+    const reset = h("button", { class: "btn small" }, "Start over");
+    const check = h("button", { class: "btn primary wide", disabled: true }, "Check");
+    const scramble = shuffle(it.order); if (scramble.join() === it.order.join()) scramble.reverse();
+    scramble.forEach(x => tiles.append(h("button", { class: "tile", onclick: e => { picked.push(x); e.currentTarget.disabled = true; slots.append(h("li", { style: "font-size:1.1rem" }, x)); check.disabled = picked.length !== it.order.length; } }, x)));
+    reset.addEventListener("click", () => { picked.length = 0; slots.replaceChildren(); [...tiles.children].forEach(b => b.disabled = false); check.disabled = true; });
+    body.append(h("p", { class: "quote" }, it.prompt), tiles, h("div", { class: "row between" }, h("span", { class: "label" }, "Gentlest first"), reset), slots, check);
+    check.addEventListener("click", () => {
+      const ok = picked.join("|") === it.order.join("|");
+      reset.remove(); check.remove(); [...tiles.children].forEach(b => b.disabled = true);
+      const changes = it.words.map(k => record(k, "meaning", ok, "order", { item: it.id, resp: picked.join(" → ") }));
+      const missed = afterGrade(st, it, ok, picked.join(" → "));
+      body.append(feedbackBox(ok, it.why, it.order.join(" → ")), missNote(st, ok, missed), continueBtn(() => done({ graded: true, ok, changes, missed })));
+    });
+  },
+
+  sentence(st, body, done) {
+    const task = st.task;
+    const typedMode = () => {
+      body.replaceChildren();
+      const w = wordByKey(task.word);
+      const ta = h("textarea", { id: "sentence-" + task.id, "aria-label": "Your sentence", autocapitalize: "sentences" });
+      const boxes = C.selfCheck.map((c, i) => h("input", { type: "checkbox", id: `sc-${task.id}-${i}` }));
+      const submit = h("button", { class: "btn primary wide", disabled: true }, "Submit sentence");
+      const hint = h("p", { class: "small muted" });
+      const stem = w.word.replace(/e$/, "").slice(0, 7);
+      const refresh = () => {
+        const has = new RegExp(stem, "i").test(ta.value);
+        hint.textContent = ta.value.trim() && !has ? `Your sentence needs a form of "${w.word}".` : "";
+        submit.disabled = !(has && boxes.every(b => b.checked) && ta.value.trim().split(/\s+/).length >= 5);
+      };
+      ta.addEventListener("input", refresh); boxes.forEach(b => b.addEventListener("change", refresh));
+      body.append(h("p", { class: "quote" }, task.typed), ta, hint,
+        h("div", { class: "panel stack-s" }, h("span", { class: "label" }, "Check before you submit"),
+          C.selfCheck.map((c, i) => h("label", { class: "check", for: `sc-${task.id}-${i}` }, boxes[i], h("span", null, c)))),
+        submit,
+        isPhone() ? h("p", { class: "small muted" }, "Tip: your keyboard's microphone button lets you say the sentence instead of typing it.") : null,
+        h("button", { class: "btn ghost small", onclick: phoneMode }, "Pick from choices instead"));
+      submit.addEventListener("click", () => {
+        P.data.sentences.push({ id: task.id + "-" + Date.now(), word: task.word, text: ta.value.trim(), day: today(), review: null });
+        const c = record(task.word, "meaning", true, "sentence", { item: task.id, resp: ta.value.trim(), production: true });
+        body.replaceChildren(feedbackBox(true, "Sent to your parent's review list. Self-checking is the skill here: you just did it."), continueBtn(() => done({ graded: false, changes: [c] })));
+      });
+    };
+    const phoneMode = () => {
+      body.replaceChildren();
+      RENDER.mcq({ item: task.phone, production: true }, body, v => done(v));
+      body.append(h("button", { class: "btn ghost small", onclick: typedMode }, "Write my own instead"));
+    };
+    isPhone() ? phoneMode() : typedMode();
+  },
+
+  produce(st, body, done) {
+    const w = wordByKey(st.key);
+    const phone = C.items.find(i => i.type === "mcq" && i.use === "review" && i.words.includes(w.key)) || C.items.find(i => i.type === "mcq" && i.words.includes(w.key));
+    RENDER.sentence({ task: { id: "pr-" + w.key, word: w.key, typed: `Use ${w.word} in a sentence that shows what it means.`, phone } }, body, done);
+  },
+
+  passage(st, body, done) {
+    const pop = h("div", { class: "pop", hidden: true, role: "status" });
+    const story = h("div", { class: "story" });
+    C.passage.paragraphs.forEach(par => {
+      const p = h("p");
+      par.split(/(\[[^\]]+\])/).forEach(chunk => {
+        const m = chunk.match(/^\[([^\]|]+)(?:\|([^\]]+))?\]$/);
+        if (!m) { p.append(chunk); return; }
+        const shown = m[1], key = m[2] || m[1];
+        p.append(h("button", { class: "tw", onclick: () => { const w = wordByKey(key); pop.hidden = false; pop.replaceChildren(h("b", null, w.word + ": "), w.def); } }, shown));
+      });
+      story.append(p);
+    });
+    body.append(h("h2", null, C.passage.title), h("p", { class: "small muted" }, "Tap an underlined word to see what it means."), h("div", { class: "panel" }, story), pop, continueBtn(() => done(null), "Answer the questions"));
+  },
+
+  /* Flash and spell (Luis's ladder): fast flash first; right = next word.
+     A miss starts the climb at slow. Each speed repeats until it's right, then moves up:
+     slow → normal → fast. Three misses at one speed: copy it while it's visible, and it comes back tomorrow. */
+  spell(st, body, done) {
+    const keys = st.keys || (st.keys = st.dueOnly ? dueWords("spelling") : C.words.map(w => w.key).filter(k => st.mode === "learn" ? true : ((P.data.words[k] || {}).spelling || {}).lvl > 0));
+    const times = C.spellingTimes, MAX = 3, climb = ["slow", "normal", "fast"];
+    let wi = st.wi || 0; st.first = st.first || 0; st.right = st.right || 0;
+    const changes = [];
+    const intro = () => {
+      body.replaceChildren(
+        h("h2", null, st.mode === "learn" ? "Flash and spell" : "Spelling review"),
+        h("p", null, "Each word flashes fast, then you type it from memory. Right, and you move on. Miss it, and it comes back slow until you get it, then normal, then fast."),
+        wi ? h("p", { class: "note" }, `Picking up where you left off: word ${wi + 1} of ${keys.length}.`) : null,
+        h("p", { class: "small muted" }, `${keys.length} words · fast ${times.fast / 1000}s · normal ${times.normal / 1000}s · slow ${times.slow / 1000}s`),
+        continueBtn(nextWord, wi ? "Keep going" : "Start"));
+    };
+    const nextWord = () => {
+      if (wi >= keys.length) {
+        body.replaceChildren(h("div", { class: "panel stack-s" }, h("h2", null, "Spelling done"),
+          h("p", null, `${st.first} of ${keys.length} right on the first flash.`),
+          st.right > st.first ? h("p", null, `${st.right - st.first} more right after slowing down.`) : null),
+          continueBtn(() => done({ graded: false, changes })));
+        return;
+      }
+      const w = wordByKey(keys[wi]);
+      let stage = -1, misses = 0, firstOk = false, lastOk = false;   // stage -1 = the first fast flash; 0..2 = climb
+      const speedNow = () => stage < 0 ? "fast" : climb[stage];
+      const climbBar = () => h("div", { class: "stack-s" },
+        h("div", { class: "speed", "aria-hidden": "true" }, climb.map((s, i) => h("i", { class: i < stage ? "done" : i === stage ? "on" : "" }))),
+        h("div", { class: "row between small muted" }, climb.map(s => h("span", null, s))));
+      const attempt = () => {
+        const speed = speedNow();
+        const flash = h("div", { class: "flash", "aria-live": "off" }, "Ready?");
+        const go = h("button", { class: "btn primary wide" }, `Flash it (${speed})`);
+        // Try counts are logged in attempts for the parent view, never shown to the learner.
+        const info = stage < 0 ? "First flash: fast" : `${speed} speed`;
+        body.replaceChildren(h("div", { class: "row between" }, h("span", { class: "label" }, `Word ${wi + 1} of ${keys.length}`), h("span", { class: "small muted" }, info)),
+          stage >= 0 ? climbBar() : null, flash, go);
+        setTimeout(() => go.focus(), 30);
+        go.addEventListener("click", () => {
+          go.remove();
+          flash.textContent = w.word; say(w.word);
+          setTimeout(() => {
+            flash.textContent = "?";
+            const inp = h("input", { class: "spell", id: "spell-input", autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false", "aria-label": "Type the word you saw", inputmode: "text" });
+            const sub = h("button", { class: "btn primary wide" }, "Check spelling");
+            const again = hasSpeech() ? h("button", { class: "btn small", onclick: () => say(w.word) }, "▶ Hear it again") : null;
+            body.append(inp, h("div", { class: "row" }, again), sub);
+            inp.focus();
+            const check = () => {
+              const val = inp.value.trim().toLowerCase();
+              if (!val) { inp.focus(); return; }
+              const ok = val === w.word;
+              if (stage < 0) firstOk = ok;
+              lastOk = ok;
+              P.data.attempts.push({ at: Date.now(), day: today(), w: w.key, s: "spelling", type: "spell-" + speed, ok, item: "spell", resp: val });
+              inp.disabled = true; sub.remove();
+              body.append(ok ? feedbackBox(true, `Spelled right at ${speed} speed.`) : spellFeedback(w, val));
+              let next, label;
+              if (ok) {
+                if (stage < 0 || stage === climb.length - 1) { next = finishWord; label = "Next word"; }
+                else { stage++; misses = 0; next = attempt; label = `Next: ${climb[stage]} speed`; }
+              } else if (stage < 0) { stage = 0; misses = 0; next = attempt; label = "Try it slow"; }
+              else if (++misses >= MAX) { next = copyIt; label = "See it spelled out"; }
+              else { next = attempt; label = `Try ${speed} again`; }
+              body.append(continueBtn(next, label));
+            };
+            sub.addEventListener("click", check);
+            inp.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+          }, times[speed]);
+        });
+      };
+      const copyIt = () => {
+        lastOk = false;
+        const inp = h("input", { class: "spell", id: "copy-input", autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false", "aria-label": "Type the word while you look at it" });
+        const msg = h("p", { class: "small muted" }, "Type the whole word while you look at it. It'll come back for practice tomorrow.");
+        const sub = h("button", { class: "btn primary wide" }, "Done");
+        const go = () => {
+          if (inp.value.trim().toLowerCase() === w.word) finishWord();
+          else { msg.textContent = "Check each letter against the word above, then try again."; inp.focus(); }
+        };
+        sub.addEventListener("click", go);
+        inp.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+        body.replaceChildren(h("h3", null, "Copy it while you can see it"),
+          h("div", { class: "flash" }, w.word),
+          h("p", { class: "muted", style: "text-align:center" }, "Built from: " + w.parts.map(p => p.t).join(" + ")), msg, inp, sub);
+        inp.focus();
+      };
+      const finishWord = () => {
+        if (firstOk) st.first++;
+        if (lastOk) st.right++;
+        if (st.mode === "learn") introduce(w.key, "spelling");
+        else changes.push(record(w.key, "spelling", lastOk, "spell", { item: "spell-review", production: true }));
+        wi++; st.wi = wi;
+        if (st.save) st.save();
+        nextWord();
+      };
+      attempt();
+    };
+    intro();
+  }
+};
+
+/* spelling feedback: show exactly where it went wrong, with the word-part reason */
+function lcsMask(a, b) {
+  const m = a.length, n = b.length, dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = m - 1; i >= 0; i--) for (let j = n - 1; j >= 0; j--) dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const keepA = new Array(m).fill(false), keepB = new Array(n).fill(false);
+  let i = 0, j = 0;
+  while (i < m && j < n) { if (a[i] === b[j]) { keepA[i] = keepB[j] = true; i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
+  return { keepA, keepB };
+}
+function spellFeedback(w, val) {
+  const { keepA, keepB } = lcsMask(val, w.word);
+  const yours = h("div", { class: "diff" }, [...val].map((ch, i) => keepA[i] ? ch : h("span", { class: "x" }, ch)));
+  const right = h("div", { class: "diff" }, [...w.word].map((ch, i) => keepB[i] ? ch : h("span", { class: "m" }, ch)));
+  const known = (w.spelling || []).find(s => s.slip === val);
+  const tip = known ? known.tip : "Build it from its parts: " + w.parts.map(p => p.t).join(" + ") + ".";
+  return h("div", { class: "feedback no stack-s", role: "status" },
+    h("b", null, "Not quite."),
+    h("div", null, h("span", { class: "label" }, "You typed"), yours),
+    h("div", null, h("span", { class: "label" }, "Correct"), right),
+    h("p", null, tip));
+}
+
+/* ---------- end of session ---------- */
+function summary(sess, r, title) {
+  const ups = r.changes.filter(c => c.to > c.from), downs = r.changes.filter(c => c.to < c.from);
+  const nx = nextSession();
+  const missedNow = [...r.missed].filter(k => P.data.missed[k]);
+  frame(h("div", { class: "stack" },
+    h("span", { class: "label" }, sess ? `Session ${sess.n} complete` : (title || "Review") + " complete"),
+    h("h1", null, sess && sess.n === 5 ? "Unit 1.1 done" : "Nice work"),
+    r.total ? h("p", { style: "font-size:1.2rem" }, `${r.right} of ${r.total} right the first time`, r.second ? `, ${r.second} more on the second try.` : ".") : null,
+    missedNow.length ? h("div", { class: "panel stack-s" }, h("h3", null, "On your Missed words list"),
+      h("p", null, missedNow.map(k => wordByKey(k).word).join(", ")),
+      h("p", { class: "small muted" }, "Practice them from the home screen whenever you like.")) : null,
+    r.checkTotal ? h("p", { class: "panel" }, h("b", null, "Weekly check: "), `${r.checkRight} of ${r.checkTotal}`, r.checkRight / r.checkTotal >= .85 ? " · strong week." : " · the missed words will come back in review.") : null,
+    ups.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Moved up"), ups.map(c => h("div", { class: "row between" }, h("span", null, wordByKey(c.key).word, c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
+    downs.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Coming back soon"), downs.map(c => h("div", { class: "row between" }, h("span", null, wordByKey(c.key).word, c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
+    h("p", { class: "muted" }, nx ? `Next: Session ${nx.n}, ${nx.title}. ${nx.about} Best done tomorrow.` : "Words now come back for review on a spaced schedule."),
+    continueBtn(showHome, "Back to home")));
+}
+
+/* ================= PARENT VIEW ================= */
+async function showParent() {
+  ensure(P);
+  const d = P.data, t = today();
+  const attempts = d.attempts.filter(a => a.w);
+  const misses = {};
+  attempts.filter(a => !a.ok && a.resp).forEach(a => {
+    const m = (misses[a.w] = misses[a.w] || []);
+    if (a.s === "spelling") m.push("spelled “" + a.resp + "”");
+    else if (!["Fits", "Doesn't fit", "Example", "Non-example"].includes(a.resp)) m.push("picked “" + a.resp + "”");
+    else m.push("missed a yes/no question");
+  });
+  const sticky = Object.entries(misses).sort((a, b) => b[1].length - a[1].length).slice(0, 4);
+  const graded = attempts.filter(a => a.s === "meaning");
+  const acc = graded.length ? Math.round(100 * graded.filter(a => a.ok).length / graded.length) : null;
+  const queue = d.sentences.filter(s => !s.review);
+  const reviewed = d.sentences.filter(s => s.review);
+
+  const sentenceCard = s => {
+    const note = h("input", { class: "spell", id: "note-" + s.id, placeholder: "Optional note", style: "font-size:.95rem" });
+    const mark = async verdict => { s.review = { verdict, note: note.value.trim(), day: t }; await persist(); showParent(); };
+    return h("div", { class: "sentence stack-s" },
+      h("span", { class: "label" }, wordByKey(s.word).word + " · " + dayLabel(s.day)),
+      h("p", null, "“", s.text, "”"),
+      note,
+      h("div", { class: "row" }, h("button", { class: "btn small", onclick: () => mark("good") }, "Good"), h("button", { class: "btn small", onclick: () => mark("needs-work") }, "Needs work")));
+  };
+  const resetBox = h("div", { class: "row" });
+  const askReset = () => resetBox.replaceChildren(h("span", { class: "small" }, `Erase all of ${d.name}'s progress?`),
+    h("button", { class: "btn small", onclick: async () => { const name = d.name, id = P.id; P.data = newProfile(name); P.id = id; await persist(); showParent(); } }, "Yes, erase"),
+    h("button", { class: "btn small ghost", onclick: () => resetBox.replaceChildren(resetBtn) }, "Cancel"));
+  const resetBtn = h("button", { class: "btn small", onclick: askReset }, "Reset this learner");
+  resetBox.append(resetBtn);
+
+  frame(h("div", { class: "stack" },
+    h("div", { class: "row between" }, h("h1", null, d.name + "'s week"), h("button", { class: "btn", onclick: showHome }, "Back")),
+    h("div", { class: "stats" },
+      h("div", { class: "stat" }, h("b", null, Object.keys(d.sessions).length + "/5"), h("span", { class: "small muted" }, "sessions")),
+      h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
+      h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Talk about it this week"),
+      h("p", { class: "small muted" }, "Using a word in real conversation is one of the strongest ways it sticks."),
+      h("ul", { class: "stack-s", style: "margin:0;padding-left:20px" }, C.parentPrompts.map(p => h("li", null, p)))),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Missed words list"),
+      h("p", { class: "small muted" }, "Still wrong after the last chance. A word comes off when they get it right in practice."),
+      Object.keys(d.missed).length ? h("div", { class: "tablebox" }, h("table", null,
+        h("thead", null, h("tr", null, h("th", null, "Word"), h("th", null, "Their answer"), h("th", null, "When"))),
+        h("tbody", null, Object.entries(d.missed).map(([k, m]) => h("tr", null,
+          h("td", null, wordByKey(k).word, m.times > 1 ? h("span", { class: "small muted" }, ` ×${m.times}`) : null),
+          h("td", { class: "small" }, m.picked || "–"),
+          h("td", { class: "small" }, dayLabel(m.day)))))))
+        : h("p", { class: "muted" }, "Empty. Nothing missed twice.")),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Sticky words"),
+      sticky.length ? sticky.map(([k, resps]) => h("div", { class: "stack-s", style: "padding-block:6px;border-bottom:1px solid var(--line)" },
+        h("div", { class: "row between" }, h("b", null, wordByKey(k).word), h("span", { class: "small muted" }, `${resps.length} miss${resps.length === 1 ? "" : "es"}`)),
+        h("p", { class: "small muted" }, [...new Set(resps)].slice(0, 4).join(" · "))))
+        : h("p", { class: "muted" }, "No misses yet.")),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Sentences to review"),
+      h("p", { class: "small muted" }, "Your verdicts become the test set for automatic grading later."),
+      queue.length ? queue.map(sentenceCard) : h("p", { class: "muted" }, "Nothing waiting. Sentences arrive in Session 4."),
+      reviewed.length ? h("details", null, h("summary", null, `Reviewed (${reviewed.length})`), h("div", { class: "stack-s", style: "margin-top:8px" }, reviewed.map(s => h("p", { class: "small" }, h("b", null, s.review.verdict === "good" ? "Good: " : "Needs work: "), s.text, s.review.note ? ` (${s.review.note})` : "")))) : null),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Every word"),
+      h("div", { class: "tablebox" }, h("table", null,
+        h("thead", null, h("tr", null, h("th", null, "Word"), h("th", null, "Meaning"), h("th", null, "Spelling"), h("th", null, "Next review"))),
+        h("tbody", null, C.words.map(w => {
+          const m = (d.words[w.key] || {}).meaning, s = (d.words[w.key] || {}).spelling;
+          const nxt = [m, s].filter(x => x && x.next !== null).map(x => x.next);
+          return h("tr", null, h("td", null, w.word), h("td", null, lvlPill(m ? m.lvl : 0)), h("td", null, lvlPill(s ? s.lvl : 0)),
+            h("td", { class: "small" }, nxt.length ? (Math.min(...nxt) <= t ? "Due now" : dayLabel(Math.min(...nxt))) : "–"));
+        }))))),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Testing tools"),
+      h("p", { class: "small muted" }, `For trying the prototype without waiting a real day. App date: ${dayLabel(t)}${d.dayOffset ? ` (${d.dayOffset} day${d.dayOffset === 1 ? "" : "s"} ahead)` : ""}.`),
+      h("div", { class: "row" },
+        h("button", { class: "btn small", onclick: async () => { d.dayOffset = (d.dayOffset || 0) + 1; await persist(); showParent(); } }, "Skip ahead one day"),
+        d.dayOffset ? h("button", { class: "btn small ghost", onclick: async () => { d.dayOffset = 0; await persist(); showParent(); } }, "Back to today") : null),
+      resetBox,
+      h("p", { class: "small muted" }, store.mode === "account" ? "Saved to this claude.ai account." : "Saved on this device only."))
+  ));
+}
+
+/* ================= BOOT ================= */
+async function boot() {
+  try {
+    const res = await fetch(CONTENT_URL, { cache: "no-cache" });
+    if (!res.ok) throw new Error(res.status);
+    C = await res.json();
+  } catch (e) {
+    app.replaceChildren(topbar(), h("div", { class: "panel stack-s" }, h("h2", null, "Couldn't load Unit 1.1"), h("p", { class: "muted" }, "The lesson file didn't load. Reload the page to try again.")));
+    return;
+  }
+  store = await makeStore();
+  window.addEventListener("unhandledrejection", e => { if (e.reason === "left") e.preventDefault(); });
+  showProfiles();
+}
+boot();
+})();
+</script>
+
+</body>
+</html>
