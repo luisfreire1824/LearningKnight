@@ -1,0 +1,10 @@
+rules_version = '2';
+// Each signed-in adult can read and write only their own learners.
+// Nothing else in the database is readable or writable.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/profiles/{profileId} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

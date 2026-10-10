@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="firebase-config.js"></script>
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -192,37 +193,95 @@ function today() {
 }
 const dayLabel = n => { const d = new Date(n * DAY); return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }); };
 
-/* ---------- storage: claude.ai account (db) with a this-device fallback ---------- */
+/* ---------- storage adapters, tried in order:
+   1. claude.ai account (when opened as a claude.ai artifact)
+   2. Firebase account (GitHub Pages, once firebase-config.js is filled in and the person signs in)
+   3. this device only (browser storage) ---------- */
 const local = {
-  mode: "device",
+  mode: "device", kind: "device", label: "this device",
   read() { try { return JSON.parse(localStorage.getItem("lk.profiles") || "{}"); } catch { return {}; } },
   write(all) { try { localStorage.setItem("lk.profiles", JSON.stringify(all)); return true; } catch { return false; } },
   async list() { const all = this.read(); return Object.entries(all).map(([id, data]) => ({ id, data })); },
   async save(id, data) { const all = this.read(); all[id] = data; this.write(all); },
   async remove(id) { const all = this.read(); delete all[id]; this.write(all); }
 };
+const deviceStore = (canSignIn) => Object.assign(Object.create(local), { canSignIn: !!canSignIn });
+
+/* Firebase: Google sign-in per adult; learners live at users/{uid}/profiles/{profileId} (see firestore.rules). */
+const FB_VER = "10.12.2";
+let fb = null;
+const loadScript = src => new Promise((ok, no) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.append(s); });
+const fbConfigured = () => { const c = window.LK_FIREBASE; return !!(c && c.apiKey && c.projectId); };
+async function loadFirebase() {
+  if (fb) return fb;
+  for (const m of ["app", "auth", "firestore"]) await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-${m}-compat.js`);
+  firebase.initializeApp(window.LK_FIREBASE);
+  const db = firebase.firestore();
+  try { await db.enablePersistence({ synchronizeTabs: true }); } catch (e) { /* offline cache is optional */ }
+  fb = { auth: firebase.auth(), db };
+  return fb;
+}
+function firebaseStore(user) {
+  const col = fb.db.collection("users").doc(user.uid).collection("profiles");
+  return {
+    mode: "account", kind: "firebase", label: user.email || "your Google account",
+    async list() { const s = await col.get(); return s.docs.map(d => ({ id: d.id, data: d.data() })); },
+    async save(id, data) { await col.doc(id).set(data); },
+    async remove(id) { await col.doc(id).delete(); }
+  };
+}
+async function signIn() {
+  try {
+    await loadFirebase();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try { await fb.auth.signInWithPopup(provider); }
+    catch (e) {
+      if (e && e.code === "auth/popup-closed-by-user") return;
+      if (e && (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment")) { await fb.auth.signInWithRedirect(provider); return; }
+      throw e;
+    }
+    store = firebaseStore(fb.auth.currentUser);
+    showProfiles(true);
+  } catch (e) { showToast("Sign-in didn't work. Check your connection and try again."); }
+}
+async function signOut() {
+  try { if (fb) await fb.auth.signOut(); } catch (e) {}
+  store = deviceStore(true); P = null;
+  showProfiles(true);
+}
+
 async function makeStore() {
   const cl = window.claude;
-  if (!cl || typeof cl.use !== "function") return local;
-  try {
-    const [db, user] = await Promise.all([cl.use("db"), cl.use("user")]);
-    const uid = user ? await user.id() : null;
-    if (!db || !uid) return local;
-    const col = db.collection("data/users/" + uid);
-    return {
-      mode: "account",
-      async list() { const s = await col.get(); return s.docs.filter(d => d.exists).map(d => ({ id: d.id, data: JSON.parse(JSON.stringify(d.data())) })); },
-      async save(id, data) { await col.doc(id).set(data); },
-      async remove(id) { await col.doc(id).delete(); }
-    };
-  } catch (e) { return local; }
+  if (cl && typeof cl.use === "function") {
+    try {
+      const [db, user] = await Promise.all([cl.use("db"), cl.use("user")]);
+      const uid = user ? await user.id() : null;
+      if (db && uid) {
+        const col = db.collection("data/users/" + uid);
+        return {
+          mode: "account", kind: "claude", label: "this claude.ai account",
+          async list() { const s = await col.get(); return s.docs.filter(d => d.exists).map(d => ({ id: d.id, data: JSON.parse(JSON.stringify(d.data())) })); },
+          async save(id, data) { await col.doc(id).set(data); },
+          async remove(id) { await col.doc(id).delete(); }
+        };
+      }
+    } catch (e) {}
+  }
+  if (fbConfigured()) {
+    try {
+      await loadFirebase();
+      const user = await new Promise(res => { const off = fb.auth.onAuthStateChanged(u => { off(); res(u); }); });
+      return user ? firebaseStore(user) : deviceStore(true);
+    } catch (e) { console.warn("Firebase unavailable; saving on this device", e); }
+  }
+  return deviceStore(false);
 }
 function persist() {
   if (!P) return;
   const snapshot = JSON.parse(JSON.stringify(P.data));
   const id = P.id;
   saveChain = saveChain.then(() => store.save(id, snapshot)).catch(err => {
-    if (store.mode === "account") { showToast("Couldn't save to your account. Progress is kept on this device for now."); store = local; return local.save(id, snapshot); }
+    if (store.mode === "account") { showToast("Couldn't save to your account. Progress is kept on this device for now."); store = deviceStore(fbConfigured()); return local.save(id, snapshot); }
   });
   return saveChain;
 }
@@ -343,11 +402,21 @@ const hasSpeech = () => { try { return "speechSynthesis" in window; } catch { re
 const isPhone = () => window.matchMedia("(pointer: coarse)").matches && window.innerWidth < 760;
 
 /* ================= SCREENS ================= */
-let inSession = false;
+let inSession = false, screen = "";
 function frame(...kids) {
+  screen = "other";
   app.replaceChildren(topbar(), ...kids);
   window.scrollTo(0, 0);
 }
+/* Coming back to the page (e.g. after using the phone) reloads the learner from the account,
+   so a stale copy on this device never overwrites newer progress made elsewhere. */
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible" || !P || inSession || screen !== "home" || !store || store.mode !== "account") return;
+  try {
+    const fresh = (await store.list()).find(x => x.id === P.id);
+    if (fresh && screen === "home" && !inSession && JSON.stringify(fresh.data) !== JSON.stringify(P.data)) { P = ensure(fresh); showHome(); }
+  } catch (e) {}
+});
 function topbar() {
   const right = h("div", { class: "row" });
   if (P && !inSession) {
@@ -379,10 +448,31 @@ async function showProfiles(force) {
     openProfile(P);
   };
   nameInput.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
-  const saveNote = store.mode === "account"
-    ? "Progress saves to this claude.ai account, so it follows you between phone and laptop."
-    : "Progress saves on this device only. Open this page signed in to claude.ai to keep it across devices.";
-  frame(h("div", { class: "stack" },
+  // Learners saved only on this device before signing in can be moved into the account in one tap.
+  let movePanel = null;
+  if (store.kind === "firebase") {
+    const onDevice = (await local.list()).filter(p => !list.some(x => x.id === p.id));
+    if (onDevice.length) {
+      const moveBtn = h("button", { class: "btn primary" }, "Move to my account");
+      moveBtn.addEventListener("click", async () => {
+        moveBtn.disabled = true; moveBtn.textContent = "Moving…";
+        try { for (const p of onDevice) { await store.save(p.id, p.data); await local.remove(p.id); } showProfiles(true); }
+        catch (e) { moveBtn.disabled = false; moveBtn.textContent = "Move to my account"; showToast("Couldn't move them yet. Check your connection and try again."); }
+      });
+      movePanel = h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
+        h("h3", null, "Learners saved on this device"),
+        h("p", null, onDevice.map(p => p.data.name).join(", ") + (onDevice.length === 1 ? " is" : " are") + " saved only on this device. Move to your account so progress follows you to your other devices."),
+        moveBtn);
+    }
+  }
+  const saveNote = store.kind === "claude"
+    ? h("p", { class: "muted small" }, "Progress saves to this claude.ai account, so it follows you between phone and laptop.")
+    : store.kind === "firebase"
+      ? h("div", { class: "row between" }, h("p", { class: "muted small" }, `Signed in as ${store.label}. Progress follows you between phone and laptop.`), h("button", { class: "btn ghost small", onclick: signOut }, "Sign out"))
+      : store.canSignIn
+        ? h("div", { class: "panel stack-s" }, h("p", { class: "small" }, "Progress is saving on this device only. Sign in to keep it in sync between your phone and laptop."), h("button", { class: "btn", onclick: signIn }, "Sign in with Google"))
+        : h("p", { class: "muted small" }, "Progress saves on this device only.");
+  frame(h("div", { class: "stack" }, movePanel,
     h("h1", null, "Who's learning?"),
     list.length ? h("div", { class: "stack-s" }, list.sort((a, b) => a.data.created - b.data.created).map(p => {
       const owned = Object.values(p.data.words || {}).filter(w => w.meaning && w.meaning.lvl === 3).length;
@@ -393,7 +483,7 @@ async function showProfiles(force) {
     h("div", { class: "panel stack-s" },
       h("label", { for: "new-name", class: "label" }, "Add a learner"),
       h("div", { class: "row" }, h("div", { style: "flex:1;min-width:0" }, nameInput), h("button", { class: "btn primary", onclick: add }, "Add"))),
-    h("p", { class: "muted small" }, saveNote)
+    saveNote
   ));
 }
 
@@ -455,6 +545,7 @@ function showHome() {
         h("span", { class: "row" }, lvlPill(x.m ? x.m.lvl : 0), lvlPill(x.s ? x.s.lvl : 0)))))),
     h("p", { class: "muted small" }, "Owned means right on spaced days, in more than one way, including using the word yourself. That takes at least a week by design.")
   ));
+  screen = "home";
 }
 
 /* ================= SESSION RUNNER ================= */
@@ -1093,7 +1184,15 @@ async function showParent() {
         h("button", { class: "btn small", onclick: async () => { d.dayOffset = (d.dayOffset || 0) + 1; await persist(); showParent(); } }, "Skip ahead one day"),
         d.dayOffset ? h("button", { class: "btn small ghost", onclick: async () => { d.dayOffset = 0; await persist(); showParent(); } }, "Back to today") : null),
       resetBox,
-      h("p", { class: "small muted" }, store.mode === "account" ? "Saved to this claude.ai account." : "Saved on this device only."))
+      h("p", { class: "small muted" }, store.mode === "account" ? `Saved to ${store.label}.` : "Saved on this device only.")),
+
+    h("section", { class: "panel stack-s" },
+      h("h3", null, "Account"),
+      store.kind === "firebase"
+        ? h("div", { class: "row between" }, h("p", { class: "small" }, `Signed in as ${store.label}.`), h("button", { class: "btn small", onclick: signOut }, "Sign out"))
+        : store.canSignIn
+          ? h("div", { class: "stack-s" }, h("p", { class: "small" }, "Saving on this device only. Sign in with Google to sync between phone and laptop."), h("button", { class: "btn small", onclick: signIn }, "Sign in with Google"))
+          : h("p", { class: "small muted" }, store.kind === "claude" ? "Saved to this claude.ai account." : "Saved on this device only."))
   ));
 }
 
