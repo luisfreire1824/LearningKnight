@@ -679,7 +679,7 @@
     "paragraphs": [
       "Two weeks before the science fair, Priya's bean plants started turning yellow. Her little brother had been hanging around the window, and her first thought was that he'd messed with them. But her mom said blaming him would be [premature]. \"You don't have any proof yet,\" she said. \"Don't let a hunch [mislead] you.\"",
       "So Priya decided to [analyze] the problem like a scientist. First, as a [precaution], she moved the three healthy plants to a different window. Then she reread the label on the plant food and realized she had [misinterpreted|misinterpret] it. The label said one scoop a month. She had been adding one scoop every week.",
-      "Her brother admitted he had [previewed|preview] her poster while she was out, but he swore he never touched the plants. \"Sorry I [mistrusted|mistrust] you,\" Priya told him. In her report, she was careful not to [misrepresent] what happened. She listed every mistake, then explained how she had [concluded|conclude] that too much plant food was hurting the plants. Her teacher called it the most honest project at the fair."
+      "Her brother swore he never touched the plants. \"Sorry I [mistrusted|mistrust] you,\" Priya told him. The night before the fair, she [previewed|preview] the judges' scoring sheet and saw that they cared most about honest results. So in her report, she was careful not to [misrepresent] what happened. She listed every mistake, then explained how she had [concluded|conclude] that too much plant food was hurting the plants. Her teacher called it the most honest project at the fair."
     ],
     "questions": [
       {
@@ -698,7 +698,7 @@
         "use": "passage",
         "words": ["misinterpret"],
         "stem": "What did Priya misinterpret?",
-        "options": ["How often to add the plant food.", "Which window got the most sun.", "What her brother did to the poster.", "When the science fair would start."],
+        "options": ["How often to add the plant food.", "Which window got the most sun.", "What the judges cared about most.", "When the science fair would start."],
         "answer": 0,
         "why": "The label said once a month. She understood it as once a week."
       },
