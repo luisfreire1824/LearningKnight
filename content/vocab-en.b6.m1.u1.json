@@ -4,7 +4,7 @@
   "level": "b6",
   "module": 1,
   "unit": "1.1",
-  "version": 1,
+  "version": 2,
   "title": "Small piece, big change",
   "focus": "Prefixes un-, re-, dis-",
   "lesson": {
@@ -189,7 +189,7 @@
     {
       "id": "sn-discourage", "word": "discourage",
       "typed": "Write a sentence using discourage that shows why someone lost confidence.",
-      "phone": {"id": "sp-unaware", "type": "mcq", "words": ["unaware"], "stem": "Pick the sentence that shows what unaware means.", "options": ["Maya was unaware the store had closed, so she walked there for nothing.", "Maya was unaware of the rain, so she packed an umbrella just in case.", "Maya was unaware of the quiz, so she studied for it all weekend."], "answer": 0, "why": "In the other two, the second half contradicts unaware. You can't prepare for something you don't know about."}
+      "phone": {"id": "sp-discourage", "type": "mcq", "words": ["discourage"], "stem": "Pick the sentence that shows what discourage means.", "options": ["The long line discouraged us, so we went home without tickets.", "The long line discouraged us, so we cheered and hurried to join it.", "The long line discouraged us, so we were excited to wait in it."], "answer": 0, "why": "Feeling discouraged makes you less willing to keep going. In the other two, the second half is the opposite."}
     },
     {
       "id": "sn-disregard", "word": "disregard",

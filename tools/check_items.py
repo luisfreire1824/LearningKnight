@@ -1,7 +1,8 @@
 """Learning Knight content check.
 
 Run before any unit ships:
-    python3 tools/check_items.py content/<unit>.json
+    python3 tools/check_items.py content/course.json      (every unit, in course order)
+    python3 tools/check_items.py content/<unit>.json      (one unit on its own)
 
 Flags multiple-choice giveaways (length, part of speech), lopsided yes/no
 answers, and gaps in coverage. Exit code 1 if anything is flagged.
@@ -33,13 +34,13 @@ def tags(word):
     return out
 
 
-def definable(word, unit):
+def definable(word, unit, earlier=()):
     """After a first wrong answer the app shows what each choice means, so every
-    single-word option needs a definition: a unit word (any simple inflection)
-    or a glossary entry."""
+    single-word option needs a definition: a word card or glossary entry from this
+    unit or an earlier one (any simple inflection)."""
     w = word.lower()
-    cards = {x["word"] for x in unit["words"]}
-    gloss = set(unit.get("glossary", {}))
+    cards = {x["word"] for u in (*earlier, unit) for x in u["words"]}
+    gloss = {g for u in (*earlier, unit) for g in u.get("glossary", {})}
     for c in (w, w[:-2] if w.endswith("ed") else None, w[:-1] if w.endswith("d") else None,
               w[:-3] + "y" if w.endswith("ied") else None, w[:-1] if w.endswith("s") else None):
         if c and (c in cards or c in gloss):
@@ -78,8 +79,7 @@ def check_mcq(item, problems):
             problems.append(f"{iid}: correct option is >20% longer than the next")
 
 
-def main(path):
-    unit = json.loads(pathlib.Path(path).read_text())
+def check_unit(unit, earlier=()):
     problems, notes = [], []
     words = {w["key"] for w in unit["words"]}
     mcqs = [i for i in unit["items"] if i["type"] == "mcq"]
@@ -88,9 +88,14 @@ def main(path):
     for it in mcqs:
         check_mcq(it, problems)
         if all(re.fullmatch(r"[A-Za-z-]+", o) for o in it["options"]):
-            undefined = [o for o in it["options"] if not definable(o, unit)]
+            undefined = [o for o in it["options"] if not definable(o, unit, earlier)]
             if undefined:
                 problems.append(f"{it['id']}: no definition for {undefined} (add to glossary; shown after a first wrong answer)")
+
+    # A sentence task's phone version must test the same word the typed version asks for.
+    for s in unit.get("sentence", []):
+        if s["phone"].get("words") != [s["word"]]:
+            problems.append(f"{s['id']}: phone item tests {s['phone'].get('words')} but the task is about '{s['word']}'")
 
     # yes/no balance per group
     groups = {}
@@ -137,7 +142,43 @@ def main(path):
         print("  note:", n)
     for p in problems:
         print("  FLAG:", p)
-    print("  answer order: shuffled by the app at run time")
+    return problems
+
+
+def ids_of(unit):
+    out = [i["id"] for i in unit["items"]] + [q["id"] for q in unit["passage"]["questions"]]
+    for s in unit.get("sentence", []):
+        out += [s["id"], s["phone"]["id"]]
+    return out
+
+
+def main(path):
+    path = pathlib.Path(path)
+    data = json.loads(path.read_text())
+    if "units" in data:   # a course file: check every unit in order, plus cross-unit rules
+        units = [json.loads((path.parent / u["file"]).read_text()) for u in data["units"]]
+        for meta, u in zip(data["units"], units):
+            if meta["id"] != u["id"]:
+                print(f"FLAG: course.json lists {meta['id']} but {meta['file']} is {u['id']}")
+                return 1
+    else:
+        units = [data]
+    problems = []
+    for n, unit in enumerate(units):
+        problems += check_unit(unit, units[:n])
+    # The app looks words and items up across the whole course, so keys and ids must be unique.
+    if len(units) > 1:
+        for what, get in (("word key", lambda u: [w["key"] for w in u["words"]]), ("item id", ids_of)):
+            seen = {}
+            for u in units:
+                for k in get(u):
+                    if k in seen and seen[k] != u["id"]:
+                        problems.append(f"{what} '{k}' is in both {seen[k]} and {u['id']}")
+                    seen.setdefault(k, u["id"])
+        cross = [p for p in problems if " is in both " in p]
+        for p in cross:
+            print("FLAG:", p)
+    print("answer order: shuffled by the app at run time")
     print("PASS" if not problems else f"FAIL ({len(problems)} flagged)")
     return 1 if problems else 0
 

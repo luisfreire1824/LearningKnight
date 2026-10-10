@@ -1,0 +1,744 @@
+{
+  "id": "vocab-en.b6.m1.u2",
+  "course": "vocab-en",
+  "level": "b6",
+  "module": 1,
+  "unit": "1.2",
+  "version": 1,
+  "title": "Wrong turns and head starts",
+  "focus": "Prefixes mis-, pre-, plus two power words",
+  "lesson": {
+    "title": "Wrong turns and head starts",
+    "label": "Two new prefixes",
+    "intro": "Two more prefixes, and both change a word's meaning in a way you can predict.",
+    "prefixes": [
+      {"p": "mis-", "means": "wrongly or badly", "from": "read", "to": "misread", "gloss": "read wrongly"},
+      {"p": "pre-", "means": "before", "from": "heat", "to": "preheat", "gloss": "heat before"}
+    ],
+    "notes": [
+      "Mis- means wrongly, not \"not.\" To misread something is to read it the wrong way, not to skip it.",
+      "Pre- can also mean too early. Premature means before the right time."
+    ],
+    "test": "Same cover-up test as last unit: cover the prefix with your thumb. Is what's left a real word with a related meaning?",
+    "examples": [
+      {"word": "misread", "cut": 3, "left": "read", "ok": true, "note": "A real word with a related meaning. It's a prefix."},
+      {"word": "mist", "cut": 3, "left": "t", "ok": false, "note": "Not a word. Just a letter."},
+      {"word": "pretzel", "cut": 3, "left": "tzel", "ok": false, "note": "Not a word. Just letters."}
+    ],
+    "power": "This unit also has two power words: analyze and conclude. They show up in every subject, from science to history. They don't have a prefix to crack, so you'll learn them whole, in chunks you can say: an · a · lyze, con · clude.",
+    "spelling": "Spelling tip: when mis- meets a word that starts with s, keep both: mis + spell = misspell."
+  },
+  "words": [
+    {
+      "key": "misinterpret",
+      "word": "misinterpret",
+      "pos": "verb",
+      "session": 1,
+      "parts": [{"t": "mis", "m": "wrongly"}, {"t": "interpret"}],
+      "def": "To misinterpret something is to understand its meaning the wrong way.",
+      "everyday": "He misinterpreted my short text as angry, but I was only in a hurry.",
+      "academic": "Readers can misinterpret a graph if they don't check what each axis measures.",
+      "family": ["interpretation", "misinterpretation"],
+      "related": ["misunderstand", "misread"],
+      "watch": "Mis- means wrongly, not \"not.\" To misinterpret is to understand something the wrong way, not to miss it completely.",
+      "think": "When has someone misinterpreted something you said or texted?",
+      "spelling": [{"slip": "missinterpret", "tip": "mis + interpret. Only one s."}, {"slip": "misinterprit", "tip": "Interpret ends in -ret: inter · pret."}]
+    },
+    {
+      "key": "mislead",
+      "word": "mislead",
+      "pos": "verb",
+      "session": 1,
+      "parts": [{"t": "mis", "m": "wrongly"}, {"t": "lead"}],
+      "def": "To mislead someone is to give them the wrong idea, on purpose or by accident.",
+      "everyday": "The sign misled us. The \"shortcut\" added ten minutes to the walk.",
+      "academic": "A headline can mislead readers even when every fact in the article is true.",
+      "family": ["misleading", "misled"],
+      "related": ["deceive", "trick"],
+      "watch": "The past tense is misled, not misleaded. Something that gives the wrong idea is misleading: a misleading ad.",
+      "think": "What's an ad or a photo that misled you about what you were getting?",
+      "spelling": [{"slip": "misleed", "tip": "mis + lead. Lead is spelled l-e-a-d."}, {"slip": "misslead", "tip": "mis + lead. Only one s."}]
+    },
+    {
+      "key": "misrepresent",
+      "word": "misrepresent",
+      "pos": "verb",
+      "session": 1,
+      "parts": [{"t": "mis", "m": "wrongly"}, {"t": "represent"}],
+      "def": "To misrepresent something is to describe or show it in a way that isn't true or fair.",
+      "everyday": "The online photos misrepresented the hotel. The pool was half the size.",
+      "academic": "Many world maps misrepresent the size of places near the poles, so Greenland looks almost as big as Africa.",
+      "family": ["misrepresentation", "representation"],
+      "related": ["distort", "twist"],
+      "watch": "You misrepresent a thing, a fact or a person: you show it as something it isn't. Compare mislead, which is about the person who ends up with the wrong idea.",
+      "think": "Have you ever heard a story about you that misrepresented what really happened?",
+      "spelling": [{"slip": "misrepresant", "tip": "Represent ends in -ent, like present."}, {"slip": "missrepresent", "tip": "mis + represent. Only one s."}]
+    },
+    {
+      "key": "mistrust",
+      "word": "mistrust",
+      "pos": "verb or noun",
+      "session": 1,
+      "parts": [{"t": "mis", "m": "badly"}, {"t": "trust"}],
+      "def": "To mistrust someone is to doubt that they're honest or that you can count on them. Mistrust is also that feeling of doubt.",
+      "everyday": "After the dog stole her sandwich twice, she mistrusted him around food.",
+      "academic": "Years of broken promises created mistrust between the two countries.",
+      "family": ["mistrustful"],
+      "opposite": [{"w": "trust", "note": "drop the mis-"}],
+      "related": ["doubt", "suspicion"],
+      "watch": "Mistrust and distrust mean almost the same thing, and both are correct. You'll meet distrust in Unit 1.4.",
+      "think": "What makes you mistrust a website or an online review?",
+      "spelling": [{"slip": "misstrust", "tip": "mis + trust. Only one s before the t."}]
+    },
+    {
+      "key": "analyze",
+      "word": "analyze",
+      "pos": "verb",
+      "session": 1,
+      "parts": [{"t": "analyze"}],
+      "def": "To analyze something is to look closely at its parts to understand how it works or what it means.",
+      "everyday": "Our coach analyzed the game video to see why we kept losing the ball.",
+      "academic": "Scientists analyze the data before they decide what the results mean.",
+      "family": ["analysis", "analytical", "analyst"],
+      "related": ["examine", "study"],
+      "watch": "In American English it's analyze. British writers spell it analyse. The noun is analysis: one analysis, two analyses.",
+      "think": "What's something you've analyzed to get better at it, like a game, a song or a recipe?",
+      "spelling": [
+        {"slip": "analize", "tip": "It ends in -yze, not -ize: an · a · lyze."},
+        {"slip": "analyse", "tip": "That's the British spelling. American English ends in -yze: an · a · lyze."},
+        {"slip": "anylize", "tip": "Start with ana-, like analysis: an · a · lyze."}
+      ],
+      "power": true,
+      "chunks": ["an", "a", "lyze"]
+    },
+    {
+      "key": "preview",
+      "word": "preview",
+      "pos": "noun or verb",
+      "session": 2,
+      "parts": [{"t": "pre", "m": "before"}, {"t": "view"}],
+      "def": "A preview is a look at something before it happens or comes out. To preview something is to look at it ahead of time.",
+      "everyday": "The trailer gave us a preview of the movie's best jokes.",
+      "academic": "Preview the chapter by reading the headings before you start.",
+      "family": [],
+      "related": ["sneak peek", "overview"],
+      "watch": "Preview can be a noun (a movie preview) or a verb (preview the chapter).",
+      "think": "How could you preview a test before you study for it?",
+      "spelling": [{"slip": "preveiw", "tip": "pre + view. View is spelled v-i-e-w."}, {"slip": "previw", "tip": "pre + view. Keep the e: v-i-e-w."}]
+    },
+    {
+      "key": "precaution",
+      "word": "precaution",
+      "pos": "noun",
+      "session": 2,
+      "parts": [{"t": "pre", "m": "before"}, {"t": "caution"}],
+      "def": "A precaution is something you do ahead of time to stop something bad from happening.",
+      "everyday": "As a precaution, we packed extra water for the hike.",
+      "academic": "The lab requires safety goggles as a precaution against splashes.",
+      "family": ["precautionary", "caution", "cautious"],
+      "related": ["safeguard"],
+      "watch": "Common phrases: as a precaution, take precautions. A precaution always comes before the problem, never after.",
+      "think": "What precaution do you take before you leave the house?",
+      "spelling": [{"slip": "precausion", "tip": "pre + caution. Caution ends in -tion."}, {"slip": "precation", "tip": "pre + caution. Caution starts with cau-."}]
+    },
+    {
+      "key": "premature",
+      "word": "premature",
+      "pos": "adjective",
+      "session": 2,
+      "parts": [{"t": "pre", "m": "before (too early)"}, {"t": "mature"}],
+      "def": "Premature means happening too early, before the right time.",
+      "everyday": "Celebrating at halftime was premature. We lost by a goal.",
+      "academic": "It would be premature to draw a conclusion from a single experiment.",
+      "family": ["prematurely"],
+      "opposite": [{"w": "overdue", "note": "too late instead of too early"}],
+      "related": ["hasty"],
+      "watch": "Premature doesn't just mean early. It means too early, before something is ready.",
+      "think": "When has a decision you made turned out to be premature?",
+      "spelling": [{"slip": "prematur", "tip": "pre + mature. Keep the e at the end."}, {"slip": "premachure", "tip": "pre + mature. The end is spelled -ture, like nature."}]
+    },
+    {
+      "key": "conclude",
+      "word": "conclude",
+      "pos": "verb",
+      "session": 2,
+      "parts": [{"t": "conclude"}],
+      "def": "To conclude is to decide something is true after thinking about the facts. It can also mean to end something.",
+      "everyday": "The cookies were gone and the dog had crumbs on his nose, so we concluded he ate them.",
+      "academic": "From the results, the students concluded that the plants grew faster with more light.",
+      "family": ["conclusion", "conclusive"],
+      "related": ["decide", "finish"],
+      "watch": "Conclude has two meanings: decide from evidence (we concluded he was right) and end (the concert concluded with fireworks). The first is the one you'll see most in school.",
+      "think": "What's something you concluded about a person from a first impression? Were you right?",
+      "spelling": [{"slip": "conclued", "tip": "con · clude. The end is -ude, like include."}, {"slip": "conclood", "tip": "con · clude. The end is -ude, like include."}],
+      "power": true,
+      "chunks": ["con", "clude"]
+    }
+  ],
+  "items": [
+    {
+      "id": "qc-misinterpret",
+      "type": "binary",
+      "use": "quick",
+      "words": ["misinterpret"],
+      "prompt": "Does misinterpret fit this sentence?",
+      "text": "She misinterpreted my joke and thought I was making fun of her.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 0,
+      "why": "She understood the joke the wrong way. That's misinterpreting."
+    },
+    {
+      "id": "qc-mislead",
+      "type": "binary",
+      "use": "quick",
+      "words": ["mislead"],
+      "prompt": "Does mislead fit this sentence?",
+      "text": "The map was so clear and honest that it misled everyone to the right trail.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 1,
+      "why": "To mislead is to give the wrong idea. A clear, honest map sends people the right way."
+    },
+    {
+      "id": "qc-misrepresent",
+      "type": "binary",
+      "use": "quick",
+      "words": ["misrepresent"],
+      "prompt": "Does misrepresent fit this sentence?",
+      "text": "The ad misrepresented the bike by showing a photo of a much fancier model.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 0,
+      "why": "The ad showed the bike as something it isn't."
+    },
+    {
+      "id": "qc-mistrust",
+      "type": "binary",
+      "use": "quick",
+      "words": ["mistrust"],
+      "prompt": "Does mistrust fit this sentence?",
+      "text": "Kai mistrusted his best friend, so he happily lent him his new phone.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 1,
+      "why": "If you mistrust someone, you doubt them. You wouldn't happily lend them your phone."
+    },
+    {
+      "id": "qc-analyze",
+      "type": "binary",
+      "use": "quick",
+      "words": ["analyze"],
+      "prompt": "Does analyze fit this sentence?",
+      "text": "Ana analyzed the results by glancing at the first number and moving on.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 1,
+      "why": "Analyzing means looking closely at the parts. A glance isn't analysis."
+    },
+    {
+      "id": "qc-preview",
+      "type": "binary",
+      "use": "quick",
+      "words": ["preview"],
+      "prompt": "Does preview fit this sentence?",
+      "text": "Before the field trip, we previewed the museum's website to plan our route.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 0,
+      "why": "We looked at the museum ahead of time. That's a preview."
+    },
+    {
+      "id": "qc-precaution",
+      "type": "binary",
+      "use": "quick",
+      "words": ["precaution"],
+      "prompt": "Does precaution fit this sentence?",
+      "text": "As a precaution, he left his umbrella at home even though storms were coming.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 1,
+      "why": "A precaution protects you ahead of time. Leaving the umbrella behind does the opposite."
+    },
+    {
+      "id": "qc-premature",
+      "type": "binary",
+      "use": "quick",
+      "words": ["premature"],
+      "prompt": "Does premature fit this sentence?",
+      "text": "Throwing a victory party before the votes were counted was premature.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 0,
+      "why": "The votes weren't counted yet, so the party came too early."
+    },
+    {
+      "id": "qc-conclude",
+      "type": "binary",
+      "use": "quick",
+      "words": ["conclude"],
+      "prompt": "Does conclude fit this sentence?",
+      "text": "Seeing the wet streets, Leo concluded that it had rained during the night.",
+      "options": ["Fits", "Doesn't fit"],
+      "answer": 0,
+      "why": "Leo used the evidence (wet streets) to decide what happened."
+    },
+    {
+      "id": "pf-misread",
+      "type": "binary",
+      "use": "prefix",
+      "words": [],
+      "prompt": "Prefix or just letters?",
+      "text": "misread",
+      "options": ["Prefix", "Just letters"],
+      "answer": 0,
+      "why": "Cover mis- and you get read. Misread means read wrongly."
+    },
+    {
+      "id": "pf-mist",
+      "type": "binary",
+      "use": "prefix",
+      "words": [],
+      "prompt": "Prefix or just letters?",
+      "text": "mist",
+      "options": ["Prefix", "Just letters"],
+      "answer": 1,
+      "why": "Cover mis- and you get t. That's not a word, just a letter."
+    },
+    {
+      "id": "pf-preheat",
+      "type": "binary",
+      "use": "prefix",
+      "words": [],
+      "prompt": "Prefix or just letters?",
+      "text": "preheat",
+      "options": ["Prefix", "Just letters"],
+      "answer": 0,
+      "why": "Cover pre- and you get heat. Preheat means heat before."
+    },
+    {
+      "id": "pf-pretzel",
+      "type": "binary",
+      "use": "prefix",
+      "words": [],
+      "prompt": "Prefix or just letters?",
+      "text": "pretzel",
+      "options": ["Prefix", "Just letters"],
+      "answer": 1,
+      "why": "Cover pre- and you get tzel. Not a word."
+    },
+    {
+      "id": "pf-misplace",
+      "type": "binary",
+      "use": "prefix",
+      "words": [],
+      "prompt": "Prefix or just letters?",
+      "text": "misplace",
+      "options": ["Prefix", "Just letters"],
+      "answer": 0,
+      "why": "Cover mis- and you get place. Misplace means put in the wrong place."
+    },
+    {
+      "id": "pf-prey",
+      "type": "binary",
+      "use": "prefix",
+      "words": [],
+      "prompt": "Prefix or just letters?",
+      "text": "prey",
+      "options": ["Prefix", "Just letters"],
+      "answer": 1,
+      "why": "Cover pre- and you get y. Just a letter."
+    },
+    {
+      "id": "wf-misrepresent",
+      "type": "mcq",
+      "use": "use",
+      "words": ["misrepresent"],
+      "stem": "The cereal box said \"healthy breakfast\" and never mentioned the sugar. The box ___ what was inside.",
+      "options": ["misrepresented", "misinterpreted", "analyzed", "previewed"],
+      "answer": 0,
+      "why": "The box showed the cereal as healthier than it is. Misinterpreted would mean the box understood something wrongly, and boxes don't understand anything."
+    },
+    {
+      "id": "wf-precaution",
+      "type": "mcq",
+      "use": "use",
+      "words": ["precaution"],
+      "stem": "Wearing a helmet every time you ride is a smart ___.",
+      "options": ["precaution", "preview", "mistrust", "disadvantage"],
+      "answer": 0,
+      "why": "A helmet protects you before anything goes wrong."
+    },
+    {
+      "id": "wf-misinterpret",
+      "type": "mcq",
+      "use": "use",
+      "words": ["misinterpret"],
+      "stem": "When I didn't reply right away, my friend ___ my silence as anger.",
+      "options": ["misinterpreted", "misrepresented", "underestimated", "mistrusted"],
+      "answer": 0,
+      "why": "My friend understood the silence the wrong way. I was just busy."
+    },
+    {
+      "id": "wf-premature",
+      "type": "mcq",
+      "use": "use",
+      "words": ["premature"],
+      "stem": "Announcing the winner before all the judges had voted was ___.",
+      "options": ["premature", "unfamiliar", "unaware", "unwilling"],
+      "answer": 0,
+      "why": "The judges weren't done, so announcing then was too early."
+    },
+    {
+      "id": "wf-preview",
+      "type": "mcq",
+      "use": "use",
+      "words": ["preview"],
+      "stem": "The guide showed us a map of the museum as a ___ of the rooms we'd visit.",
+      "options": ["preview", "precaution", "mistrust", "disadvantage"],
+      "answer": 0,
+      "why": "The map let us see the rooms before we got to them."
+    },
+    {
+      "id": "wf-analyze",
+      "type": "mcq",
+      "use": "use",
+      "words": ["analyze"],
+      "stem": "The detectives ___ every fingerprint before they named a suspect.",
+      "options": ["analyzed", "concluded", "mistrusted", "previewed"],
+      "answer": 0,
+      "why": "They studied each fingerprint closely. Concluded comes after that: it's the decision they reach."
+    },
+    {
+      "id": "ex-preview",
+      "type": "binary",
+      "use": "use",
+      "words": ["preview"],
+      "prompt": "Example or non-example of preview?",
+      "text": "Reading the headings and looking at the pictures before you read the chapter.",
+      "options": ["Example", "Non-example"],
+      "answer": 0,
+      "why": "You're looking at the chapter ahead of time."
+    },
+    {
+      "id": "ex-premature",
+      "type": "binary",
+      "use": "use",
+      "words": ["premature"],
+      "prompt": "Example or non-example of premature?",
+      "text": "Calling a movie \"the best ever\" two minutes after it starts.",
+      "options": ["Example", "Non-example"],
+      "answer": 0,
+      "why": "Two minutes in is too early to judge the whole movie."
+    },
+    {
+      "id": "ex-misrepresent",
+      "type": "binary",
+      "use": "use",
+      "words": ["misrepresent"],
+      "prompt": "Example or non-example of misrepresent?",
+      "text": "Quoting someone's exact words and explaining what they were talking about.",
+      "options": ["Example", "Non-example"],
+      "answer": 1,
+      "why": "That shows what they said fairly. Misrepresenting would twist it."
+    },
+    {
+      "id": "bd-preview",
+      "type": "build",
+      "use": "use",
+      "words": ["preview"],
+      "prompt": "to look at something before it happens",
+      "prefixes": ["mis", "pre", "un"],
+      "bases": ["view", "lead", "trust", "caution", "mature"],
+      "answer": ["pre", "view"],
+      "why": "pre (before) + view = preview."
+    },
+    {
+      "id": "bd-mislead",
+      "type": "build",
+      "use": "use",
+      "words": ["mislead"],
+      "prompt": "to give someone the wrong idea",
+      "prefixes": ["mis", "pre", "un"],
+      "bases": ["view", "lead", "trust", "caution", "mature"],
+      "answer": ["mis", "lead"],
+      "why": "mis (wrongly) + lead = mislead: to lead someone the wrong way."
+    },
+    {
+      "id": "bd-mistrust",
+      "type": "build",
+      "use": "use",
+      "words": ["mistrust"],
+      "prompt": "to doubt that someone is honest",
+      "prefixes": ["mis", "pre", "un"],
+      "bases": ["view", "lead", "trust", "caution", "mature"],
+      "answer": ["mis", "trust"],
+      "why": "mis (badly) + trust = mistrust."
+    },
+    {
+      "id": "or-premature",
+      "type": "order",
+      "use": "use",
+      "words": ["premature"],
+      "prompt": "Tap these from earliest to latest.",
+      "firstLabel": "Earliest first",
+      "order": ["premature", "timely", "overdue"],
+      "why": "Premature is too early, timely is right on time, and overdue is too late."
+    },
+    {
+      "id": "rv-misinterpret",
+      "type": "mcq",
+      "use": "review",
+      "words": ["misinterpret"],
+      "stem": "She ___ the email. She thought the meeting was cancelled, but it had only been moved.",
+      "options": ["misinterpreted", "misrepresented", "mistrusted", "previewed"],
+      "answer": 0,
+      "why": "She understood the email the wrong way."
+    },
+    {
+      "id": "rv-mislead",
+      "type": "mcq",
+      "use": "review",
+      "words": ["mislead"],
+      "stem": "The photo on the box made the toy look huge. It was meant to ___ buyers.",
+      "options": ["mislead", "preview", "analyze", "conclude"],
+      "answer": 0,
+      "why": "A photo that makes a toy look bigger than it is gives buyers the wrong idea."
+    },
+    {
+      "id": "rv-misrepresent",
+      "type": "mcq",
+      "use": "review",
+      "words": ["misrepresent"],
+      "stem": "The trailer ___ the film. It showed only action scenes, but the movie was mostly talking.",
+      "options": ["misrepresented", "misinterpreted", "analyzed", "concluded"],
+      "answer": 0,
+      "why": "The trailer showed the film as something it isn't."
+    },
+    {
+      "id": "rv-mistrust",
+      "type": "mcq",
+      "use": "review",
+      "words": ["mistrust"],
+      "stem": "After the app leaked their passwords, many users began to ___ it.",
+      "options": ["mistrust", "preview", "misrepresent", "analyze"],
+      "answer": 0,
+      "why": "When a company breaks your trust, you start to doubt it."
+    },
+    {
+      "id": "rv-preview",
+      "type": "mcq",
+      "use": "review",
+      "words": ["preview"],
+      "stem": "The bookstore let us read the first chapter as a free ___.",
+      "options": ["preview", "mistrust", "precaution", "conclusion"],
+      "answer": 0,
+      "why": "A free first chapter lets you see the book before you buy it."
+    },
+    {
+      "id": "rv-precaution",
+      "type": "mcq",
+      "use": "review",
+      "words": ["precaution"],
+      "stem": "Before the storm, the town filled sandbags as a ___ against flooding.",
+      "options": ["precaution", "preview", "conclusion", "disadvantage"],
+      "answer": 0,
+      "why": "Sandbags go up before the flood, to stop the damage."
+    },
+    {
+      "id": "rv-premature",
+      "type": "mcq",
+      "use": "review",
+      "words": ["premature"],
+      "stem": "With five minutes left and the score tied, cheering for a win was ___.",
+      "options": ["premature", "unreliable", "unaware", "unfamiliar"],
+      "answer": 0,
+      "why": "The game wasn't over, so cheering then was too early."
+    },
+    {
+      "id": "rv-analyze",
+      "type": "mcq",
+      "use": "review",
+      "words": ["analyze"],
+      "stem": "To find out why the plants died, the scientist will ___ the soil.",
+      "options": ["analyze", "mislead", "mistrust", "misrepresent"],
+      "answer": 0,
+      "why": "She'll study the soil closely to understand what's in it."
+    },
+    {
+      "id": "rv-conclude",
+      "type": "mcq",
+      "use": "review",
+      "words": ["conclude"],
+      "stem": "The footprints led to the open window. We came to the ___ that the cat got out that way.",
+      "options": ["conclusion", "precaution", "preview", "disadvantage"],
+      "answer": 0,
+      "why": "A conclusion is what you decide after looking at the facts. It's the noun form of conclude."
+    },
+    {
+      "id": "mx-mislead",
+      "type": "mcq",
+      "use": "review",
+      "words": ["mislead"],
+      "stem": "The graph's scale started at 90 instead of 0, which could ___ readers into thinking the change was huge.",
+      "options": ["mislead", "conclude", "analyze", "preview"],
+      "answer": 0,
+      "why": "Starting the scale high makes a small change look big. That gives readers the wrong idea."
+    },
+    {
+      "id": "mx-mistrust",
+      "type": "mcq",
+      "use": "review",
+      "words": ["mistrust"],
+      "stem": "The coach kept breaking his promises about playing time, which caused ___ on the team.",
+      "options": ["mistrust", "precaution", "preview", "conclusion"],
+      "answer": 0,
+      "why": "Broken promises make people doubt you."
+    },
+    {
+      "id": "mx-conclude",
+      "type": "mcq",
+      "use": "review",
+      "words": ["conclude"],
+      "stem": "The principal will ___ the assembly with a short speech.",
+      "options": ["conclude", "analyze", "mistrust", "misinterpret"],
+      "answer": 0,
+      "why": "Here conclude means end: the speech is the last part of the assembly."
+    },
+    {
+      "id": "tr-misspell",
+      "type": "binary",
+      "use": "transfer",
+      "words": [],
+      "prompt": "New word. Prefix or just letters?",
+      "text": "misspell",
+      "options": ["Prefix", "Just letters"],
+      "answer": 0,
+      "why": "Cover mis- and you get spell. Misspell means spell wrongly, and it keeps both s's."
+    },
+    {
+      "id": "tr-prepay",
+      "type": "binary",
+      "use": "transfer",
+      "words": [],
+      "prompt": "New word. Prefix or just letters?",
+      "text": "prepay",
+      "options": ["Prefix", "Just letters"],
+      "answer": 0,
+      "why": "Cover pre- and you get pay. Prepay means pay before."
+    },
+    {
+      "id": "tr-mister",
+      "type": "binary",
+      "use": "transfer",
+      "words": [],
+      "prompt": "New word. Prefix or just letters?",
+      "text": "mister",
+      "options": ["Prefix", "Just letters"],
+      "answer": 1,
+      "why": "Cover mis- and you get ter. Not a word."
+    }
+  ],
+  "sentence": [
+    {
+      "id": "sn-mislead",
+      "word": "mislead",
+      "typed": "Write a sentence using mislead that shows how someone got the wrong idea.",
+      "phone": {
+        "id": "sp-mislead",
+        "type": "mcq",
+        "words": ["mislead"],
+        "stem": "Pick the sentence that shows what mislead means.",
+        "options": [
+          "The sign said \"free,\" which misled us. Everything cost five dollars.",
+          "The sign said \"free,\" which misled us. Everything really was free.",
+          "The sign said \"closed,\" which misled us. The store was closed all day."
+        ],
+        "answer": 0,
+        "why": "In the other two, the sign told the truth, so nobody got the wrong idea."
+      }
+    },
+    {
+      "id": "sn-precaution",
+      "word": "precaution",
+      "typed": "Write a sentence using precaution that shows what someone did ahead of time to stay safe.",
+      "phone": {
+        "id": "sp-precaution",
+        "type": "mcq",
+        "words": ["precaution"],
+        "stem": "Pick the sentence that shows what precaution means.",
+        "options": [
+          "As a precaution, Sam charged his phone before the long bus ride.",
+          "As a precaution, Sam let his phone die before the long bus ride.",
+          "As a precaution, Sam charged his phone after the bus ride ended."
+        ],
+        "answer": 0,
+        "why": "A precaution comes before the problem and protects you. The others do the opposite or come too late."
+      }
+    }
+  ],
+  "selfCheck": [
+    "I used the word with the right meaning.",
+    "The word is in the right form (for example mislead, misled, misleading).",
+    "Someone who didn't know the word could guess its meaning from my sentence."
+  ],
+  "passage": {
+    "title": "The Science Fair Mystery",
+    "paragraphs": [
+      "Two weeks before the science fair, Priya's bean plants started turning yellow. Her little brother had been hanging around the window, and her first thought was that he'd messed with them. But her mom said blaming him would be [premature]. \"You don't have any proof yet,\" she said. \"Don't let a hunch [mislead] you.\"",
+      "So Priya decided to [analyze] the problem like a scientist. First, as a [precaution], she moved the three healthy plants to a different window. Then she reread the label on the plant food and realized she had [misinterpreted|misinterpret] it. The label said one scoop a month. She had been adding one scoop every week.",
+      "Her brother admitted he had [previewed|preview] her poster while she was out, but he swore he never touched the plants. \"Sorry I [mistrusted|mistrust] you,\" Priya told him. In her report, she was careful not to [misrepresent] what happened. She listed every mistake, then explained how she had [concluded|conclude] that too much plant food was hurting the plants. Her teacher called it the most honest project at the fair."
+    ],
+    "questions": [
+      {
+        "id": "pq2-1",
+        "type": "mcq",
+        "use": "passage",
+        "words": ["premature"],
+        "stem": "Why did Priya's mom say blaming her brother would be premature?",
+        "options": ["Priya didn't have any proof yet.", "Her brother was too young to blame.", "The fair was still two weeks away.", "Priya had already forgiven him."],
+        "answer": 0,
+        "why": "Blaming him before she had proof would be too early: premature."
+      },
+      {
+        "id": "pq2-2",
+        "type": "mcq",
+        "use": "passage",
+        "words": ["misinterpret"],
+        "stem": "What did Priya misinterpret?",
+        "options": ["How often to add the plant food.", "Which window got the most sun.", "What her brother did to the poster.", "When the science fair would start."],
+        "answer": 0,
+        "why": "The label said once a month. She understood it as once a week."
+      },
+      {
+        "id": "pq2-3",
+        "type": "mcq",
+        "use": "passage",
+        "words": ["precaution"],
+        "stem": "What precaution did Priya take?",
+        "options": ["She moved the healthy plants away.", "She asked her brother to stay out.", "She bought a new bag of plant food.", "She started her poster over again."],
+        "answer": 0,
+        "why": "Moving the healthy plants protected them before anything could happen to them too."
+      },
+      {
+        "id": "pq2-4",
+        "type": "mcq",
+        "use": "passage",
+        "words": ["conclude"],
+        "stem": "What did Priya finally conclude?",
+        "options": ["Too much plant food hurt the plants.", "Her brother had knocked over the pots.", "The window was too cold for beans.", "The plants needed a lot more water."],
+        "answer": 0,
+        "why": "After looking at the evidence, she decided the plant food was the problem."
+      }
+    ]
+  },
+  "glossary": {
+    "underestimate": "To underestimate something is to think it's smaller, weaker or less important than it really is.",
+    "conclusion": "A conclusion is what you decide after thinking about the facts. It can also mean the end of something."
+  },
+  "spellingTimes": {"slow": 3000, "normal": 1500, "fast": 500},
+  "parentPrompts": [
+    "At dinner, preview tomorrow together: \"Let's preview the plan for tomorrow.\"",
+    "Ask: \"What's an ad or a headline that misled you?\" Share one of your own first.",
+    "When someone jumps to a decision, ask: \"Is it premature to decide that? What would we need to analyze first?\""
+  ],
+  "sessions": [
+    {"n": 1, "title": "Meet", "about": "Two new prefixes, then your first five words.", "plan": ["lesson", "meet:1", "prefix", "exit"]},
+    {"n": 2, "title": "Meet", "about": "Four more words, then a spelling round.", "plan": ["warmup", "meet:2", "spell:learn", "exit"]},
+    {"n": 3, "title": "Use", "about": "Pick the right word, build words from parts, and put words in time order.", "plan": ["warmup", "use"]},
+    {"n": 4, "title": "Produce", "about": "Use the words yourself, then read a short mystery that uses all nine.", "plan": ["warmup", "sentence", "passage"]},
+    {"n": 5, "title": "Check", "about": "The weekly check, plus a spelling review.", "plan": ["check", "spell:review"]}
+  ]
+}

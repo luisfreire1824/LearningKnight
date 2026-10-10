@@ -71,6 +71,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .lv1{background:var(--accent-soft);color:var(--lvl1)}
 .lv2{background:var(--accent-soft);color:var(--lvl2)}
 .lv3{background:var(--brass-soft);color:var(--brass)}
+.pill.power{background:var(--brass-soft);color:var(--brass)}
+.path{display:flex;flex-wrap:wrap;gap:6px}
 .progress{height:6px;background:var(--sunk);border-radius:999px;overflow:hidden}
 .progress>i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
 .sessions{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
@@ -153,17 +155,20 @@ th{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mu
 
 <div class="wrap" id="app" aria-live="polite">
   <div class="topbar"><div class="brand">Learning Knight</div></div>
-  <div class="panel stack"><h2>Opening your profiles…</h2><p class="muted">Loading Unit 1.1 and any saved progress.</p></div>
+  <div class="panel stack"><h2>Opening your profiles…</h2><p class="muted">Loading your lessons and any saved progress.</p></div>
 </div>
 
 <script>
 (() => {
 "use strict";
-const CONTENT_URL = "content/vocab-en.b6.m1.u1.json";
+const COURSE_URL = "content/course.json";
 const LEVELS = ["New", "Learning", "Familiar", "Owned"];
 const DAY = 864e5;
 const app = document.getElementById("app");
-let C = null;            // unit content
+let COURSE = null;       // content/course.json
+let UNITS = [];          // every unit, in course order
+let WORDS = [], BANK = [], FINDABLE = [], SENTENCES = [], GLOSS = {};  // looked up across the whole course
+let C = null;            // the unit being worked on right now
 let store = null;        // storage adapter
 let P = null;            // current profile {id, data}
 let saveChain = Promise.resolve();
@@ -178,11 +183,12 @@ function h(tag, attrs, ...kids) {
     else if (k === "html") e.innerHTML = v;
     else e.setAttribute(k, v === true ? "" : v);
   }
-  for (const k of kids.flat()) if (k !== null && k !== undefined && k !== false) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  for (const k of kids.flat(Infinity)) if (k !== null && k !== undefined && k !== false) e.append(k.nodeType ? k : document.createTextNode(String(k)));
   return e;
 }
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-const wordByKey = k => C.words.find(w => w.key === k);
+const wordByKey = k => WORDS.find(w => w.key === k);
+const unitById = id => UNITS.find(u => u.id === id) || null;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /* ---------- clock (with a testing offset so a parent can jump ahead a day) ---------- */
@@ -349,9 +355,29 @@ function showToast(msg) {
 
 /* ---------- profile model ---------- */
 function newProfile(name) {
-  return { name, created: Date.now(), dayOffset: 0, unit: C.id, sessions: {}, words: {}, attempts: [], sentences: [], missed: {} };
+  return { name, created: Date.now(), dayOffset: 0, units: {}, words: {}, attempts: [], sentences: [], missed: {} };
 }
-function ensure(p) { p.data.missed = p.data.missed || {}; p.data.sentences = p.data.sentences || []; return p; }
+function ensure(p) {
+  const d = p.data;
+  d.missed = d.missed || {}; d.sentences = d.sentences || []; d.words = d.words || {}; d.attempts = d.attempts || [];
+  // Profiles from the one-unit version kept sessions at the top level. They belong to Unit 1.1.
+  // Merged rather than moved once, so a save from a tab still running the old version is never lost.
+  d.units = d.units || {};
+  if (d.sessions && Object.keys(d.sessions).length) {
+    const u = (d.units[d.unit || UNITS[0].id] = d.units[d.unit || UNITS[0].id] || { sessions: {} });
+    u.sessions = { ...d.sessions, ...u.sessions };
+  }
+  delete d.sessions; delete d.unit;
+  return p;
+}
+/* Units unlock in order: the current unit is the first one with a session still to do. */
+const sessionsIn = (d, u) => ((d.units || {})[u.id] || {}).sessions || {};
+const unitDone = (d, u) => u.sessions.every(s => sessionsIn(d, u)[s.n]);
+const currentUnit = d => UNITS.find(u => !unitDone(d, u)) || UNITS[UNITS.length - 1];
+const allDone = d => UNITS.every(u => unitDone(d, u));
+// A run in progress keeps the unit it started in, even if content is added in the meantime.
+function syncUnit() { C = (P.data.run && unitById(P.data.run.unit)) || currentUnit(P.data); return C; }
+const lastSessionDay = d => Math.max(-1, ...UNITS.flatMap(u => Object.values(sessionsIn(d, u)).map(s => s.day)));
 /* Missed words: anything still wrong after its last chance. Cleared by getting it right in practice. */
 function missAdd(key, item, picked) {
   const m = P.data.missed[key] || { times: 0 };
@@ -365,7 +391,7 @@ function afterGrade(st, it, ok, picked, firstTry = true) {
 }
 /* A multiple-choice question for a word, avoiding ones already used; falls back to a repeat only if the bank is thin. */
 function mcqFor(key, avoid) {
-  const all = C.items.filter(i => i.type === "mcq" && (i.words || []).includes(key));
+  const all = BANK.filter(i => i.type === "mcq" && (i.words || []).includes(key));
   return shuffle(all.filter(i => !avoid.has(i.id)))[0] || shuffle(all)[0] || null;
 }
 /* What a choice means: a unit word (any simple inflection) or a glossary entry */
@@ -373,9 +399,9 @@ function defOf(opt) {
   const w = opt.toLowerCase();
   const cands = [w, w.replace(/ied$/, "y"), w.replace(/ed$/, ""), w.replace(/d$/, ""), w.replace(/s$/, "")];
   for (const c of cands) {
-    const card = C.words.find(x => x.word === c);
+    const card = WORDS.find(x => x.word === c);
     if (card) return { word: opt, def: card.def };
-    if (C.glossary && C.glossary[c]) return { word: opt, def: C.glossary[c] };
+    if (GLOSS[c]) return { word: opt, def: GLOSS[c] };
   }
   return null;
 }
@@ -421,10 +447,10 @@ function record(key, skill, correct, type, extra = {}) {
   return s.lvl !== before ? { key, skill, from: before, to: s.lvl } : null;
 }
 const lvlPill = l => h("span", { class: "pill lv" + l }, LEVELS[l]);
-function nextSession() { for (const s of C.sessions) if (!P.data.sessions[s.n]) return s; return null; }
+function nextSession() { const done = sessionsIn(P.data, C); for (const s of C.sessions) if (!done[s.n]) return s; return null; }
 function dueWords(skill = "meaning") {
   const t = today();
-  return C.words.map(w => w.key).filter(k => { const s = P.data.words[k] && P.data.words[k][skill]; return s && s.lvl > 0 && s.next !== null && s.next <= t; })
+  return WORDS.map(w => w.key).filter(k => { const s = P.data.words[k] && P.data.words[k][skill]; return s && s.lvl > 0 && s.next !== null && s.next <= t; })
     .sort((a, b) => P.data.words[a][skill].next - P.data.words[b][skill].next);
 }
 
@@ -432,7 +458,7 @@ function dueWords(skill = "meaning") {
 // Story questions only make sense right after the story, so they never appear in reviews or practice.
 const bankUses = ["quick", "use", "review"];
 function bankFor(key, avoid = new Set()) {
-  const all = [...C.items, ...C.passage.questions].filter(i => (i.words || []).includes(key) && bankUses.includes(i.use) && !avoid.has(i.id));
+  const all = BANK.filter(i => (i.words || []).includes(key) && bankUses.includes(i.use) && !avoid.has(i.id));
   const recent = new Set(P.data.attempts.slice(-60).map(a => a.item));
   const fresh = all.filter(i => !recent.has(i.id));
   const pool = fresh.length ? fresh : all;
@@ -468,7 +494,7 @@ document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState !== "visible" || !P || inSession || screen !== "home" || !store || store.mode !== "account") return;
   try {
     const fresh = (await store.list()).find(x => x.id === P.id);
-    if (fresh && screen === "home" && !inSession && JSON.stringify(fresh.data) !== JSON.stringify(P.data)) { P = ensure(fresh); showHome(); }
+    if (fresh && screen === "home" && !inSession && JSON.stringify(ensure(fresh).data) !== JSON.stringify(P.data)) { P = fresh; showHome(); }
   } catch (e) {}
 });
 function topbar() {
@@ -486,7 +512,7 @@ function topbar() {
 const remember = id => { try { localStorage.setItem("lk.last", id); } catch (e) {} };
 const lastId = () => { try { return localStorage.getItem("lk.last"); } catch (e) { return null; } };
 // A learner shared with you opens straight to their Parent view; you follow their progress, you don't run their sessions.
-function openProfile(p) { P = ensure(p); remember(p.id); if (p.role === "helper") showParent(); else showHome(); }
+function openProfile(p) { P = ensure(p); syncUnit(); remember(p.id); if (p.role === "helper") showParent(); else showHome(); }
 const isHelper = () => P && P.role === "helper";
 async function showProfiles(force) {
   P = null;
@@ -530,11 +556,14 @@ async function showProfiles(force) {
         ? h("div", { class: "panel stack-s" }, h("p", { class: "small" }, "Progress is saving on this device only. Sign in to keep it in sync between your phone and laptop."), h("button", { class: "btn", onclick: signIn }, "Sign in with Google"))
         : h("p", { class: "muted small" }, "Progress saves on this device only.");
   const learnerBtn = p => {
-    const owned = Object.values(p.data.words || {}).filter(w => w.meaning && w.meaning.lvl === 3).length;
-    const done = Object.keys(p.data.sessions || {}).length;
+    ensure(p);
+    const owned = Object.values(p.data.words).filter(w => w.meaning && w.meaning.lvl === 3).length;
+    const u = currentUnit(p.data), n = u.sessions.length;
+    const done = Object.keys(sessionsIn(p.data, u)).length;
+    const where = allDone(p.data) ? `All ${UNITS.length} units done` : `Unit ${u.unit} · ${p.role === "helper" ? `${done} of ${n} sessions` : `Session ${Math.min(done + 1, n)} of ${n}`}`;
     return h("button", { class: "opt", onclick: () => openProfile(p) },
       h("div", { class: "row between" }, h("b", null, p.data.name || "Learner"),
-        h("span", { class: "muted small" }, p.role === "helper" ? `${p.meta.ownerName && p.meta.ownerName !== p.data.name ? "from " + p.meta.ownerName + " · " : ""}${done} of 5 sessions` : `Session ${Math.min(done + 1, 5)} of 5 · ${owned} owned`)));
+        h("span", { class: "muted small" }, p.role === "helper" ? `${p.meta.ownerName && p.meta.ownerName !== p.data.name ? "from " + p.meta.ownerName + " · " : ""}${where}` : `${where} · ${owned} owned`)));
   };
   const mine = list.filter(p => p.role !== "helper").sort((a, b) => (a.data.created || 0) - (b.data.created || 0));
   const shared = list.filter(p => p.role === "helper");
@@ -552,14 +581,20 @@ async function showProfiles(force) {
 
 /* ---------- home ---------- */
 function showHome() {
-  ensure(P);
+  ensure(P); syncUnit();
   const d = P.data, nx = nextSession(), t = today();
-  const words = C.words.map(w => ({ w, m: (d.words[w.key] || {}).meaning, s: (d.words[w.key] || {}).spelling }));
-  const met = words.filter(x => x.m && x.m.lvl > 0).length;
-  const fam = words.filter(x => x.m && x.m.lvl >= 2).length;
-  const owned = words.filter(x => x.m && x.m.lvl === 3).length;
+  const row = w => ({ w, m: (d.words[w.key] || {}).meaning, s: (d.words[w.key] || {}).spelling });
+  const words = C.words.map(row);
+  const everything = WORDS.map(row);   // stats count every unit so far
+  const met = everything.filter(x => x.m && x.m.lvl > 0).length;
+  const fam = everything.filter(x => x.m && x.m.lvl >= 2).length;
+  const owned = everything.filter(x => x.m && x.m.lvl === 3).length;
   const due = dueWords().length + dueWords("spelling").length;
-  const lastDay = Math.max(-1, ...Object.values(d.sessions).map(s => s.day));
+  const lastDay = lastSessionDay(d);
+  const earlier = UNITS.slice(0, UNITS.indexOf(C)).filter(u => unitDone(d, u));
+  const wordRow = x => h("div", { class: "wl" },
+    h("span", null, x.m && x.m.lvl > 0 ? x.w.word : h("span", { class: "muted" }, x.w.word)),
+    h("span", { class: "row" }, lvlPill(x.m ? x.m.lvl : 0), lvlPill(x.s ? x.s.lvl : 0)));
   let action;
   if (d.run) {
     const run = d.run;
@@ -576,22 +611,23 @@ function showHome() {
   } else {
     action = h("div", { class: "stack-s" },
       h("button", { class: "btn primary wide", onclick: runReview, disabled: due ? null : true }, due ? `Review ${due} due word${due === 1 ? "" : "s"}` : "Nothing due today"),
-      h("p", { class: "muted small" }, "Unit 1.1 is complete. Words come back for review on a spaced schedule until they're owned."));
+      h("p", { class: "muted small" }, `Every unit so far is complete. Words come back for review on a spaced schedule until they're owned. New units appear here when they're added.`));
   }
   const missedKeys = Object.keys(d.missed || {});
   const missedPanel = missedKeys.length ? h("div", { class: "panel stack-s", style: "border-color:var(--bad)" },
     h("div", { class: "row between" }, h("h3", null, "Missed words"), h("span", { class: "pill", style: "background:var(--bad-soft);color:var(--bad)" }, missedKeys.length)),
     h("p", { class: "small muted" }, "Words you got wrong after your last chance. See each one again, then try a new question. Get it right and it comes off the list."),
     h("div", { class: "wordlist" }, missedKeys.map(k => h("div", { class: "wl" },
-      h("span", null, wordByKey(k).word), h("span", { class: "small muted" }, "missed " + dayLabel(d.missed[k].day))))),
+      h("span", null, wordByKey(k) ? wordByKey(k).word : k), h("span", { class: "small muted" }, "missed " + dayLabel(d.missed[k].day))))),
     h("button", { class: "btn wide", onclick: runMissed }, "Practice missed words")) : null;
   frame(h("div", { class: "stack" },
     h("div", { class: "stack-s" },
-      h("span", { class: "label" }, `Band 6 · Module 1 · Unit ${C.unit}`),
+      h("span", { class: "label" }, `Band 6 · Module ${C.module} · Unit ${C.unit}`),
       h("h1", null, C.title),
-      h("p", { class: "muted" }, C.focus)),
+      h("p", { class: "muted" }, C.focus),
+      UNITS.length > 1 ? h("div", { class: "path", "aria-label": "Units" }, UNITS.map(u => h("span", { class: "pill " + (unitDone(d, u) ? "lv3" : u === C ? "lv1" : "lv0") }, `${u.unit}${unitDone(d, u) ? " ✓" : ""}`))) : null),
     h("div", { class: "sessions", role: "list" }, C.sessions.map(s => {
-      const done = d.sessions[s.n];
+      const done = sessionsIn(d, C)[s.n];
       return h("div", { class: "sess" + (done ? " done" : "") + (nx && nx.n === s.n ? " next" : ""), role: "listitem" },
         h("b", null, s.n), s.title, done ? h("div", { class: "small" }, "✓") : null);
     })),
@@ -602,10 +638,10 @@ function showHome() {
       h("div", { class: "stat" }, h("b", null, fam), h("span", { class: "small muted" }, "familiar")),
       h("div", { class: "stat" }, h("b", null, owned), h("span", { class: "small muted" }, "owned"))),
     h("div", { class: "panel" },
-      h("div", { class: "row between", style: "margin-bottom:4px" }, h("h3", null, "Your words"), h("span", { class: "small muted" }, "meaning · spelling")),
-      h("div", { class: "wordlist" }, words.map(x => h("div", { class: "wl" },
-        h("span", null, x.m && x.m.lvl > 0 ? x.w.word : h("span", { class: "muted" }, x.w.word)),
-        h("span", { class: "row" }, lvlPill(x.m ? x.m.lvl : 0), lvlPill(x.s ? x.s.lvl : 0)))))),
+      h("div", { class: "row between", style: "margin-bottom:4px" }, h("h3", null, `Unit ${C.unit} words`), h("span", { class: "small muted" }, "meaning · spelling")),
+      h("div", { class: "wordlist" }, words.map(wordRow)),
+      earlier.map(u => h("details", { style: "margin-top:10px" }, h("summary", null, `Unit ${u.unit}: ${u.title}`),
+        h("div", { class: "wordlist", style: "margin-top:6px" }, u.words.map(w => wordRow(row(w))))))),
     h("p", { class: "muted small" }, "Owned means right on spaced days, in more than one way, including using the word yourself. That takes at least a week by design.")
   ));
   screen = "home";
@@ -618,7 +654,7 @@ function buildSteps(sess) {
   const pushItem = (it, label) => { if (it && !today_.has(it.id)) { today_.add(it.id); steps.push({ kind: it.type, item: it, label }); } };
   for (const part of sess.plan) {
     const [what, arg] = part.split(":");
-    if (what === "lesson") steps.push({ kind: "lesson", label: "The prefix trick" });
+    if (what === "lesson") steps.push({ kind: "lesson", label: C.lesson.label || "The prefix trick" });
     if (what === "meet") {
       for (const w of C.words.filter(w => w.session === Number(arg))) {
         steps.push({ kind: "card", word: w, label: "New word" });
@@ -644,7 +680,7 @@ function buildSteps(sess) {
 
 /* ---------- runs: sessions, reviews and practice save their place after every step,
    so "Save and leave", closing the page or an app update all resume where you were ---------- */
-const findItem = id => [...C.items, ...C.passage.questions, ...C.sentence.map(s => s.phone)].find(i => i.id === id) || null;
+const findItem = id => FINDABLE.find(i => i.id === id) || null;
 function ser(st) {
   const o = { kind: st.kind, label: typeof st.label === "string" ? st.label : "" };
   for (const k of ["check", "practice", "production", "key", "mode", "dueOnly", "max", "session", "text", "wi", "keys", "first", "right"]) if (st[k] !== undefined) o[k] = st[k];
@@ -657,14 +693,14 @@ function hyd(o) {
   const st = { ...o };
   if (o.item) { st.item = findItem(o.item); if (!st.item) return null; }
   if (o.word) { st.word = wordByKey(o.word); if (!st.word) return null; }
-  if (o.task) { st.task = C.sentence.find(s => s.id === o.task); if (!st.task) return null; }
+  if (o.task) { st.task = SENTENCES.find(s => s.id === o.task); if (!st.task) return null; }
   if (o.key && !wordByKey(o.key)) return null;
   return st;
 }
 const emptyResults = () => ({ right: 0, total: 0, second: 0, changes: [], checkRight: 0, checkTotal: 0, missed: [] });
 
 async function startRun(meta, steps, used) {
-  P.data.run = { ...meta, day: today(), i: 0, used: [...used], results: emptyResults(), steps: steps.map(ser) };
+  P.data.run = { ...meta, unit: C.id, day: today(), i: 0, used: [...used], results: emptyResults(), steps: steps.map(ser) };
   await persist();
   return continueRun();
 }
@@ -685,7 +721,7 @@ function runMissed() {
   const steps = [], used = new Set(), quiz = [];
   missedKeys.forEach((k, i) => steps.push({ kind: "card", word: wordByKey(k), label: `Missed word ${i + 1} of ${missedKeys.length}: study it` }));
   const lvl = k => ((P.data.words[k] || {}).meaning || {}).lvl || 0;
-  const others = C.words.map(w => w.key).filter(k => !P.data.missed[k]);
+  const others = WORDS.map(w => w.key).filter(k => !P.data.missed[k]);
   const known = others.filter(k => lvl(k) >= 2);                     // Familiar or Owned
   const pool = known.length >= 2 ? known : others.filter(k => lvl(k) >= 1);
   for (const k of missedKeys) {
@@ -719,6 +755,8 @@ function orderMixed(quiz, lastKey) {
 async function continueRun() {
   const run = P.data.run;
   if (!run) return showHome();
+  syncUnit();
+  const unit = C;
   const used = new Set(run.used || []);
   const R = run.results;
   inSession = true;
@@ -760,10 +798,10 @@ async function continueRun() {
     }
   } finally { inSession = false; }
   delete P.data.run;
-  const sess = run.type === "session" ? C.sessions.find(s => s.n === run.n) : null;
-  if (sess) P.data.sessions[sess.n] = { day: today(), at: Date.now() };
+  const sess = run.type === "session" ? unit.sessions.find(s => s.n === run.n) : null;
+  if (sess) { const u = (P.data.units[unit.id] = P.data.units[unit.id] || { sessions: {} }); u.sessions[sess.n] = { day: today(), at: Date.now() }; }
   await persist();
-  summary(sess, { ...R, missed: new Set(R.missed) }, run.type === "missed" ? "Missed words practice" : run.type === "review" ? "Review" : null);
+  summary(unit, sess, { ...R, missed: new Set(R.missed) }, run.type === "missed" ? "Missed words practice" : run.type === "review" ? "Review" : null);
 }
 
 function stepShell(meta, label, body) {
@@ -778,6 +816,10 @@ function stepShell(meta, label, body) {
 function renderStep(st, meta) {
   return new Promise(resolve => {
     const body = h("div", { class: "stack" });
+    // Renderers pass optional pieces as null and lists as arrays; the DOM would print those as text.
+    const clean = k => k.flat(Infinity).filter(x => x !== null && x !== undefined && x !== false);
+    body.append = (...k) => Element.prototype.append.apply(body, clean(k));
+    body.replaceChildren = (...k) => Element.prototype.replaceChildren.apply(body, clean(k));
     body.addEventListener("leave", () => resolve("leave"));
     const done = v => resolve(v);
     frame(stepShell(meta, typeof st.label === "string" ? st.label : "", body));
@@ -820,6 +862,7 @@ const RENDER = {
       h("div", { class: "panel stack-s" }, L.prefixes.map(p => h("div", { class: "row between" },
         h("span", null, h("b", { style: "font-family:var(--display);font-size:1.3rem;color:var(--accent)" }, p.p), " means ", h("b", null, p.means)),
         h("span", { class: "muted" }, `${p.from} → ${p.to}`)))),
+      (L.notes || []).map(n => h("p", { class: "note" }, n)),
       h("p", null, h("b", null, L.test)),
       h("div", { class: "panel" }, L.examples.map(ex => {
         const wEl = h("span", { class: "w" }, h("span", null, ex.word.slice(0, ex.cut)), h("span", null, ex.word.slice(ex.cut)));
@@ -828,6 +871,8 @@ const RENDER = {
         btn.addEventListener("click", () => { wEl.firstChild.className = "hide"; verdict.replaceChildren(h("b", { style: `color:var(--${ex.ok ? "good" : "bad"})` }, `"${ex.left}" `), ex.note); btn.disabled = true; });
         return h("div", { class: "cover" }, h("div", { class: "stack-s", style: "min-width:0" }, wEl, verdict), btn);
       })),
+      L.power ? h("div", { class: "panel stack-s" }, h("span", { class: "pill power", style: "align-self:flex-start" }, "Power words"), h("p", null, L.power)) : null,
+      L.spelling ? h("p", { class: "small muted" }, L.spelling) : null,
       continueBtn(() => done(null), "Meet the first words"));
   },
 
@@ -835,7 +880,8 @@ const RENDER = {
     const w = st.word;
     introduce(w.key);
     const head = h("div", { class: "headword" });
-    w.parts.forEach((p, i) => { if (i) head.append(h("span", { class: "dot" }, "·")); head.append(h("span", { class: i === 0 && p.m ? "pre" : "" }, p.t)); });
+    // Prefix words split into their parts; power words split into chunks you can say.
+    (w.chunks ? w.chunks.map(t => ({ t })) : w.parts).forEach((p, i) => { if (i) head.append(h("span", { class: "dot" }, "·")); head.append(h("span", { class: i === 0 && p.m ? "pre" : "" }, p.t)); });
     const facts = h("dl", { class: "facts" });
     if (w.family && w.family.length) facts.append(h("dt", null, "Family"), h("dd", null, w.family.join(", ")));
     if (w.opposite) facts.append(h("dt", null, "Opposite"), h("dd", null, w.opposite.map(o => o.note ? `${o.w} (${o.note})` : o.w).join(", ")));
@@ -843,7 +889,8 @@ const RENDER = {
     body.append(h("article", { class: "panel entry stack" },
       h("div", { class: "stack-s" },
         head,
-        h("div", { class: "row" }, h("span", { class: "pos" }, w.pos), hasSpeech() ? h("button", { class: "btn small", onclick: () => say(w.word) }, "▶ Hear it") : null)),
+        h("div", { class: "row" }, h("span", { class: "pos" }, w.pos), w.power ? h("span", { class: "pill power", title: "Used in every subject" }, "Power word") : null, hasSpeech() ? h("button", { class: "btn small", onclick: () => say(w.word) }, "▶ Hear it") : null),
+        w.power ? h("p", { class: "small muted" }, "A power word shows up in every subject: science, history, math and English.") : null),
       h("div", { class: "parts" }, w.parts.filter(p => p.m).map(p => h("span", { class: "part" }, h("b", null, p.t), h("span", null, " = " + p.m)))),
       h("p", { style: "font-size:1.1rem" }, w.def),
       h("div", { class: "stack-s" },
@@ -947,7 +994,7 @@ const RENDER = {
     const scramble = shuffle(it.order); if (scramble.join() === it.order.join()) scramble.reverse();
     scramble.forEach(x => tiles.append(h("button", { class: "tile", onclick: e => { picked.push(x); e.currentTarget.disabled = true; slots.append(h("li", { style: "font-size:1.1rem" }, x)); check.disabled = picked.length !== it.order.length; } }, x)));
     reset.addEventListener("click", () => { picked.length = 0; slots.replaceChildren(); [...tiles.children].forEach(b => b.disabled = false); check.disabled = true; });
-    body.append(h("p", { class: "quote" }, it.prompt), tiles, h("div", { class: "row between" }, h("span", { class: "label" }, "Gentlest first"), reset), slots, check);
+    body.append(h("p", { class: "quote" }, it.prompt), tiles, h("div", { class: "row between" }, h("span", { class: "label" }, it.firstLabel || "Gentlest first"), reset), slots, check);
     check.addEventListener("click", () => {
       const ok = picked.join("|") === it.order.join("|");
       reset.remove(); check.remove(); [...tiles.children].forEach(b => b.disabled = true);
@@ -966,9 +1013,10 @@ const RENDER = {
       const boxes = C.selfCheck.map((c, i) => h("input", { type: "checkbox", id: `sc-${task.id}-${i}` }));
       const submit = h("button", { class: "btn primary wide", disabled: true }, "Submit sentence");
       const hint = h("p", { class: "small muted" });
-      const stem = w.word.replace(/e$/, "").slice(0, 7);
+      // Any form counts: mislead, misled, misleading. Family words only count if they share the word's start.
+      const forms = [w.word.replace(/e$/, "").slice(0, 7), ...(w.family || []).filter(f => f.startsWith(w.word.slice(0, 3)))];
       const refresh = () => {
-        const has = new RegExp(stem, "i").test(ta.value);
+        const has = forms.some(f => ta.value.toLowerCase().includes(f.toLowerCase()));
         hint.textContent = ta.value.trim() && !has ? `Your sentence needs a form of "${w.word}".` : "";
         submit.disabled = !(has && boxes.every(b => b.checked) && ta.value.trim().split(/\s+/).length >= 5);
       };
@@ -995,7 +1043,7 @@ const RENDER = {
 
   produce(st, body, done) {
     const w = wordByKey(st.key);
-    const phone = C.items.find(i => i.type === "mcq" && i.use === "review" && i.words.includes(w.key)) || C.items.find(i => i.type === "mcq" && i.words.includes(w.key));
+    const phone = BANK.find(i => i.type === "mcq" && i.use === "review" && i.words.includes(w.key)) || BANK.find(i => i.type === "mcq" && i.words.includes(w.key));
     RENDER.sentence({ task: { id: "pr-" + w.key, word: w.key, typed: `Use ${w.word} in a sentence that shows what it means.`, phone } }, body, done);
   },
 
@@ -1100,7 +1148,7 @@ const RENDER = {
         inp.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
         body.replaceChildren(h("h3", null, "Copy it while you can see it"),
           h("div", { class: "flash" }, w.word),
-          h("p", { class: "muted", style: "text-align:center" }, "Built from: " + w.parts.map(p => p.t).join(" + ")), msg, inp, sub);
+          h("p", { class: "muted", style: "text-align:center" }, w.chunks ? "Say it in chunks: " + w.chunks.join(" · ") : "Built from: " + w.parts.map(p => p.t).join(" + ")), msg, inp, sub);
         inp.focus();
       };
       const finishWord = () => {
@@ -1132,7 +1180,7 @@ function spellFeedback(w, val) {
   const yours = h("div", { class: "diff" }, [...val].map((ch, i) => keepA[i] ? ch : h("span", { class: "x" }, ch)));
   const right = h("div", { class: "diff" }, [...w.word].map((ch, i) => keepB[i] ? ch : h("span", { class: "m" }, ch)));
   const known = (w.spelling || []).find(s => s.slip === val);
-  const tip = known ? known.tip : "Build it from its parts: " + w.parts.map(p => p.t).join(" + ") + ".";
+  const tip = known ? known.tip : w.chunks ? "Say it in chunks as you type: " + w.chunks.join(" · ") + "." : "Build it from its parts: " + w.parts.map(p => p.t).join(" + ") + ".";
   return h("div", { class: "feedback no stack-s", role: "status" },
     h("b", null, "Not quite."),
     h("div", null, h("span", { class: "label" }, "You typed"), yours),
@@ -1141,21 +1189,25 @@ function spellFeedback(w, val) {
 }
 
 /* ---------- end of session ---------- */
-function summary(sess, r, title) {
+function summary(unit, sess, r, title) {
   const ups = r.changes.filter(c => c.to > c.from), downs = r.changes.filter(c => c.to < c.from);
-  const nx = nextSession();
+  const finished = sess && unitDone(P.data, unit);
+  syncUnit();
+  const nx = nextSession(), nextUnit = finished && C !== unit ? C : null;
+  const word = k => wordByKey(k) ? wordByKey(k).word : k;
   const missedNow = [...r.missed].filter(k => P.data.missed[k]);
   frame(h("div", { class: "stack" },
     h("span", { class: "label" }, sess ? `Session ${sess.n} complete` : (title || "Review") + " complete"),
-    h("h1", null, sess && sess.n === 5 ? "Unit 1.1 done" : "Nice work"),
+    h("h1", null, finished ? `Unit ${unit.unit} done` : "Nice work"),
     r.total ? h("p", { style: "font-size:1.2rem" }, `${r.right} of ${r.total} right the first time`, r.second ? `, ${r.second} more on the second try.` : ".") : null,
     missedNow.length ? h("div", { class: "panel stack-s" }, h("h3", null, "On your Missed words list"),
-      h("p", null, missedNow.map(k => wordByKey(k).word).join(", ")),
+      h("p", null, missedNow.map(word).join(", ")),
       h("p", { class: "small muted" }, "Practice them from the home screen whenever you like.")) : null,
     r.checkTotal ? h("p", { class: "panel" }, h("b", null, "Weekly check: "), `${r.checkRight} of ${r.checkTotal}`, r.checkRight / r.checkTotal >= .85 ? " · strong week." : " · the missed words will come back in review.") : null,
-    ups.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Moved up"), ups.map(c => h("div", { class: "row between" }, h("span", null, wordByKey(c.key).word, c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
-    downs.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Coming back soon"), downs.map(c => h("div", { class: "row between" }, h("span", null, wordByKey(c.key).word, c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
-    h("p", { class: "muted" }, nx ? `Next: Session ${nx.n}, ${nx.title}. ${nx.about} Best done tomorrow.` : "Words now come back for review on a spaced schedule."),
+    ups.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Moved up"), ups.map(c => h("div", { class: "row between" }, h("span", null, word(c.key), c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
+    downs.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Coming back soon"), downs.map(c => h("div", { class: "row between" }, h("span", null, word(c.key), c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
+    h("p", { class: "muted" }, nextUnit ? `Unit ${nextUnit.unit} is unlocked: ${nextUnit.title}. It covers ${nextUnit.focus.charAt(0).toLowerCase() + nextUnit.focus.slice(1)}. Best started tomorrow.`
+      : nx ? `Next: Session ${nx.n}, ${nx.title}. ${nx.about} Best done tomorrow.` : "Words now come back for review on a spaced schedule."),
     continueBtn(showHome, "Back to home")));
 }
 
@@ -1187,7 +1239,7 @@ async function handleJoin() {
 }
 
 async function showParent() {
-  ensure(P);
+  ensure(P); syncUnit();
   // Pick up helpers who joined (or reviews made) since this learner was loaded.
   if (store.meta && !showParent.refreshing) {
     showParent.refreshing = true;
@@ -1224,7 +1276,7 @@ async function showParent() {
       showParent();
     };
     return h("div", { class: "sentence stack-s" },
-      h("span", { class: "label" }, wordByKey(s.word).word + " · " + dayLabel(s.day)),
+      h("span", { class: "label" }, (wordByKey(s.word) ? wordByKey(s.word).word : s.word) + " · " + dayLabel(s.day)),
       h("p", null, "“", s.text, "”"),
       note,
       h("div", { class: "row" }, h("button", { class: "btn small", onclick: () => mark("good") }, "Good"), h("button", { class: "btn small", onclick: () => mark("needs-work") }, "Needs work")));
@@ -1279,12 +1331,12 @@ async function showParent() {
     h("div", { class: "row between" }, h("h1", null, d.name + "'s week"), h("button", { class: "btn", onclick: helper ? () => showProfiles(true) : showHome }, "Back")),
     helperBanner,
     h("div", { class: "stats" },
-      h("div", { class: "stat" }, h("b", null, Object.keys(d.sessions).length + "/5"), h("span", { class: "small muted" }, "sessions")),
+      h("div", { class: "stat" }, h("b", null, allDone(d) ? "All ✓" : Object.keys(sessionsIn(d, C)).length + "/" + C.sessions.length), h("span", { class: "small muted" }, allDone(d) ? `${UNITS.length} units` : `Unit ${C.unit} sessions`)),
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
       h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
 
     h("section", { class: "panel stack-s" },
-      h("h3", null, "Talk about it this week"),
+      h("h3", null, `Talk about it this week (Unit ${C.unit})`),
       h("p", { class: "small muted" }, "Using a word in real conversation is one of the strongest ways it sticks."),
       h("ul", { class: "stack-s", style: "margin:0;padding-left:20px" }, C.parentPrompts.map(p => h("li", null, p)))),
 
@@ -1294,7 +1346,7 @@ async function showParent() {
       Object.keys(d.missed).length ? h("div", { class: "tablebox" }, h("table", null,
         h("thead", null, h("tr", null, h("th", null, "Word"), h("th", null, "Their answer"), h("th", null, "When"))),
         h("tbody", null, Object.entries(d.missed).map(([k, m]) => h("tr", null,
-          h("td", null, wordByKey(k).word, m.times > 1 ? h("span", { class: "small muted" }, ` ×${m.times}`) : null),
+          h("td", null, wordByKey(k) ? wordByKey(k).word : k, m.times > 1 ? h("span", { class: "small muted" }, ` ×${m.times}`) : null),
           h("td", { class: "small" }, m.picked || "–"),
           h("td", { class: "small" }, dayLabel(m.day)))))))
         : h("p", { class: "muted" }, "Empty. Nothing missed twice.")),
@@ -1302,7 +1354,7 @@ async function showParent() {
     h("section", { class: "panel stack-s" },
       h("h3", null, "Sticky words"),
       sticky.length ? sticky.map(([k, resps]) => h("div", { class: "stack-s", style: "padding-block:6px;border-bottom:1px solid var(--line)" },
-        h("div", { class: "row between" }, h("b", null, wordByKey(k).word), h("span", { class: "small muted" }, `${resps.length} miss${resps.length === 1 ? "" : "es"}`)),
+        h("div", { class: "row between" }, h("b", null, wordByKey(k) ? wordByKey(k).word : k), h("span", { class: "small muted" }, `${resps.length} miss${resps.length === 1 ? "" : "es"}`)),
         h("p", { class: "small muted" }, [...new Set(resps)].slice(0, 4).join(" · "))))
         : h("p", { class: "muted" }, "No misses yet.")),
 
@@ -1316,12 +1368,15 @@ async function showParent() {
       h("h3", null, "Every word"),
       h("div", { class: "tablebox" }, h("table", null,
         h("thead", null, h("tr", null, h("th", null, "Word"), h("th", null, "Meaning"), h("th", null, "Spelling"), h("th", null, "Next review"))),
-        h("tbody", null, C.words.map(w => {
-          const m = (d.words[w.key] || {}).meaning, s = (d.words[w.key] || {}).spelling;
-          const nxt = [m, s].filter(x => x && x.next !== null).map(x => x.next);
-          return h("tr", null, h("td", null, w.word), h("td", null, lvlPill(m ? m.lvl : 0)), h("td", null, lvlPill(s ? s.lvl : 0)),
-            h("td", { class: "small" }, nxt.length ? (Math.min(...nxt) <= t ? "Due now" : dayLabel(Math.min(...nxt))) : "–"));
-        }))))),
+        // Every unit up to the current one, grouped; later units haven't started.
+        h("tbody", null, UNITS.slice(0, UNITS.indexOf(C) + 1).map(u => [
+          UNITS.length > 1 ? h("tr", null, h("th", { colspan: "4", style: "padding-top:12px" }, `Unit ${u.unit}: ${u.title}`)) : null,
+          u.words.map(w => {
+            const m = (d.words[w.key] || {}).meaning, s = (d.words[w.key] || {}).spelling;
+            const nxt = [m, s].filter(x => x && x.next !== null).map(x => x.next);
+            return h("tr", null, h("td", null, w.word), h("td", null, lvlPill(m ? m.lvl : 0)), h("td", null, lvlPill(s ? s.lvl : 0)),
+              h("td", { class: "small" }, nxt.length ? (Math.min(...nxt) <= t ? "Due now" : dayLabel(Math.min(...nxt))) : "–"));
+          })]))))),
 
     sharePanel,
 
@@ -1348,11 +1403,20 @@ async function showParent() {
 /* ================= BOOT ================= */
 async function boot() {
   try {
-    const res = await fetch(CONTENT_URL, { cache: "no-cache" });
-    if (!res.ok) throw new Error(res.status);
-    C = await res.json();
+    const get = async url => { const res = await fetch(url, { cache: "no-cache" }); if (!res.ok) throw new Error(url + " " + res.status); return res.json(); };
+    COURSE = await get(COURSE_URL);
+    const base = COURSE_URL.replace(/[^/]*$/, "");
+    UNITS = await Promise.all(COURSE.units.map(u => get(base + u.file)));
+    for (const u of UNITS) {
+      u.words.forEach(w => { w.unit = u.id; WORDS.push(w); });
+      BANK.push(...u.items);
+      FINDABLE.push(...u.items, ...u.passage.questions, ...u.sentence.map(s => s.phone));
+      SENTENCES.push(...u.sentence);
+      Object.assign(GLOSS, u.glossary || {});
+    }
+    C = UNITS[0];
   } catch (e) {
-    app.replaceChildren(topbar(), h("div", { class: "panel stack-s" }, h("h2", null, "Couldn't load Unit 1.1"), h("p", { class: "muted" }, "The lesson file didn't load. Reload the page to try again.")));
+    app.replaceChildren(topbar(), h("div", { class: "panel stack-s" }, h("h2", null, "Couldn't load the lessons"), h("p", { class: "muted" }, "The lesson files didn't load. Reload the page to try again.")));
     return;
   }
   store = await makeStore();

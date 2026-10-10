@@ -1,18 +1,21 @@
 # Learning Knight
 
 A home vocabulary program: short daily sessions, word parts, spaced review,
-flash-and-spell, a Missed words list and a parent view. This is the Unit 1.1
-prototype (Band 6, prefixes un-, re-, dis-).
+flash-and-spell, a Missed words list and a parent view. Band 6, Module 1 so far:
+Unit 1.1 (un-, re-, dis-) and Unit 1.2 (mis-, pre-, power words analyze and conclude).
+Units unlock in order; reviews and the Missed words list draw on every unit learned.
 
 Live site: https://luisfreire1824.github.io/LearningKnight/
 
 ## Files
 - `index.html` — the whole app (one page, no build step)
-- `content/` — lesson content as JSON. New units are new files here.
+- `content/course.json` — the units, in order. A new unit is a new JSON file in
+  `content/` plus one line here.
 - `firebase-config.js` — Firebase web settings. Empty = this-device-only mode.
 - `firestore.rules` — database security rules (paste into the Firebase console)
-- `tools/check_items.py` — run before shipping any unit:
-  `python3 tools/check_items.py content/vocab-en.b6.m1.u1.json`
+- `tools/check_items.py` — run before shipping any unit (checks every unit, and
+  that words and item ids are unique across the course):
+  `python3 tools/check_items.py content/course.json`
 
 ## Where progress is saved
 - Signed in with Google: in your account, synced between phone and laptop.
