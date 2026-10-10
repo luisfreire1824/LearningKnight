@@ -5,6 +5,13 @@ flash-and-spell, a Missed words list and a parent view. Band 6, Module 1 so far:
 Unit 1.1 (un-, re-, dis-) and Unit 1.2 (mis-, pre-, power words analyze and conclude).
 Units unlock in order; reviews and the Missed words list draw on every unit learned.
 
+Placement check (home screen): an adaptive vocabulary + reading check, Grade 4 to
+Professional. 10 questions per level, a level passes at 90%. Vocabulary first (with
+"I don't know" so guesses don't inflate it), then 8 word-part items, then reading:
+two original passages per level, five questions each (detail, word in context,
+inference, main idea, author's purpose). Results: secure level for each, a reading
+skill profile, the words missed. It doesn't change word mastery.
+
 Live site: https://luisfreire1824.github.io/LearningKnight/
 
 ## Files
@@ -16,6 +23,9 @@ Live site: https://luisfreire1824.github.io/LearningKnight/
 - `tools/check_items.py` — run before shipping any unit (checks every unit, and
   that words and item ids are unique across the course):
   `python3 tools/check_items.py content/course.json`
+- `content/assessment-en.a.json` — placement check, form A. Check it with
+  `python3 tools/check_assessment.py content/assessment-en.a.json` (answer-length
+  giveaways, one question per reading skill, passage difficulty rising by level).
 
 ## Where progress is saved
 - Signed in with Google: in your account, synced between phone and laptop.

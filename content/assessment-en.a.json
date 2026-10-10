@@ -1,0 +1,1901 @@
+{
+ "id": "assess-en",
+ "form": "A",
+ "version": 1,
+ "title": "Placement check",
+ "passMark": 0.9,
+ "keepGoing": 0.7,
+ "about": "Two parts: vocabulary (about 10 minutes) and reading (about 15 to 20 minutes). It adjusts to you, so it gets harder when you're doing well and stops when it's found your level. You can save and come back at any point.",
+ "skills": {
+  "detail": "Finding details",
+  "vocab": "Words in context",
+  "inference": "Reading between the lines",
+  "main": "Main idea",
+  "purpose": "Author's purpose"
+ },
+ "vocab": {
+  "start": "g8",
+  "levels": [
+   {
+    "id": "g4",
+    "name": "Grade 4",
+    "items": [
+     {
+      "id": "av-ability",
+      "word": "ability",
+      "pos": "noun",
+      "sentence": "She has the [ability] to fix almost any bike.",
+      "options": [
+       "the skill to do something",
+       "a strong wish to do something",
+       "the habit of doing something",
+       "permission to do something"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-accept",
+      "word": "accept",
+      "pos": "verb",
+      "sentence": "He decided to [accept] the job offer.",
+      "options": [
+       "to say yes to something offered",
+       "to read something very carefully",
+       "to turn down something offered",
+       "to ask questions about something"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-amount",
+      "word": "amount",
+      "pos": "noun",
+      "sentence": "The [amount] of rain this month surprised everyone.",
+      "options": [
+       "how much there is of something",
+       "the time when something happens",
+       "the place where something falls",
+       "the reason something happens"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-attend",
+      "word": "attend",
+      "pos": "verb",
+      "sentence": "About fifty people will [attend] the meeting.",
+      "options": [
+       "to go to and be at an event",
+       "to plan the details of an event",
+       "to cancel an event ahead of time",
+       "to pay the full cost of an event"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-compare",
+      "word": "compare",
+      "pos": "verb",
+      "sentence": "Before you buy one, [compare] the two phones.",
+      "options": [
+       "to see how things are alike or different",
+       "to try out each thing for a short while first",
+       "to ask other people what they think of them",
+       "to choose the cheaper of the two things"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-discuss",
+      "word": "discuss",
+      "pos": "verb",
+      "sentence": "The team will [discuss] the plan on Monday.",
+      "options": [
+       "to talk about something with others",
+       "to write down every part of something",
+       "to put something off until later",
+       "to give final approval to something"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-encourage",
+      "word": "encourage",
+      "pos": "verb",
+      "sentence": "Her coach [encouraged] her to try out for the team.",
+      "options": [
+       "to give someone support or hope",
+       "to order someone to do something",
+       "to warn someone against something",
+       "to remind someone about something"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-establish",
+      "word": "establish",
+      "pos": "verb",
+      "sentence": "The company was [established] in 1998.",
+      "options": [
+       "to start or set up something",
+       "to sell or close something",
+       "to move something to a new place",
+       "to give something a new name"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-prepare",
+      "word": "prepare",
+      "pos": "verb",
+      "sentence": "We need to [prepare] for the storm.",
+      "options": [
+       "to get ready for something",
+       "to hide away from something",
+       "to write a report on something",
+       "to worry about something"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-remove",
+      "word": "remove",
+      "pos": "verb",
+      "sentence": "Please [remove] your shoes at the door.",
+      "options": [
+       "to take something off or away",
+       "to clean something carefully",
+       "to put something in its place",
+       "to check something closely"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g6",
+    "name": "Grade 6",
+    "items": [
+     {
+      "id": "av-withdraw",
+      "word": "withdraw",
+      "pos": "verb",
+      "sentence": "Two players decided to [withdraw] from the tournament.",
+      "options": [
+       "to pull out of something",
+       "to sign up for something",
+       "to win something easily",
+       "to complain about something"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-permanent",
+      "word": "permanent",
+      "pos": "adjective",
+      "sentence": "The change to the schedule is [permanent].",
+      "options": [
+       "meant to last for good",
+       "meant to last a short time",
+       "still waiting to be decided",
+       "made without asking anyone"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-refuse",
+      "word": "refuse",
+      "pos": "verb",
+      "sentence": "The bank may [refuse] the loan.",
+      "options": [
+       "to say no to something",
+       "to make small changes to it",
+       "to speed something up",
+       "to offer something again"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-previous",
+      "word": "previous",
+      "pos": "adjective",
+      "sentence": "The [previous] owner left the shed full of tools.",
+      "options": [
+       "coming before this one",
+       "coming after this one",
+       "the most important one",
+       "the only one there is"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-efficiency",
+      "word": "efficiency",
+      "pos": "noun",
+      "sentence": "The new machines improved the factory's [efficiency].",
+      "options": [
+       "getting work done with little waste",
+       "the safety of the people at work",
+       "the look and feel of a building",
+       "the number of people who work there"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-negotiation",
+      "word": "negotiation",
+      "pos": "noun",
+      "sentence": "The [negotiation] lasted most of the afternoon.",
+      "options": [
+       "talks to reach a deal",
+       "a test of a new product",
+       "a speech given to a crowd",
+       "a meeting to say goodbye"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-guarantee",
+      "word": "guarantee",
+      "pos": "noun",
+      "sentence": "The store offers a two-year [guarantee].",
+      "options": [
+       "a promise that it will work",
+       "a lower price for paying early",
+       "an extra charge for delivery",
+       "a written list of store rules"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-transform",
+      "word": "transform",
+      "pos": "verb",
+      "sentence": "The new park [transformed] the neighborhood.",
+      "options": [
+       "to change completely",
+       "to divide into parts",
+       "to make more crowded",
+       "to give a new name to"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-detect",
+      "word": "detect",
+      "pos": "verb",
+      "sentence": "The sensor can [detect] smoke.",
+      "options": [
+       "to notice or discover",
+       "to block or keep out",
+       "to clean or remove",
+       "to create or give off"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-illustrate",
+      "word": "illustrate",
+      "pos": "verb",
+      "sentence": "The chart [illustrates] how sales changed.",
+      "options": [
+       "to show or explain",
+       "to hide or cover up",
+       "to predict or guess",
+       "to cause or start"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g8",
+    "name": "Grade 8",
+    "items": [
+     {
+      "id": "av-viable",
+      "word": "viable",
+      "pos": "adjective",
+      "sentence": "The engineers said the plan was not [viable].",
+      "options": [
+       "able to work as planned",
+       "approved by the managers",
+       "written down in detail",
+       "too costly to pay for"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-predecessor",
+      "word": "predecessor",
+      "pos": "noun",
+      "sentence": "Her [predecessor] had run the department for ten years.",
+      "options": [
+       "the person who held the job before",
+       "the person who will hold the job next",
+       "the person who hired her for the job",
+       "the person who works under her"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-subsidy",
+      "word": "subsidy",
+      "pos": "noun",
+      "sentence": "Farmers receive a [subsidy] to grow certain crops.",
+      "options": [
+       "government money given to help",
+       "a tax that must be paid each year",
+       "a rule that limits how much is grown",
+       "a loan that must be paid back"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-concede",
+      "word": "concede",
+      "pos": "verb",
+      "sentence": "The senator [conceded] the election late on Tuesday night.",
+      "options": [
+       "to admit that you lost",
+       "to announce that you won",
+       "to demand a second count",
+       "to ask for a short delay"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-imminent",
+      "word": "imminent",
+      "pos": "adjective",
+      "sentence": "Forecasters said a storm was [imminent].",
+      "options": [
+       "about to happen soon",
+       "likely to be very weak",
+       "already over and gone",
+       "impossible to predict"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-elusive",
+      "word": "elusive",
+      "pos": "adjective",
+      "sentence": "A cure for the common cold has remained [elusive].",
+      "options": [
+       "hard to find or reach",
+       "easy to buy in stores",
+       "too expensive for most",
+       "widely known and used"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-uphold",
+      "word": "uphold",
+      "pos": "verb",
+      "sentence": "The court [upheld] the earlier ruling.",
+      "options": [
+       "to keep or support something",
+       "to cancel or overturn something",
+       "to delay a decision on something",
+       "to review something a second time"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-embargo",
+      "word": "embargo",
+      "pos": "noun",
+      "sentence": "The country placed an [embargo] on oil from its neighbor.",
+      "options": [
+       "an official ban on trade",
+       "a tax on goods from abroad",
+       "a limit on how much is sold",
+       "a reward for selling goods"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-presume",
+      "word": "presume",
+      "pos": "verb",
+      "sentence": "I [presume] you've already eaten.",
+      "options": [
+       "to assume something is true",
+       "to hope that something is true",
+       "to doubt that something is true",
+       "to prove that something is true"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-integral",
+      "word": "integral",
+      "pos": "adjective",
+      "sentence": "Customer service is [integral] to the company's success.",
+      "options": [
+       "necessary and central",
+       "harmful or damaging",
+       "unrelated or separate",
+       "helpful but optional"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g10",
+    "name": "Grade 10",
+    "items": [
+     {
+      "id": "av-stringent",
+      "word": "stringent",
+      "pos": "adjective",
+      "sentence": "The new food safety rules are more [stringent].",
+      "options": [
+       "strict and hard to meet",
+       "confusing and unclear",
+       "relaxed and easy to meet",
+       "short-lived and temporary"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-mitigate",
+      "word": "mitigate",
+      "pos": "verb",
+      "sentence": "The company took steps to [mitigate] the damage.",
+      "options": [
+       "to make less severe",
+       "to measure exactly",
+       "to hide from the public",
+       "to pay for in full"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-adamant",
+      "word": "adamant",
+      "pos": "adjective",
+      "sentence": "He was [adamant] that he had locked the door.",
+      "options": [
+       "completely sure and firm",
+       "a little worried or unsure",
+       "embarrassed and quiet",
+       "angry and loud about it"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-contentious",
+      "word": "contentious",
+      "pos": "adjective",
+      "sentence": "Pay raises became a [contentious] issue at the meeting.",
+      "options": [
+       "likely to cause arguments",
+       "settled before the meeting",
+       "too minor to bother with",
+       "welcomed by nearly everyone"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-erratic",
+      "word": "erratic",
+      "pos": "adjective",
+      "sentence": "The stock's price has been [erratic] all week.",
+      "options": [
+       "changing unpredictably",
+       "rising slowly and steadily",
+       "staying exactly the same",
+       "falling a little each day"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-quantify",
+      "word": "quantify",
+      "pos": "verb",
+      "sentence": "It's hard to [quantify] the value of a good reputation.",
+      "options": [
+       "to put a number on",
+       "to protect from harm",
+       "to describe in words",
+       "to increase over time"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-forfeit",
+      "word": "forfeit",
+      "pos": "verb",
+      "sentence": "The team had to [forfeit] the game.",
+      "options": [
+       "to lose by giving it up",
+       "to replay from the start",
+       "to win by a large score",
+       "to stop for bad weather"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-entrenched",
+      "word": "entrenched",
+      "pos": "adjective",
+      "sentence": "Those habits are deeply [entrenched] in the company.",
+      "options": [
+       "firmly set and hard to change",
+       "newly added and still unclear",
+       "hidden from most employees",
+       "recently banned by managers"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-illicit",
+      "word": "illicit",
+      "pos": "adjective",
+      "sentence": "Investigators traced the [illicit] payments to a shell company.",
+      "options": [
+       "not permitted by law",
+       "made at a low price",
+       "approved by the board",
+       "left behind by mistake"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-rudimentary",
+      "word": "rudimentary",
+      "pos": "adjective",
+      "sentence": "He has a [rudimentary] knowledge of Spanish.",
+      "options": [
+       "basic and simple",
+       "expert and complete",
+       "recently gained",
+       "learned on his own"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g12",
+    "name": "Grade 12",
+    "items": [
+     {
+      "id": "av-unwarranted",
+      "word": "unwarranted",
+      "pos": "adjective",
+      "sentence": "Critics called the price increase [unwarranted].",
+      "options": [
+       "without a good reason",
+       "long expected by buyers",
+       "carefully planned ahead",
+       "small and barely noticed"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-expediency",
+      "word": "expediency",
+      "pos": "noun",
+      "sentence": "The decision was made out of [expediency], not principle.",
+      "options": [
+       "doing what is quick and useful",
+       "a deep respect for old traditions",
+       "fear of being punished later",
+       "careful study of the facts"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-quandary",
+      "word": "quandary",
+      "pos": "noun",
+      "sentence": "The layoffs put the manager in a [quandary].",
+      "options": [
+       "uncertainty about what to do",
+       "a position of much greater power",
+       "a long period of deep sadness",
+       "a situation of real danger"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-complacent",
+      "word": "complacent",
+      "pos": "adjective",
+      "sentence": "After years of strong sales, the company became [complacent].",
+      "options": [
+       "too satisfied to see risks",
+       "eager to expand quickly",
+       "careful with its spending",
+       "divided by internal fights"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-impunity",
+      "word": "impunity",
+      "pos": "noun",
+      "sentence": "The officials acted with [impunity].",
+      "options": [
+       "without fear of punishment",
+       "with great care and skill",
+       "with the public's support",
+       "without enough information"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-supersede",
+      "word": "supersede",
+      "pos": "verb",
+      "sentence": "The new policy [supersedes] the old one.",
+      "options": [
+       "to take the place of",
+       "to be modeled closely on",
+       "to copy several parts of",
+       "to work together with"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-frugal",
+      "word": "frugal",
+      "pos": "adjective",
+      "sentence": "My grandmother was [frugal] all her life.",
+      "options": [
+       "careful not to spend much",
+       "generous with her money",
+       "often worried about health",
+       "very strict with rules"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-acquiesce",
+      "word": "acquiesce",
+      "pos": "verb",
+      "sentence": "The board eventually [acquiesced] to the proposal.",
+      "options": [
+       "to accept without protest",
+       "to argue strongly against",
+       "to delay making a choice",
+       "to rewrite it from scratch"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-pernicious",
+      "word": "pernicious",
+      "pos": "adjective",
+      "sentence": "Gossip had a [pernicious] effect on the team.",
+      "options": [
+       "harmful in a gradual way",
+       "noticeable but harmless",
+       "funny and lighthearted",
+       "positive but short-lived"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-flout",
+      "word": "flout",
+      "pos": "verb",
+      "sentence": "Some drivers [flout] the speed limit.",
+      "options": [
+       "to openly ignore",
+       "to strongly support",
+       "to be unaware of",
+       "to ask to change"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "col",
+    "name": "College",
+    "items": [
+     {
+      "id": "av-remuneration",
+      "word": "remuneration",
+      "pos": "noun",
+      "sentence": "The job offers generous [remuneration].",
+      "options": [
+       "payment for work done",
+       "time off from work",
+       "training on the job",
+       "chances for promotion"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-abrogate",
+      "word": "abrogate",
+      "pos": "verb",
+      "sentence": "The new government [abrogated] the treaty.",
+      "options": [
+       "to formally end or cancel",
+       "to sign and formally approve",
+       "to publish for everyone",
+       "to renew for more years"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-capitulation",
+      "word": "capitulation",
+      "pos": "noun",
+      "sentence": "The strike ended in the union's [capitulation].",
+      "options": [
+       "giving in completely",
+       "a clear and total victory",
+       "a fair compromise for both",
+       "a long pause in the talks"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-abstention",
+      "word": "abstention",
+      "pos": "noun",
+      "sentence": "The final count was six votes for, four against and two [abstentions].",
+      "options": [
+       "choosing not to cast a vote",
+       "votes counted twice by mistake",
+       "votes cast early by mail",
+       "votes thrown out as invalid"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-ostracism",
+      "word": "ostracism",
+      "pos": "noun",
+      "sentence": "After the scandal, he faced [ostracism] from his colleagues.",
+      "options": [
+       "being shut out by a group",
+       "praise for being so honest",
+       "pressure to quit his position",
+       "demands for a public apology"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-propound",
+      "word": "propound",
+      "pos": "verb",
+      "sentence": "The economist [propounded] a new theory of inflation.",
+      "options": [
+       "to offer for consideration",
+       "to prove completely wrong",
+       "to borrow from someone else",
+       "to explain in plain terms"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-panoply",
+      "word": "panoply",
+      "pos": "noun",
+      "sentence": "The store carries a [panoply] of kitchen gadgets.",
+      "options": [
+       "a wide, impressive range",
+       "a small, careful selection",
+       "a cheap, low-quality supply",
+       "a new and untested line"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-depredation",
+      "word": "depredation",
+      "pos": "noun",
+      "sentence": "The region still shows the effects of years of [depredation].",
+      "options": [
+       "plundering and destruction",
+       "poor weather and long drought",
+       "rapid growth and building",
+       "neglect and lack of money"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-aver",
+      "word": "aver",
+      "pos": "verb",
+      "sentence": "The witness [averred] that she had seen the car.",
+      "options": [
+       "to state firmly",
+       "to doubt openly",
+       "to deny strongly",
+       "to guess wildly"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-subjugate",
+      "word": "subjugate",
+      "pos": "verb",
+      "sentence": "The empire [subjugated] the surrounding kingdoms.",
+      "options": [
+       "to bring under control by force",
+       "to trade goods with regularly",
+       "to form friendly ties with",
+       "to send messengers and gifts to"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "pro",
+    "name": "Professional",
+    "items": [
+     {
+      "id": "av-fiduciary",
+      "word": "fiduciary",
+      "pos": "adjective",
+      "sentence": "Board members have a [fiduciary] duty to shareholders.",
+      "options": [
+       "of trust, acting in another's interest",
+       "required by law to report every year",
+       "limited to approving the yearly budget",
+       "based on owning a large share of stock"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-malfeasance",
+      "word": "malfeasance",
+      "pos": "noun",
+      "sentence": "An audit uncovered [malfeasance] by two senior officials.",
+      "options": [
+       "wrongdoing by someone in power",
+       "careless errors in record keeping",
+       "a failure to meet sales goals",
+       "secret plans to buy a rival"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-sinecure",
+      "word": "sinecure",
+      "pos": "noun",
+      "sentence": "Critics said the advisory role was a [sinecure].",
+      "options": [
+       "a paid job needing little work",
+       "an unpaid job with long hours",
+       "a short-term job with high risk",
+       "a job given as a punishment"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-obfuscate",
+      "word": "obfuscate",
+      "pos": "verb",
+      "sentence": "The report seemed designed to [obfuscate] the losses.",
+      "options": [
+       "to make unclear on purpose",
+       "to report in full detail",
+       "to spread across years",
+       "to reduce by cutting costs"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-perfunctory",
+      "word": "perfunctory",
+      "pos": "adjective",
+      "sentence": "She gave the contract a [perfunctory] review before signing.",
+      "options": [
+       "quick and done without care",
+       "slow and extremely thorough",
+       "official and legally required",
+       "shared with the whole team"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-abeyance",
+      "word": "abeyance",
+      "pos": "noun",
+      "sentence": "The project is in [abeyance] until funding is approved.",
+      "options": [
+       "temporarily on hold",
+       "under close review",
+       "finished ahead of time",
+       "open for public comment"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-fungible",
+      "word": "fungible",
+      "pos": "adjective",
+      "sentence": "Traders treat the commodity as [fungible].",
+      "options": [
+       "swappable for any other unit",
+       "likely to lose value quickly",
+       "hard to store or ship safely",
+       "controlled by a few sellers"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-pecuniary",
+      "word": "pecuniary",
+      "pos": "adjective",
+      "sentence": "The dispute was purely [pecuniary].",
+      "options": [
+       "relating to money",
+       "relating to land",
+       "relating to family",
+       "relating to pride"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-obsequious",
+      "word": "obsequious",
+      "pos": "adjective",
+      "sentence": "The new assistant was [obsequious] with every client.",
+      "options": [
+       "too eager to please",
+       "rude and impatient",
+       "new and very nervous",
+       "tired and careless"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "av-indemnify",
+      "word": "indemnify",
+      "pos": "verb",
+      "sentence": "The contract [indemnifies] the contractor against lawsuits.",
+      "options": [
+       "to protect from loss or blame",
+       "to leave open to legal risk",
+       "to forbid from taking part",
+       "to require payment in advance"
+      ],
+      "answer": 0
+     }
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "id": "av-misallocate",
+    "word": "misallocate",
+    "pos": "verb",
+    "sentence": "Auditors found the city had [misallocated] the grant money.",
+    "options": [
+     "assigned to the wrong use",
+     "spent faster than planned",
+     "given back to the donor",
+     "divided evenly among groups"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-disincentive",
+    "word": "disincentive",
+    "pos": "noun",
+    "sentence": "High fees are a [disincentive] to saving.",
+    "options": [
+     "something that puts people off",
+     "something that rewards people",
+     "something that forces people",
+     "something that slows people down"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-irreplaceable",
+    "word": "irreplaceable",
+    "pos": "adjective",
+    "sentence": "Her experience with the system is [irreplaceable].",
+    "options": [
+     "impossible to replace",
+     "easy to find elsewhere",
+     "gained only very recently",
+     "no longer needed here"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-predetermine",
+    "word": "predetermine",
+    "pos": "verb",
+    "sentence": "The outcome seemed [predetermined].",
+    "options": [
+     "decided in advance",
+     "decided by a vote",
+     "impossible to decide",
+     "decided again later"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-reinvest",
+    "word": "reinvest",
+    "pos": "verb",
+    "sentence": "The company [reinvests] most of its profits.",
+    "options": [
+     "puts back into the business",
+     "pays out to all of its owners",
+     "saves in a bank account",
+     "gives to local charities"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-unquantifiable",
+    "word": "unquantifiable",
+    "pos": "adjective",
+    "sentence": "The benefits of the program are [unquantifiable].",
+    "options": [
+     "impossible to measure",
+     "too small to be noticed",
+     "easy to put into words",
+     "felt by most people"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-mistranslate",
+    "word": "mistranslate",
+    "pos": "verb",
+    "sentence": "The ad's slogan was [mistranslated] for the overseas market.",
+    "options": [
+     "translated incorrectly",
+     "translated word for word",
+     "left in the original",
+     "shortened to save space"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "av-disproportionate",
+    "word": "disproportionate",
+    "pos": "adjective",
+    "sentence": "Small businesses pay a [disproportionate] share of the cost.",
+    "options": [
+     "too large compared with others",
+     "exactly equal to everyone else's",
+     "smaller than anyone expected",
+     "decided by random drawing"
+    ],
+    "answer": 0
+   }
+  ]
+ },
+ "reading": {
+  "levels": [
+   {
+    "id": "g6",
+    "name": "Grade 6",
+    "passages": [
+     {
+      "id": "ar-g6-a",
+      "title": "The Bakery That Went Online",
+      "topic": "business",
+      "paragraphs": [
+       "For twenty years, Rosa's Bakery sold bread the same way: customers walked in, pointed at a loaf, and paid at the counter. Then the road outside the shop closed for repairs, and for six months almost no one could reach it.",
+       "Rosa's daughter, Lina, had an idea. She built a simple website where people could order bread the night before, and each morning she delivered the orders to customers' homes in the family van.",
+       "At first, only a few people used it, and Rosa worried that the plan would fail. But Lina posted photos of fresh bread on the bakery's page every day, and slowly the orders grew. Some customers liked knowing their bread was saved for them, while others liked not having to wait in line.",
+       "Something else changed, too. Because people ordered ahead, Rosa knew exactly how many loaves to bake. Before, she often threw away a third of her bread at the end of the day; now she threw away almost none.",
+       "When the road finally reopened, Rosa expected everything to go back to normal, but it didn't. Half of her customers kept ordering online. Rosa still loves chatting with people at the counter, but she admits the website taught her something important. Sometimes a problem pushes you to discover a better way."
+      ],
+      "questions": [
+       {
+        "id": "ar-g6-a-detail",
+        "skill": "detail",
+        "stem": "Before the website, about how much bread did Rosa throw away at the end of the day?",
+        "options": [
+         "About a third of it",
+         "Close to half of it",
+         "Almost none of it",
+         "Only a few loaves"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: she often threw away a third of her bread."
+       },
+       {
+        "id": "ar-g6-a-vocab",
+        "skill": "vocab",
+        "stem": "In the last paragraph, what does admits mean?",
+        "options": [
+         "agrees that it is true",
+         "worries that it is true",
+         "pretends it is not true",
+         "forgets that it is true"
+        ],
+        "answer": 0,
+        "why": "Rosa agrees, maybe a little reluctantly, that the website taught her something."
+       },
+       {
+        "id": "ar-g6-a-inference",
+        "skill": "inference",
+        "stem": "Why did half of the customers keep ordering online after the road opened?",
+        "options": [
+         "They found it easier than coming in",
+         "The counter was often closed early",
+         "The bread online cost less money",
+         "Lina gave them free delivery coupons"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3 gives the reasons: bread saved for them and no line. Nothing says the price was lower."
+       },
+       {
+        "id": "ar-g6-a-main",
+        "skill": "main",
+        "stem": "What is the main idea of the passage?",
+        "options": [
+         "A problem led the bakery to a better way of selling.",
+         "Road repairs can ruin a small business for good.",
+         "Selling bread online costs more than selling in a shop.",
+         "Lina wanted to take over her mother's bakery soon."
+        ],
+        "answer": 0,
+        "why": "The closed road pushed the bakery online, and the new way worked better."
+       },
+       {
+        "id": "ar-g6-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author mention the photos Lina posted?",
+        "options": [
+         "To show how the orders slowly grew",
+         "To explain why the road was closed",
+         "To show that Rosa took the photos",
+         "To prove it was the best bread in town"
+        ],
+        "answer": 0,
+        "why": "The photos come right before \"slowly the orders grew.\""
+       }
+      ]
+     },
+     {
+      "id": "ar-g6-b",
+      "title": "Hiding in Plain Sight",
+      "topic": "science",
+      "paragraphs": [
+       "An octopus has no shell and no sharp teeth to protect it, and its soft body makes an easy meal for many hungry animals. So how does it survive? It hides in plain sight.",
+       "An octopus can change the color of its skin in less than a second. Its skin contains thousands of tiny sacs filled with color, and muscles surrounding each sac can stretch it open to display the color or squeeze it shut to hide it. By opening some sacs and closing others, an octopus can create spots, stripes, or a plain dark brown.",
+       "Color is only part of the trick, because an octopus can also raise small bumps on its skin. When it settles on a rock, the bumps make its skin look rough, exactly like the rock itself, so a fish swimming past may notice nothing but stone.",
+       "One question still puzzles scientists. Most octopuses seem to see the world without much color, yet they match their surroundings remarkably well. Some researchers think their skin may sense light directly, while others believe octopuses match patterns and brightness rather than exact colors. No one knows for sure yet."
+      ],
+      "questions": [
+       {
+        "id": "ar-g6-b-detail",
+        "skill": "detail",
+        "stem": "What makes an octopus's skin look rough like a rock?",
+        "options": [
+         "Bumps it raises on its skin",
+         "Sand that sticks to its body",
+         "Dark spots that cover its arms",
+         "Tiny sacs that fill with color"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: it raises small bumps that make its skin look rough."
+       },
+       {
+        "id": "ar-g6-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 1, what does survive mean?",
+        "options": [
+         "stay alive",
+         "grow bigger",
+         "find dinner",
+         "swim quickly"
+        ],
+        "answer": 0,
+        "why": "The question is how a soft animal with no shell stays alive."
+       },
+       {
+        "id": "ar-g6-b-inference",
+        "skill": "inference",
+        "stem": "Why might a fish swim right past an octopus?",
+        "options": [
+         "It can't tell it apart from the rock",
+         "It is afraid of the octopus's teeth",
+         "It only ever hunts for food at night",
+         "The octopus is much too large to eat"
+        ],
+        "answer": 0,
+        "why": "The octopus looks like stone. The passage says it has no sharp teeth."
+       },
+       {
+        "id": "ar-g6-b-main",
+        "skill": "main",
+        "stem": "What is the passage mostly about?",
+        "options": [
+         "How an octopus hides by changing its skin",
+         "Why octopuses see the world without color",
+         "Which animals hunt octopuses in the sea",
+         "How scientists study animals in the ocean"
+        ],
+        "answer": 0,
+        "why": "Every paragraph is about how the octopus hides. Color vision is one puzzle at the end."
+       },
+       {
+        "id": "ar-g6-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author end with what scientists don't know?",
+        "options": [
+         "To show a mystery is still unsolved",
+         "To prove that octopuses can see color",
+         "To argue that scientists made a mistake",
+         "To explain how the color sacs work"
+        ],
+        "answer": 0,
+        "why": "The last paragraph presents an open question: no one knows for sure yet."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "g8",
+    "name": "Grade 8",
+    "passages": [
+     {
+      "id": "ar-g8-a",
+      "title": "Four Days a Week",
+      "topic": "business",
+      "paragraphs": [
+       "When Harbor Tools announced that it would experiment with a four-day workweek, many employees assumed there was a catch. Would they have to work ten-hour days? Would their pay be reduced? The answer to both questions was no: for six months, the company's 140 workers would work four eight-hour days and keep their full salaries.",
+       "The company's leaders had a practical reason for the experiment. Hiring had become increasingly difficult, and experienced workers kept leaving for competitors. A shorter week, they hoped, would make Harbor Tools a place where people wanted to stay.",
+       "To make the plan work, every team had to identify wasted time. Meetings were shortened from an hour to thirty minutes, and workers stopped copying the entire office on routine emails. One team discovered that it spent most of every Monday morning fixing problems that a simple checklist could prevent.",
+       "The results surprised even the skeptics. Output remained about the same, fewer people quit, and sick days dropped by nearly a third.",
+       "Not everyone was satisfied, however. The customer service team struggled, because customers still expected help five days a week. The company eventually divided that team into two groups with different days off, so the phones were always covered. The managers acknowledged that the schedule worked better for some jobs than for others.",
+       "At the end of the trial, Harbor Tools voted to keep the four-day week. It also kept the checklist, the shorter meetings, and the smaller email lists, changes that some employees say mattered almost as much as the extra day off."
+      ],
+      "questions": [
+       {
+        "id": "ar-g8-a-detail",
+        "skill": "detail",
+        "stem": "How did the company keep the phones covered?",
+        "options": [
+         "It split the team into two groups",
+         "It hired workers just for Fridays",
+         "It sent calls to another company",
+         "It let some calls go to voicemail"
+        ],
+        "answer": 0,
+        "why": "Paragraph 5: it split the customer service team into two groups."
+       },
+       {
+        "id": "ar-g8-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does skeptics mean?",
+        "options": [
+         "people who doubted the plan",
+         "people who designed the plan",
+         "people who were paid more",
+         "people who left the company"
+        ],
+        "answer": 0,
+        "why": "Paragraph 1 describes workers who assumed there was a catch. The results surprised the doubters."
+       },
+       {
+        "id": "ar-g8-a-inference",
+        "skill": "inference",
+        "stem": "Why did the managers likely care that fewer people quit?",
+        "options": [
+         "Keeping workers was the trial's goal",
+         "They planned to cut every worker's pay",
+         "Workers who quit had taken company tools",
+         "Fewer workers meant fewer long meetings"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: good workers kept leaving, and the shorter week was meant to make them stay."
+       },
+       {
+        "id": "ar-g8-a-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "A four-day week worked, partly because it made teams cut wasted time.",
+         "A four-day week failed because customers still called five days a week.",
+         "Harbor Tools cut its workers' hours and their pay for six months.",
+         "Most workers prefer ten-hour days to a standard five-day week."
+        ],
+        "answer": 0,
+        "why": "The trial succeeded, and the last paragraph credits the time-saving changes too."
+       },
+       {
+        "id": "ar-g8-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author include the paragraph about customer service?",
+        "options": [
+         "To show that the plan also had downsides",
+         "To explain why the trial was ended early",
+         "To prove that customers disliked the change",
+         "To describe how the trial was first planned"
+        ],
+        "answer": 0,
+        "why": "It starts \"Not everyone was happy\" and shows a problem the company had to solve."
+       }
+      ]
+     },
+     {
+      "id": "ar-g8-b",
+      "title": "Clinton's Ditch",
+      "topic": "history",
+      "paragraphs": [
+       "In 1817, New York began digging a canal across the entire state, from the Hudson River at Albany to Lake Erie at Buffalo. Many people considered the idea foolish. The canal would stretch 363 miles through forests and swamps, and it would have to climb hills that boats could not float up on their own. Critics mockingly called it \"Clinton's Ditch,\" after the governor who championed it.",
+       "Workers dug most of the canal by hand, using shovels, horses, and simple machines designed for pulling up tree stumps. To carry boats over the hills, engineers built locks, which are chambers that fill with water to raise a boat or drain to lower it.",
+       "When the canal opened in 1825, it transformed the country's economy almost overnight. Before, moving a ton of goods from Buffalo to New York City by wagon cost about $100 and took weeks; by canal, it cost about $10 and took days. Farmers in the Midwest could now sell their grain in eastern cities, and factories in the East could ship tools and cloth to the growing West.",
+       "New York City benefited most of all. Goods from the entire Great Lakes region now flowed through its harbor, and it soon became the busiest port in the nation. Towns along the canal, such as Rochester and Syracuse, also grew rapidly.",
+       "The \"ditch\" that critics had ridiculed turned out to be one of the most successful public projects of its era."
+      ],
+      "questions": [
+       {
+        "id": "ar-g8-b-detail",
+        "skill": "detail",
+        "stem": "What did the locks do?",
+        "options": [
+         "Raised and lowered boats over hills",
+         "Kept water from leaking into swamps",
+         "Stopped boats from passing at night",
+         "Pulled tree stumps out of the ground"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: locks fill or drain to raise or lower a boat."
+       },
+       {
+        "id": "ar-g8-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 1, what does critics mean?",
+        "options": [
+         "people who found fault with it",
+         "people who paid to build it",
+         "people who worked on the canal",
+         "people who lived near the route"
+        ],
+        "answer": 0,
+        "why": "They called the plan foolish and mocked it as a ditch."
+       },
+       {
+        "id": "ar-g8-b-inference",
+        "skill": "inference",
+        "stem": "Why did the canal help farmers in the Midwest?",
+        "options": [
+         "Shipping grain east got far cheaper",
+         "The canal watered their dry fields",
+         "Eastern cities paid them to move east",
+         "The canal let them stop growing grain"
+        ],
+        "answer": 0,
+        "why": "Moving a ton of goods dropped from about $100 to about $10."
+       },
+       {
+        "id": "ar-g8-b-main",
+        "skill": "main",
+        "stem": "What is the main idea of the passage?",
+        "options": [
+         "A canal many doubted changed trade in America.",
+         "Building canals by hand was dangerous and slow work.",
+         "Governor Clinton was disliked by most New Yorkers.",
+         "Rochester and Syracuse were founded as canal towns."
+        ],
+        "answer": 0,
+        "why": "It goes from doubts, to building, to a big change in trade."
+       },
+       {
+        "id": "ar-g8-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author compare the cost of shipping by wagon and by canal?",
+        "options": [
+         "To show how much the canal lowered costs",
+         "To explain why the canal took years to build",
+         "To show that wagons were faster than boats",
+         "To argue that the canal cost too much"
+        ],
+        "answer": 0,
+        "why": "The numbers show the cost falling to a tenth."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "g10",
+    "name": "Grade 10",
+    "passages": [
+     {
+      "id": "ar-g10-a",
+      "title": "The Empty Seat Problem",
+      "topic": "business",
+      "paragraphs": [
+       "Airlines routinely sell more tickets than there are seats on a plane. To many travelers, this practice seems unfair, even dishonest. Yet from the airline's point of view, overbooking is a calculated response to a predictable problem: on almost every flight, some passengers who bought tickets never show up.",
+       "An empty seat on a departing plane is lost revenue that can never be recovered. Unlike a sweater in a store, a seat cannot be sold tomorrow. If an airline knows from years of data that roughly one in twenty passengers on a certain route misses the flight, it can sell a few extra tickets and expect the plane to leave full.",
+       "The strategy depends on accurate forecasts. Business travelers on Monday morning flights rarely miss them, while travelers on holiday routes may change plans more often. Airlines therefore adjust how many extra seats they sell for each route, day, and season.",
+       "When the forecast is wrong and too many passengers arrive, the airline must find volunteers to give up their seats, usually by offering travel vouchers or cash. If no one volunteers, some passengers can be bumped against their will, and regulations require the airline to compensate them.",
+       "For the airline, these payments are a cost of doing business, one that is usually smaller than the revenue lost by flying with empty seats. For the stranded traveler, the math offers little comfort."
+      ],
+      "questions": [
+       {
+        "id": "ar-g10-a-detail",
+        "skill": "detail",
+        "stem": "According to the passage, why do airlines change how many extra tickets they sell?",
+        "options": [
+         "No-show rates differ by route and season",
+         "Regulations limit sales on some routes",
+         "Business travelers pay higher fares",
+         "Holiday flights tend to use larger planes"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: they adjust by route, day and season because no-show rates differ."
+       },
+       {
+        "id": "ar-g10-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 2, what does revenue mean?",
+        "options": [
+         "income from sales",
+         "money spent on fuel",
+         "number of passengers",
+         "time spent waiting"
+        ],
+        "answer": 0,
+        "why": "An unsold seat is money the airline never earns."
+       },
+       {
+        "id": "ar-g10-a-inference",
+        "skill": "inference",
+        "stem": "Which flight would an airline probably overbook the least?",
+        "options": [
+         "A Monday morning business flight",
+         "A flight during a holiday week",
+         "A route with frequent no-shows",
+         "A flight with cheap flexible fares"
+        ],
+        "answer": 0,
+        "why": "Business travelers on Monday mornings rarely miss flights, so fewer extra tickets are needed."
+       },
+       {
+        "id": "ar-g10-a-main",
+        "skill": "main",
+        "stem": "What is the main idea of the passage?",
+        "options": [
+         "Overbooking is a planned bet that some passengers won't show.",
+         "Airlines overbook because their planes are too small for demand.",
+         "Most passengers who are bumped receive no compensation at all.",
+         "Business travelers cause most of the problems with overbooking."
+        ],
+        "answer": 0,
+        "why": "The passage explains overbooking as a calculated response to predictable no-shows."
+       },
+       {
+        "id": "ar-g10-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author compare a plane seat to a sweater in a store?",
+        "options": [
+         "To show that an unsold seat's value is lost",
+         "To show that seats cost more than clothing",
+         "To suggest airlines should lower their fares",
+         "To explain how stores also overbook items"
+        ],
+        "answer": 0,
+        "why": "A sweater can be sold tomorrow; a seat on a flight that has left cannot."
+       }
+      ]
+     },
+     {
+      "id": "ar-g10-b",
+      "title": "Islands of Heat",
+      "topic": "science",
+      "paragraphs": [
+       "On a summer evening, a city can be several degrees warmer than the farmland surrounding it. Scientists call this phenomenon an urban heat island, and it is caused largely by the materials and design of cities themselves.",
+       "Most urban surfaces are dark and hard. Asphalt streets and tar roofs absorb sunlight throughout the day and store it as heat; after sunset, they gradually release that heat back into the air, which is why the temperature difference between city and countryside is often greatest at night. Concrete and brick behave in a similar way.",
+       "Cities also lack something the countryside has in abundance: vegetation. Trees provide shade, and their leaves release water vapor, which cools the surrounding air much as evaporating sweat cools skin. When fields and forests are replaced by parking lots and buildings, both forms of cooling disappear, while cars, factories, and air conditioners contribute additional heat of their own.",
+       "The consequences extend well beyond discomfort. Warmer nights make it harder for people to recover from hot days, which is particularly dangerous for older adults and anyone without air conditioning. Higher temperatures also increase electricity consumption, as buildings run their cooling systems longer.",
+       "Some cities are responding. They are painting roofs white so that they reflect sunlight instead of absorbing it, planting trees along streets, and covering rooftops with gardens. Each change is modest on its own, but across thousands of buildings, the combined effect can be measurable."
+      ],
+      "questions": [
+       {
+        "id": "ar-g10-b-detail",
+        "skill": "detail",
+        "stem": "According to the passage, when is the difference between city and countryside often greatest?",
+        "options": [
+         "At night, after sunset",
+         "At noon, in full sun",
+         "In the early springtime",
+         "During heavy rainstorms"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: stored heat is released after sunset, so the gap is often greatest at night."
+       },
+       {
+        "id": "ar-g10-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 3, what does abundance mean?",
+        "options": [
+         "a large supply",
+         "a short time",
+         "a hidden place",
+         "a careful plan"
+        ],
+        "answer": 0,
+        "why": "The countryside has plenty of plants; cities lack them."
+       },
+       {
+        "id": "ar-g10-b-inference",
+        "skill": "inference",
+        "stem": "Based on the passage, a neighborhood that loses most of its trees would probably",
+        "options": [
+         "get warmer, mostly at night",
+         "use less electricity in summer",
+         "get more rain than it did before",
+         "cool down faster after sunset"
+        ],
+        "answer": 0,
+        "why": "Losing trees removes shade and cooling from leaves, and the passage says heat builds most at night."
+       },
+       {
+        "id": "ar-g10-b-main",
+        "skill": "main",
+        "stem": "What is the main idea of the passage?",
+        "options": [
+         "Cities run hot because of how they're built, but this can be eased.",
+         "Air conditioners are the main reason cities are hotter than farmland.",
+         "Rural areas are growing hotter faster than cities in most regions.",
+         "White roofs have solved the problem of heat in most large cities."
+        ],
+        "answer": 0,
+        "why": "It explains the causes, the harms, and then the fixes."
+       },
+       {
+        "id": "ar-g10-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author compare leaves to sweat?",
+        "options": [
+         "To explain how plants cool the air",
+         "To show that trees need lots of water",
+         "To suggest that heat harms people",
+         "To describe how plants absorb heat"
+        ],
+        "answer": 0,
+        "why": "Both release water that cools what's around them."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "g12",
+    "name": "Grade 12",
+    "passages": [
+     {
+      "id": "ar-g12-a",
+      "title": "Buying Back the Company",
+      "topic": "business",
+      "paragraphs": [
+       "When a company earns more cash than it needs to run its operations, it faces a choice: it can invest in new factories or research, pay its shareholders a dividend, or repurchase some of its own stock. Over the past several decades, buybacks have become an increasingly popular option among large American corporations, and an increasingly controversial one.",
+       "The mechanics are straightforward. When a company repurchases its shares, fewer shares remain in the hands of investors. Because the company's profits are now divided among fewer shares, each remaining share represents a larger slice of earnings. Earnings per share, a figure that analysts watch closely, therefore rises, even if total profits have not changed at all.",
+       "Supporters argue that buybacks are simply an efficient way to return money to a company's owners. Unlike dividends, which investors come to expect year after year and which companies are therefore reluctant to cut, buybacks can be scaled up or down without alarming the market. A buyback can also signal that executives believe their company's shares are undervalued, since they are willing to spend corporate cash to acquire them.",
+       "Critics see a less flattering picture. Cash spent on buybacks is cash not spent on wages, equipment, or research that might strengthen the company over the long term. They also point out that many executives are paid partly in stock, or rewarded for hitting earnings-per-share targets, which gives them a personal incentive to favor buybacks.",
+       "Neither side disputes the arithmetic. The disagreement is about priorities: whether a company's spare cash belongs to its current owners or should be invested in its future."
+      ],
+      "questions": [
+       {
+        "id": "ar-g12-a-detail",
+        "skill": "detail",
+        "stem": "According to the passage, why can buybacks be scaled back more easily than dividends?",
+        "options": [
+         "Investors don't count on them yearly",
+         "Buybacks are not reported to analysts",
+         "Dividends are set by government rules",
+         "Shareholders vote on each buyback"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: investors come to expect dividends year after year, but not buybacks."
+       },
+       {
+        "id": "ar-g12-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does flattering mean?",
+        "options": [
+         "positive",
+         "accurate",
+         "detailed",
+         "familiar"
+        ],
+        "answer": 0,
+        "why": "Critics see a less positive picture than supporters do."
+       },
+       {
+        "id": "ar-g12-a-inference",
+        "skill": "inference",
+        "stem": "Why might an executive who is rewarded for hitting earnings-per-share targets favor a buyback?",
+        "options": [
+         "It raises that figure even if profits don't",
+         "It lowers the amount of tax the company owes",
+         "It guarantees that profits will grow next year",
+         "It lets the company raise every worker's wages"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: fewer shares means higher earnings per share, even with the same profit."
+       },
+       {
+        "id": "ar-g12-a-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Buybacks lift per-share earnings, but whether they're wise is disputed.",
+         "Buybacks are banned in most countries because they mislead investors.",
+         "Companies should always pay dividends rather than buy back their stock.",
+         "Executives mostly use buybacks to raise their own salaries each year."
+        ],
+        "answer": 0,
+        "why": "It explains how buybacks work, then lays out both sides without picking one."
+       },
+       {
+        "id": "ar-g12-a-purpose",
+        "skill": "purpose",
+        "stem": "What is the purpose of the final paragraph?",
+        "options": [
+         "To show the debate is about values, not math",
+         "To argue that critics have the stronger case",
+         "To explain how buybacks are calculated",
+         "To predict that buybacks will soon end"
+        ],
+        "answer": 0,
+        "why": "\"Neither side disputes the arithmetic. The disagreement is about priorities.\""
+       }
+      ]
+     },
+     {
+      "id": "ar-g12-b",
+      "title": "Bring Back the Walls",
+      "topic": "work",
+      "paragraphs": [
+       "For roughly two decades, companies have been tearing down office walls in the name of collaboration. The theory was appealing: place people in one large, open room, and ideas would circulate freely between desks. Executives also noticed a less inspiring advantage, which is that open offices are considerably cheaper, because more employees fit into less space.",
+       "That theory deserves reconsideration, because the evidence has not been kind to it. One widely cited study followed employees at two companies as they moved from cubicles into open-plan offices. Rather than talking more, they spoke far less face to face and sent more emails and instant messages instead; surrounded by colleagues, people put on headphones and retreated into their screens.",
+       "None of this should surprise anyone who has attempted to write a careful report while a coworker conducts a sales call six feet away. Concentration is fragile, and each interruption carries a cost, measured not only in the minutes lost but in the time required to return to deep focus afterward.",
+       "Defenders of the open office are right about one thing: casual encounters matter, and a quick question answered at a neighbor's desk can prevent a day of confusion. But the solution is not to force everyone into permanent proximity. It is to offer people a choice, with quiet rooms for focused work and shared spaces for the conversations that genuinely benefit from them.",
+       "Walls, it turns out, were never the obstacle to good teamwork. Constant noise may be."
+      ],
+      "questions": [
+       {
+        "id": "ar-g12-b-detail",
+        "skill": "detail",
+        "stem": "According to the study, what happened after employees moved into open offices?",
+        "options": [
+         "They talked in person less and messaged more",
+         "They talked in person more and messaged less",
+         "They asked to move back into cubicles",
+         "They finished their projects more quickly"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: face-to-face talk fell and emails and messages rose."
+       },
+       {
+        "id": "ar-g12-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does proximity mean?",
+        "options": [
+         "closeness",
+         "silence",
+         "competition",
+         "supervision"
+        ],
+        "answer": 0,
+        "why": "Forcing everyone into permanent closeness, the open room."
+       },
+       {
+        "id": "ar-g12-b-inference",
+        "skill": "inference",
+        "stem": "What would the author most likely recommend for a team writing a long report?",
+        "options": [
+         "A quiet room away from shared spaces",
+         "Desks placed close together for speed",
+         "Headphones handed out to every worker",
+         "More meetings to share their ideas"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: quiet rooms for focused work."
+       },
+       {
+        "id": "ar-g12-b-main",
+        "skill": "main",
+        "stem": "What is the author's main argument?",
+        "options": [
+         "Open offices hurt focus; workers need a choice of spaces.",
+         "Open offices are too expensive for most companies to build.",
+         "Workers should never talk to each other during the workday.",
+         "Cubicles should replace all shared spaces in every office."
+        ],
+        "answer": 0,
+        "why": "The author argues against open offices and for a mix of quiet and shared spaces."
+       },
+       {
+        "id": "ar-g12-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author admit that \"casual encounters matter\"?",
+        "options": [
+         "To grant a fair point before offering a solution",
+         "To show that the study's results were wrong",
+         "To argue that open offices should stay as they are",
+         "To explain why companies first chose cubicles"
+        ],
+        "answer": 0,
+        "why": "The author concedes the other side's point, then proposes giving people a choice."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "col",
+    "name": "College",
+    "passages": [
+     {
+      "id": "ar-col-a",
+      "title": "The Safety Net Problem",
+      "topic": "economics",
+      "paragraphs": [
+       "Economists use the term moral hazard to describe a subtle but pervasive problem: when people are protected from the consequences of a risk, they tend to take more of it. The phrase comes from the insurance industry, where underwriters long ago observed that a policyholder whose property was fully insured had less reason to guard it carefully. A homeowner who will be reimbursed for every loss may be less diligent about checking the wiring or locking the doors.",
+       "The concept extends well beyond insurance: a bank that expects the government to rescue it in a crisis may make riskier loans, reasoning that it will keep the profits if the gamble succeeds and pass the losses to taxpayers if it fails. Critics of the bailouts that followed the 2008 financial crisis invoked precisely this argument, contending that rescuing large institutions rewarded the very recklessness that had caused the crisis.",
+       "Yet moral hazard is easier to identify in theory than to measure in practice. Insured drivers do not, on the whole, appear to drive with conspicuous carelessness; the prospect of injury remains a powerful deterrent regardless of coverage. Moreover, the alternative to protection is not always prudence. Without insurance or emergency support, a single misfortune can ruin a family or a firm, producing harms that may dwarf the costs of the additional risk-taking.",
+       "For this reason, institutions rarely eliminate protection altogether. Instead, they design it to preserve some exposure to loss. Deductibles and co-payments ensure that the insured still bear part of any damage, and regulators may require rescued firms to replace their executives or accept strict conditions. The aim is not to abolish the safety net, but to ensure that those beneath it still have reason to watch their step."
+      ],
+      "questions": [
+       {
+        "id": "ar-col-a-detail",
+        "skill": "detail",
+        "stem": "According to the passage, what is the purpose of a deductible?",
+        "options": [
+         "To keep the insured partly exposed to loss",
+         "To lower the price of an insurance policy",
+         "To reward drivers who have no accidents",
+         "To replace the executives of rescued firms"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: deductibles ensure the insured still bear part of the damage."
+       },
+       {
+        "id": "ar-col-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 1, what does diligent mean?",
+        "options": [
+         "careful and thorough",
+         "honest and fair-minded",
+         "worried and very anxious",
+         "wealthy and very secure"
+        ],
+        "answer": 0,
+        "why": "A fully insured homeowner may be less careful about wiring and locks."
+       },
+       {
+        "id": "ar-col-a-inference",
+        "skill": "inference",
+        "stem": "Which situation best illustrates moral hazard as the passage defines it?",
+        "options": [
+         "A fully insured renter stops locking the door",
+         "A driver slows down after seeing an accident",
+         "A bank raises interest rates to slow its lending",
+         "A family saves money in case of a job loss"
+        ],
+        "answer": 0,
+        "why": "Protection from loss leads to taking more risk."
+       },
+       {
+        "id": "ar-col-a-main",
+        "skill": "main",
+        "stem": "Which sentence best summarizes the passage?",
+        "options": [
+         "Protection can encourage risk, so it's designed to leave some cost.",
+         "Insurance should be abolished because it causes people to act carelessly.",
+         "Bank bailouts in 2008 were the main cause of the financial crisis.",
+         "Moral hazard is easy to measure, so economists agree on how to fix it."
+        ],
+        "answer": 0,
+        "why": "It defines the problem, notes its limits, and ends on how protection is designed."
+       },
+       {
+        "id": "ar-col-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author mention insured drivers in paragraph 3?",
+        "options": [
+         "To show the effect can be weaker than theory says",
+         "To prove that insurance makes roads more dangerous",
+         "To explain how deductibles were first invented",
+         "To argue that drivers should not buy insurance"
+        ],
+        "answer": 0,
+        "why": "Insured drivers don't drive conspicuously carelessly, so the effect is hard to see in practice."
+       }
+      ]
+     },
+     {
+      "id": "ar-col-b",
+      "title": "When the Number Becomes the Goal",
+      "topic": "business",
+      "paragraphs": [
+       "In 1975, the British economist Charles Goodhart observed that any statistic the government relied on to manage the economy tended to lose its reliability once officials began targeting it. His insight, later condensed into the maxim \"when a measure becomes a target, it ceases to be a good measure,\" has since been applied far beyond economics, to schools, hospitals, and nearly every modern organization that runs on metrics.",
+       "The underlying mechanism is straightforward. A measure is useful because it correlates with something we genuinely care about but cannot observe directly. Test scores roughly track learning; the number of calls a support agent closes roughly tracks helpfulness. Once people are rewarded for the number itself, however, they discover ways to raise it that do not improve, and may even undermine, the underlying goal. Teachers drill students on the format of the exam rather than the subject, and support agents hurry callers off the phone in order to close more tickets.",
+       "A frequently repeated story, probably apocryphal, illustrates the point. A factory instructed to maximize the number of nails it produced made millions of tiny, useless ones; when the target was changed to total weight, it produced a few enormous nails instead. The tale endures because it exaggerates something real: those being measured usually understand the measurement better than those who designed it.",
+       "None of this implies that organizations should abandon measurement, which would leave them navigating blind. The more modest lesson is to treat any single number with suspicion, to track several indicators that are difficult to game simultaneously, and to keep looking directly at the work itself. A dashboard is a map of the territory, not the territory."
+      ],
+      "questions": [
+       {
+        "id": "ar-col-b-detail",
+        "skill": "detail",
+        "stem": "According to the passage, why is a measure useful in the first place?",
+        "options": [
+         "It tracks something we can't see directly",
+         "It is simple for outsiders to understand",
+         "It can't be changed once it is recorded",
+         "It lets leaders reward their best workers"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: a measure correlates with something we care about but can't observe directly."
+       },
+       {
+        "id": "ar-col-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 3, what does apocryphal mean?",
+        "options": [
+         "of doubtful truth",
+         "much admired by all",
+         "extremely ancient",
+         "meant to be funny"
+        ],
+        "answer": 0,
+        "why": "The story is repeated often but probably didn't happen."
+       },
+       {
+        "id": "ar-col-b-inference",
+        "skill": "inference",
+        "stem": "Based on the passage, which change would most likely make a support team's numbers harder to game?",
+        "options": [
+         "Tracking both call counts and customer ratings",
+         "Raising the bonus for each ticket an agent closes",
+         "Measuring only the number of calls answered",
+         "Letting agents choose which calls to count"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: track several indicators that are difficult to game at the same time."
+       },
+       {
+        "id": "ar-col-b-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Rewarding a number distorts it; use several and look at the work.",
+         "Organizations should stop using numbers to judge performance altogether.",
+         "Goodhart's law applies to economic statistics but rarely to schools.",
+         "Factories often cheat on targets, so their output can't be measured."
+        ],
+        "answer": 0,
+        "why": "It explains the distortion, then gives the modest lesson. It rejects abandoning measurement."
+       },
+       {
+        "id": "ar-col-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author include the story about the nail factory?",
+        "options": [
+         "To exaggerate a real problem in a memorable way",
+         "To give historical proof that targets always fail",
+         "To show that factories are harder to measure",
+         "To criticize how Goodhart reached his conclusion"
+        ],
+        "answer": 0,
+        "why": "\"The tale endures because it exaggerates something real.\""
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

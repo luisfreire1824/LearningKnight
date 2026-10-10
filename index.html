@@ -54,7 +54,7 @@ p{margin:0}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 18px;font-weight:700;min-height:44px}
-.btn:hover{border-color:var(--accent)}
+@media (hover:hover){.btn:hover{border-color:var(--accent)}}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .btn.primary:disabled{opacity:.45;cursor:not-allowed}
 .btn.ghost{background:transparent;border-color:transparent;padding-inline:10px}
@@ -72,6 +72,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .lv2{background:var(--accent-soft);color:var(--lvl2)}
 .lv3{background:var(--brass-soft);color:var(--brass)}
 .pill.power{background:var(--brass-soft);color:var(--brass)}
+.res-pass{background:var(--good-soft);color:var(--good)}
+.res-edge{background:var(--brass-soft);color:var(--brass)}
+.res-fail{background:var(--bad-soft);color:var(--bad)}
+.opt.idk{color:var(--muted);border-style:dashed}
 .path{display:flex;flex-wrap:wrap;gap:6px}
 .progress{height:6px;background:var(--sunk);border-radius:999px;overflow:hidden}
 .progress>i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
@@ -106,7 +110,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--accent)}
 .blank{display:inline-block;min-width:3.5em;border-bottom:2px solid var(--ink);margin-inline:2px}
 .opts{display:grid;gap:8px}
 .opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px 16px;min-height:48px;font-size:1rem}
-.opt:hover:not(:disabled){border-color:var(--accent)}
+@media (hover:hover){.opt:hover:not(:disabled){border-color:var(--accent)}}
 .opt.picked{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .opt.right{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
 .opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--ink)}
@@ -169,6 +173,7 @@ let COURSE = null;       // content/course.json
 let UNITS = [];          // every unit, in course order
 let WORDS = [], BANK = [], FINDABLE = [], SENTENCES = [], GLOSS = {};  // looked up across the whole course
 let C = null;            // the unit being worked on right now
+let ASSESS = null, AITEM = {}, APASS = {};  // placement check (content/assessment-*.json)
 let store = null;        // storage adapter
 let P = null;            // current profile {id, data}
 let saveChain = Promise.resolve();
@@ -359,7 +364,7 @@ function newProfile(name) {
 }
 function ensure(p) {
   const d = p.data;
-  d.missed = d.missed || {}; d.sentences = d.sentences || []; d.words = d.words || {}; d.attempts = d.attempts || [];
+  d.missed = d.missed || {}; d.sentences = d.sentences || []; d.words = d.words || {}; d.attempts = d.attempts || []; d.assessments = d.assessments || [];
   // Profiles from the one-unit version kept sessions at the top level. They belong to Unit 1.1.
   // Merged rather than moved once, so a save from a tab still running the old version is never lost.
   d.units = d.units || {};
@@ -632,6 +637,7 @@ function showHome() {
         h("b", null, s.n), s.title, done ? h("div", { class: "small" }, "✓") : null);
     })),
     action,
+    assessPanel(d),
     missedPanel,
     h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, met), h("span", { class: "small muted" }, "words met")),
@@ -680,10 +686,10 @@ function buildSteps(sess) {
 
 /* ---------- runs: sessions, reviews and practice save their place after every step,
    so "Save and leave", closing the page or an app update all resume where you were ---------- */
-const findItem = id => FINDABLE.find(i => i.id === id) || null;
+const findItem = id => FINDABLE.find(i => i.id === id) || AITEM[id] || null;
 function ser(st) {
   const o = { kind: st.kind, label: typeof st.label === "string" ? st.label : "" };
-  for (const k of ["check", "practice", "production", "key", "mode", "dueOnly", "max", "session", "text", "wi", "keys", "first", "right"]) if (st[k] !== undefined) o[k] = st[k];
+  for (const k of ["check", "practice", "production", "key", "mode", "dueOnly", "max", "session", "text", "wi", "keys", "first", "right", "part", "passage"]) if (st[k] !== undefined) o[k] = st[k];
   if (st.item) o.item = st.item.id;
   if (st.word) o.word = st.word.key;
   if (st.task) o.task = st.task.id;
@@ -774,6 +780,8 @@ async function continueRun() {
         run.steps.splice(i, 1, ...(items.length ? items : [{ kind: "note", label: o.label, text: "Nothing is due for review yet, so there's no warm-up today." }]));
         run.used = [...used]; i--; continue;
       }
+      // The placement check picks its next level from the answers so far.
+      if (o.kind === "anext") { run.steps.splice(i, 1, ...expandAssess(run, o)); i--; continue; }
       if (o.kind === "exit") {
         const keys = C.words.filter(w => w.session === o.session || (o.session > 1 && w.session < o.session)).map(w => w.key);
         const picks = shuffle(keys).slice(0, 3).map(k => bankFor(k, used)).filter(Boolean);
@@ -786,6 +794,7 @@ async function continueRun() {
       st.save = () => { o.wi = st.wi; o.keys = st.keys; o.first = st.first; o.right = st.right; persist(); };
       const out = await renderStep(st, { i, n: run.steps.length, title: run.title });
       if (out === "leave") { await persist(); inSession = false; showHome(); return; }
+      if (out && out.assess) run.assess.answers.push(out.assess);
       if (out && typeof out === "object") {
         if (out.graded) { R.total++; if (out.ok) R.right++; if (st.check) { R.checkTotal++; if (out.ok) R.checkRight++; } }
         (out.changes || []).forEach(c => c && R.changes.push(c));
@@ -798,6 +807,12 @@ async function continueRun() {
     }
   } finally { inSession = false; }
   delete P.data.run;
+  if (run.type === "assess") {
+    const res = assessResult(run);
+    P.data.assessments.push(res);
+    await persist();
+    return showAssessResult(res, showHome);
+  }
   const sess = run.type === "session" ? unit.sessions.find(s => s.n === run.n) : null;
   if (sess) { const u = (P.data.units[unit.id] = P.data.units[unit.id] || { sessions: {} }); u.sessions[sess.n] = { day: today(), at: Date.now() }; }
   await persist();
@@ -1203,12 +1218,196 @@ function summary(unit, sess, r, title) {
     missedNow.length ? h("div", { class: "panel stack-s" }, h("h3", null, "On your Missed words list"),
       h("p", null, missedNow.map(word).join(", ")),
       h("p", { class: "small muted" }, "Practice them from the home screen whenever you like.")) : null,
-    r.checkTotal ? h("p", { class: "panel" }, h("b", null, "Weekly check: "), `${r.checkRight} of ${r.checkTotal}`, r.checkRight / r.checkTotal >= .85 ? " · strong week." : " · the missed words will come back in review.") : null,
+    r.checkTotal ? h("p", { class: "panel" }, h("b", null, "Weekly check: "), `${r.checkRight} of ${r.checkTotal}`, r.checkRight / r.checkTotal >= .9 ? " · strong week." : " · the missed words will come back in review.") : null,
     ups.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Moved up"), ups.map(c => h("div", { class: "row between" }, h("span", null, word(c.key), c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
     downs.length ? h("div", { class: "panel stack-s" }, h("h3", null, "Coming back soon"), downs.map(c => h("div", { class: "row between" }, h("span", null, word(c.key), c.skill === "spelling" ? " (spelling)" : ""), lvlPill(c.to)))) : null,
     h("p", { class: "muted" }, nextUnit ? `Unit ${nextUnit.unit} is unlocked: ${nextUnit.title}. It covers ${nextUnit.focus.charAt(0).toLowerCase() + nextUnit.focus.slice(1)}. Best started tomorrow.`
       : nx ? `Next: Session ${nx.n}, ${nx.title}. ${nx.about} Best done tomorrow.` : "Words now come back for review on a spaced schedule."),
     continueBtn(showHome, "Back to home")));
+}
+
+/* ================= PLACEMENT CHECK =================
+   Vocabulary, then word parts, then reading. Each level is 10 questions and passes at ASSESS.passMark (90%).
+   Pass a level: go up. Fail before passing anything: go down. Just missed (70-89%) above a passed level:
+   try one more up, to find the edge. Nothing is shown right or wrong until the end. */
+const LEVEL_NAMES = { g4: "Grade 4", g6: "Grade 6", g8: "Grade 8", g10: "Grade 10", g12: "Grade 12", col: "College", pro: "Professional" };
+const levelName = id => LEVEL_NAMES[id] || "Below Grade 4";
+const aLevels = part => (part === "vocab" ? ASSESS.vocab.levels : ASSESS.reading.levels).map(l => l.id);
+const share = x => (x && x.total ? x.right / x.total : 0);
+function aScores(answers, part) {
+  const s = {};
+  answers.filter(a => a.part === part).forEach(a => { const x = (s[a.level] = s[a.level] || { right: 0, total: 0 }); x.total++; if (a.ok) x.right++; });
+  return s;
+}
+function aNextLevel(part, answers, start, tried) {
+  const order = aLevels(part), S = aScores(answers, part), pass = ASSESS.passMark;
+  if (!tried.length) return start;
+  const last = tried[tried.length - 1], li = order.indexOf(last), s = share(S[last]);
+  const up = order[li + 1], down = order[li - 1], fresh = l => l && !S[l];
+  if (s >= pass) return fresh(up) ? up : null;
+  if (!tried.some(l => share(S[l]) >= pass)) return fresh(down) ? down : null;
+  const passedBelow = tried.some(l => order.indexOf(l) < li && share(S[l]) >= pass);
+  return passedBelow && s >= ASSESS.keepGoing && fresh(up) ? up : null;
+}
+// Secure level: the highest level passed with every tested level below it passed too.
+function aSecure(part, S) {
+  let best = null;
+  for (const l of aLevels(part)) { if (!S[l]) continue; if (share(S[l]) >= ASSESS.passMark) best = l; else break; }
+  return best;
+}
+function readingStart(answers) {
+  const v = aSecure("vocab", aScores(answers, "vocab")), order = aLevels("reading");
+  if (!v || aLevels("vocab").indexOf(v) < aLevels("vocab").indexOf(order[0])) return order[0];
+  return order.includes(v) ? v : order[order.length - 1];
+}
+function aLevelSteps(part, level) {
+  if (part === "vocab") return shuffle(ASSESS.vocab.levels.find(l => l.id === level).items).map(it => ({ kind: "aq", item: it.id, label: "Vocabulary" }));
+  const steps = [];
+  for (const p of shuffle(ASSESS.reading.levels.find(l => l.id === level).passages)) {
+    steps.push({ kind: "apassage", passage: p.id, label: "Reading" });
+    p.questions.forEach(q => steps.push({ kind: "aq", item: q.id, label: "Reading" }));
+  }
+  return steps;
+}
+function expandAssess(run, o) {
+  const A = run.assess;
+  if (o.part === "parts") return [
+    { kind: "note", label: "Word parts", text: "Next, eight less common words. Some may be new to you. Look at the parts of each word to work out what it means." },
+    ...shuffle(ASSESS.vocab.parts).map(it => ({ kind: "aq", item: it.id, label: "Word parts" }))];
+  const start = o.part === "vocab" ? ASSESS.vocab.start : readingStart(A.answers);
+  const lvl = aNextLevel(o.part, A.answers, start, A.tried[o.part]);
+  if (!lvl) return [];
+  A.tried[o.part].push(lvl);
+  return [...aLevelSteps(o.part, lvl), { kind: "anext", part: o.part }];
+}
+function runAssess() {
+  const steps = [
+    { kind: "note", label: "Placement check", text: ASSESS.about + " Answer on your own, without looking anything up. If you don't know a word, choose \"I don't know\": a guess that happens to be right makes your results less useful." },
+    { kind: "note", label: "Vocabulary", text: "Part 1: vocabulary. Each question shows a word in a sentence. Pick what it means." },
+    { kind: "anext", part: "vocab" },
+    { kind: "anext", part: "parts" },
+    { kind: "note", label: "Reading", text: "Part 2: reading. Read each passage, then answer five questions. You can reread the passage while you answer." },
+    { kind: "anext", part: "reading" }];
+  return startRun({ type: "assess", title: "Placement check", started: Date.now(), assess: { answers: [], tried: { vocab: [], reading: [] } } }, steps, new Set());
+}
+function assessResult(run) {
+  const ans = run.assess.answers;
+  const V = aScores(ans, "vocab"), Rd = aScores(ans, "reading");
+  const parts = ans.filter(a => a.part === "parts");
+  const skills = {};
+  ans.filter(a => a.part === "reading").forEach(a => { const s = (skills[a.skill] = skills[a.skill] || { right: 0, total: 0 }); s.total++; if (a.ok) s.right++; });
+  return {
+    id: "a-" + Date.now(), form: ASSESS.form, version: ASSESS.version, day: today(), at: Date.now(), passMark: ASSESS.passMark,
+    vocab: { levels: V, secure: aSecure("vocab", V) },
+    parts: { right: parts.filter(a => a.ok).length, total: parts.length },
+    reading: { levels: Rd, secure: aSecure("reading", Rd), skills },
+    answers: ans.map(a => ({ id: a.id, ok: a.ok, pick: a.pick }))
+  };
+}
+const boldWord = s => { const n = h("p", { class: "quote" }); s.split(/(\[[^\]]+\])/).forEach(c => n.append(/^\[.+\]$/.test(c) ? h("b", { style: "color:var(--accent)" }, c.slice(1, -1)) : c)); return n; };
+const passageNode = p => h("div", { class: "story" }, p.paragraphs.map(t => h("p", null, t)));
+
+RENDER.apassage = (st, body, done) => {
+  const p = APASS[st.passage];
+  body.append(h("h2", null, p.title), h("div", { class: "panel" }, passageNode(p)), continueBtn(() => done(null), "Go to the questions"));
+};
+RENDER.aq = (st, body, done) => {
+  const it = st.item;
+  if (it.passage) {
+    const p = APASS[it.passage];
+    body.append(h("details", { class: "panel", open: isPhone() ? null : true }, h("summary", null, `${p.title}: reread the passage`), h("div", { style: "margin-top:8px" }, passageNode(p))));
+    body.append(h("p", { class: "quote" }, it.stem));
+  } else body.append(h("p", { class: "muted" }, "What does the word in bold mean here?"), boldWord(it.sentence));
+  const order = shuffle(it.options.map((_, i) => i));
+  const opts = h("div", { class: "opts" });
+  const next = h("button", { class: "btn primary wide", disabled: true }, "Next");
+  let picked = null;
+  const pick = (i, btn) => { picked = i; [...opts.children].forEach(b => b.classList.toggle("picked", b === btn)); next.disabled = false; };
+  order.forEach(i => opts.append(h("button", { class: "opt", onclick: e => pick(i, e.currentTarget) }, it.options[i])));
+  if (it.part !== "reading") opts.append(h("button", { class: "opt idk", onclick: e => pick(-1, e.currentTarget) }, "I don't know"));
+  next.addEventListener("click", () => done({ assess: { id: it.id, part: it.part, level: it.level, skill: it.skill || null, ok: picked === it.answer, pick: picked >= 0 ? it.options[picked] : null } }));
+  body.append(opts, next);
+};
+
+/* Results: levels with scores, the reading skill profile, what it means, and everything missed. */
+function levelChip(S, l) {
+  const x = S[l];
+  if (!x) return h("span", { class: "pill lv0" }, `${levelName(l)} · not tested`);
+  const s = share(x), cls = s >= ASSESS.passMark ? "res-pass" : s >= ASSESS.keepGoing ? "res-edge" : "res-fail";
+  return h("span", { class: "pill " + cls }, `${levelName(l)} · ${x.right}/${x.total}`);
+}
+function assessReading(res) {
+  const tips = [], pass = res.passMark || ASSESS.passMark;
+  const vo = aLevels("vocab"), vs = res.vocab.secure;
+  const vEdge = vo.filter(l => res.vocab.levels[l] && share(res.vocab.levels[l]) < pass && (!vs || vo.indexOf(l) > vo.indexOf(vs)));
+  if (!vs) tips.push("Vocabulary: start with the basics. The first levels were hard, so new words at the earliest levels will pay off most.");
+  else if (vEdge.length) tips.push(`Vocabulary: solid through ${levelName(vs)}. Words start to slip at ${levelName(vEdge[0])}, so that's where new words will pay off most.`);
+  else tips.push(`Vocabulary: solid through ${levelName(vs)}${vs === vo[vo.length - 1] ? ", the top of this check" : ""}.`);
+  const sk = Object.entries(res.reading.skills).filter(([, x]) => x.total >= 2).sort((a, b) => share(a[1]) - share(b[1]));
+  if (sk.length) {
+    const [wk, wx] = sk[0], [st, sx] = sk[sk.length - 1];
+    // Every skill gets the same number of questions; a one-question gap is noise, not a weakness.
+    if (sx.right - wx.right >= 2) tips.push(`Reading: strongest at ${ASSESS.skills[st].toLowerCase()} (${sx.right}/${sx.total}), weakest at ${ASSESS.skills[wk].toLowerCase()} (${wx.right}/${wx.total}).`);
+    else tips.push("Reading: about even across the five question types. No skill stood out as a gap.");
+  }
+  if (res.parts.total) tips.push(res.parts.right / res.parts.total >= pass
+    ? `Word parts: ${res.parts.right} of ${res.parts.total}. You already use word parts to work out new words.`
+    : `Word parts: ${res.parts.right} of ${res.parts.total}. Learning common prefixes and roots would help you work out words you haven't seen.`);
+  return tips;
+}
+function showAssessResult(res, back) {
+  const pass = res.passMark || ASSESS.passMark;
+  const byId = Object.fromEntries(res.answers.map(a => [a.id, a]));
+  const missedV = res.answers.filter(a => !a.ok && AITEM[a.id] && AITEM[a.id].part !== "reading").map(a => AITEM[a.id]);
+  const missedR = res.answers.filter(a => !a.ok && AITEM[a.id] && AITEM[a.id].part === "reading").map(a => AITEM[a.id]);
+  frame(h("div", { class: "stack" },
+    h("div", { class: "row between" }, h("span", { class: "label" }, `Placement check · ${dayLabel(res.day)}`), h("button", { class: "btn", onclick: back }, "Back")),
+    h("h1", null, `${P.data.name}'s results`),
+    h("div", { class: "stats" },
+      h("div", { class: "stat" }, h("b", null, levelName(res.vocab.secure)), h("span", { class: "small muted" }, "vocabulary")),
+      h("div", { class: "stat" }, h("b", null, res.reading.secure ? levelName(res.reading.secure) : "Below Grade 6"), h("span", { class: "small muted" }, "reading"))),
+    h("p", { class: "small muted" }, `Each level is solid at ${Math.round(pass * 100)}% or better. Green passed, amber was close, red wasn't there yet.`),
+    h("section", { class: "panel stack-s" }, h("h3", null, "What this tells us"), h("ul", { class: "stack-s", style: "margin:0;padding-left:20px" }, assessReading(res).map(t => h("li", null, t)))),
+    h("section", { class: "panel stack-s" }, h("h3", null, "Vocabulary by level"), h("div", { class: "path" }, aLevels("vocab").map(l => levelChip(res.vocab.levels, l)))),
+    h("section", { class: "panel stack-s" }, h("h3", null, "Reading by level"), h("div", { class: "path" }, aLevels("reading").map(l => levelChip(res.reading.levels, l))),
+      h("h3", { style: "margin-top:8px" }, "Reading skills"),
+      h("p", { class: "small muted" }, "A small sample: a few questions per skill. Read it as a hint, not a verdict."),
+      Object.keys(ASSESS.skills).map(k => {
+        const x = res.reading.skills[k] || { right: 0, total: 0 };
+        return h("div", { class: "stack-s" }, h("div", { class: "row between small" }, h("span", null, ASSESS.skills[k]), h("span", { class: "muted" }, x.total ? `${x.right}/${x.total}` : "–")),
+          h("div", { class: "progress" }, h("i", { style: `width:${Math.round(share(x) * 100)}%;background:var(--${share(x) >= pass ? "good" : share(x) >= ASSESS.keepGoing ? "brass" : "bad"})` })));
+      })),
+    missedV.length ? h("section", { class: "panel stack-s" }, h("h3", null, `Words to learn (${missedV.length})`),
+      h("p", { class: "small muted" }, "Missed or marked \"I don't know.\" These are the start of a personal word list."),
+      h("div", { class: "wordlist" }, missedV.map(it => h("div", { class: "wl", style: "align-items:flex-start;gap:12px" }, h("b", null, it.word), h("span", { class: "small", style: "text-align:right" }, it.options[it.answer]))))) : null,
+    missedR.length ? h("section", { class: "panel stack-s" }, h("h3", null, `Reading questions missed (${missedR.length})`),
+      missedR.map(q => h("details", null, h("summary", null, `${APASS[q.passage].title}: ${ASSESS.skills[q.skill]}`),
+        h("div", { class: "stack-s", style: "margin-top:8px" }, h("p", null, q.stem),
+          h("p", { class: "small" }, h("b", null, "Your answer: "), byId[q.id].pick || "–"),
+          h("p", { class: "small" }, h("b", null, "Best answer: "), q.options[q.answer]),
+          h("p", { class: "small muted" }, q.why))))) : null,
+    h("p", { class: "small muted" }, "This is a home-built check, not an official test. Levels come from how common each word is and how complex each passage is, so treat them as a guide. Taking the same version again will score higher because you've seen the questions."),
+    continueBtn(back, "Done")));
+  screen = "results";
+}
+function assessPanel(d) {
+  if (!ASSESS || isHelper()) return null;
+  const last = (d.assessments || [])[(d.assessments || []).length - 1];
+  const busy = !!d.run;
+  if (!last) return h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
+    h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, "about 30 min")),
+    h("p", { class: "small" }, "Find your level in vocabulary and reading. It adjusts as you go, and you can save and come back."),
+    h("button", { class: "btn primary", onclick: runAssess, disabled: busy || null }, "Start the check"),
+    busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
+  const again = h("div", { class: "row" });
+  const ask = () => again.replaceChildren(h("span", { class: "small" }, "You've seen these questions, so a retake will score higher. Take it anyway?"),
+    h("button", { class: "btn small", onclick: runAssess, disabled: busy || null }, "Yes"), h("button", { class: "btn small ghost", onclick: () => again.replaceChildren(againBtn) }, "No"));
+  const againBtn = h("button", { class: "btn small ghost", onclick: ask }, "Take it again");
+  again.append(againBtn);
+  return h("div", { class: "panel stack-s" },
+    h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, dayLabel(last.day))),
+    h("p", { class: "small" }, `Vocabulary: ${levelName(last.vocab.secure)} · Reading: ${last.reading.secure ? levelName(last.reading.secure) : "Below Grade 6"}`),
+    h("div", { class: "row" }, h("button", { class: "btn small", onclick: () => showAssessResult(last, showHome) }, "See results"), again));
 }
 
 /* ================= PARENT VIEW ================= */
@@ -1335,6 +1534,14 @@ async function showParent() {
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
       h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
 
+    (d.assessments || []).length ? (() => {
+      const last = d.assessments[d.assessments.length - 1];
+      return h("section", { class: "panel stack-s" },
+        h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, dayLabel(last.day))),
+        h("p", null, `Vocabulary: ${levelName(last.vocab.secure)} · Reading: ${last.reading.secure ? levelName(last.reading.secure) : "Below Grade 6"}`),
+        h("button", { class: "btn small", onclick: () => showAssessResult(last, showParent) }, "See full results"));
+    })() : null,
+
     h("section", { class: "panel stack-s" },
       h("h3", null, `Talk about it this week (Unit ${C.unit})`),
       h("p", { class: "small muted" }, "Using a word in real conversation is one of the strongest ways it sticks."),
@@ -1415,6 +1622,17 @@ async function boot() {
       Object.assign(GLOSS, u.glossary || {});
     }
     C = UNITS[0];
+    if (COURSE.assessment) {
+      try {
+        ASSESS = await get(base + COURSE.assessment);
+        for (const l of ASSESS.vocab.levels) l.items.forEach(it => { AITEM[it.id] = { ...it, part: "vocab", level: l.id }; });
+        ASSESS.vocab.parts.forEach(it => { AITEM[it.id] = { ...it, part: "parts", level: "parts" }; });
+        for (const l of ASSESS.reading.levels) for (const p of l.passages) {
+          APASS[p.id] = p;
+          p.questions.forEach(q => { AITEM[q.id] = { ...q, part: "reading", level: l.id, passage: p.id }; });
+        }
+      } catch (e) { ASSESS = null; }  // the course still works without the check
+    }
   } catch (e) {
     app.replaceChildren(topbar(), h("div", { class: "panel stack-s" }, h("h2", null, "Couldn't load the lessons"), h("p", { class: "muted" }, "The lesson files didn't load. Reload the page to try again.")));
     return;
