@@ -207,7 +207,7 @@ const local = {
 };
 const deviceStore = (canSignIn) => Object.assign(Object.create(local), { canSignIn: !!canSignIn });
 
-/* Firebase: Google sign-in per adult; learners live at users/{uid}/profiles/{profileId} (see firestore.rules). */
+/* Firebase: Google sign-in per person; shareable learners (see firebaseStore and firestore.rules). */
 const FB_VER = "10.12.2";
 let fb = null;
 const loadScript = src => new Promise((ok, no) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.append(s); });
@@ -221,13 +221,66 @@ async function loadFirebase() {
   fb = { auth: firebase.auth(), db };
   return fb;
 }
+/* Firebase learners live at learners/{id}: { ownerUid, ownerName, helpers: [uid], helperInfo: {uid: {name, email}}, p: <progress>, updatedAt }.
+   The owner shares by invite link; helpers can see progress and review sentences, never change who has access.
+   firestore.rules enforces all of it. */
+const randomCode = () => { const a = new Uint8Array(18); crypto.getRandomValues(a); return Array.from(a, b => (b % 36).toString(36)).join(""); };
 function firebaseStore(user) {
-  const col = fb.db.collection("users").doc(user.uid).collection("profiles");
+  const FV = firebase.firestore.FieldValue;
+  const learners = fb.db.collection("learners");
+  const me = { uid: user.uid, name: user.displayName || "", email: user.email || "" };
+  const myName = me.name || me.email || "Someone";
+  const wrap = (d, role) => {
+    const x = d.data() || {};
+    return { id: d.id, data: x.p || {}, role, meta: { ownerUid: x.ownerUid, ownerName: x.ownerName || "", helpers: x.helpers || [], helperInfo: x.helperInfo || {}, reviews: x.reviews || {} } };
+  };
+  let migrated = false;
+  async function migrateOld() {
+    // Learners saved by the first Firebase version (users/{uid}/profiles) move to the shareable location once.
+    if (migrated) return; migrated = true;
+    try {
+      const old = await fb.db.collection("users").doc(user.uid).collection("profiles").get();
+      for (const d of old.docs) {
+        await learners.doc(d.id).set({ ownerUid: user.uid, ownerName: myName, helpers: [], helperInfo: {}, p: d.data(), updatedAt: FV.serverTimestamp() });
+        await d.ref.delete();
+      }
+    } catch (e) { migrated = false; }
+  }
   return {
-    mode: "account", kind: "firebase", label: user.email || "your Google account",
-    async list() { const s = await col.get(); return s.docs.map(d => ({ id: d.id, data: d.data() })); },
-    async save(id, data) { await col.doc(id).set(data); },
-    async remove(id) { await col.doc(id).delete(); }
+    mode: "account", kind: "firebase", label: user.email || "your Google account", me,
+    async list() {
+      await migrateOld();
+      const [own, shared] = await Promise.all([learners.where("ownerUid", "==", user.uid).get(), learners.where("helpers", "array-contains", user.uid).get()]);
+      return [...own.docs.map(d => wrap(d, "owner")), ...shared.docs.map(d => wrap(d, "helper"))];
+    },
+    async create(id, data) {
+      await learners.doc(id).set({ ownerUid: user.uid, ownerName: myName, helpers: [], helperInfo: {}, p: data, updatedAt: FV.serverTimestamp() });
+    },
+    // Saves replace only the progress field, so they can never drop a helper added from another device.
+    async save(id, data) { await learners.doc(id).update({ p: data, updatedAt: FV.serverTimestamp() }); },
+    async remove(id) { await learners.doc(id).delete(); },
+    // Sentence reviews live in their own field, so reviewing never touches (or overwrites) the learner's progress.
+    async review(id, sentenceId, review) { await learners.doc(id).update({ ["reviews." + sentenceId]: review, updatedAt: FV.serverTimestamp() }); },
+    async meta(id) { const d = await learners.doc(id).get(); return d.exists ? wrap(d, "owner").meta : null; },
+    async invite(id, learnerName) {
+      const code = randomCode();
+      await fb.db.collection("invites").doc(code).set({
+        learnerId: id, learnerName, ownerUid: user.uid, ownerName: myName,
+        createdAt: FV.serverTimestamp(), expiresAt: firebase.firestore.Timestamp.fromMillis(Date.now() + 7 * DAY)
+      });
+      return code;
+    },
+    async join(code) {
+      const inv = await fb.db.collection("invites").doc(code).get();
+      if (!inv.exists) throw { code: "invite-missing" };
+      const v = inv.data();
+      if (v.expiresAt.toMillis() < Date.now()) throw { code: "invite-expired" };
+      if (v.ownerUid === user.uid) return { ...v, own: true };
+      await learners.doc(v.learnerId).update({ helpers: FV.arrayUnion(user.uid), ["helperInfo." + user.uid]: { name: me.name, email: me.email }, joinCode: code });
+      return v;
+    },
+    async removeHelper(id, uid) { await learners.doc(id).update({ helpers: FV.arrayRemove(uid), ["helperInfo." + uid]: FV.delete() }); },
+    async leave(id) { await learners.doc(id).update({ helpers: FV.arrayRemove(user.uid), ["helperInfo." + user.uid]: FV.delete() }); }
   };
 }
 async function signIn() {
@@ -241,6 +294,7 @@ async function signIn() {
       throw e;
     }
     store = firebaseStore(fb.auth.currentUser);
+    if (await handleJoin()) return;
     showProfiles(true);
   } catch (e) { showToast("Sign-in didn't work. Check your connection and try again."); }
 }
@@ -277,7 +331,7 @@ async function makeStore() {
   return deviceStore(false);
 }
 function persist() {
-  if (!P) return;
+  if (!P || P.role === "helper") return Promise.resolve();  // helpers never write a learner's progress
   const snapshot = JSON.parse(JSON.stringify(P.data));
   const id = P.id;
   saveChain = saveChain.then(() => store.save(id, snapshot)).catch(err => {
@@ -431,7 +485,9 @@ function topbar() {
 /* ---------- profiles ---------- */
 const remember = id => { try { localStorage.setItem("lk.last", id); } catch (e) {} };
 const lastId = () => { try { return localStorage.getItem("lk.last"); } catch (e) { return null; } };
-function openProfile(p) { P = ensure(p); remember(p.id); showHome(); }
+// A learner shared with you opens straight to their Parent view; you follow their progress, you don't run their sessions.
+function openProfile(p) { P = ensure(p); remember(p.id); if (p.role === "helper") showParent(); else showHome(); }
+const isHelper = () => P && P.role === "helper";
 async function showProfiles(force) {
   P = null;
   let list = [];
@@ -443,8 +499,9 @@ async function showProfiles(force) {
     const name = nameInput.value.trim();
     if (!name) { nameInput.focus(); return; }
     const id = "p-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 16) + "-" + Math.random().toString(36).slice(2, 7);
-    P = { id, data: newProfile(name) };
-    await persist();
+    P = { id, data: newProfile(name), role: "owner" };
+    if (store.create) { try { await store.create(id, P.data); } catch (e) { showToast("Couldn't add the learner to your account. Check your connection and try again."); return; } }
+    else await persist();
     openProfile(P);
   };
   nameInput.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
@@ -456,7 +513,7 @@ async function showProfiles(force) {
       const moveBtn = h("button", { class: "btn primary" }, "Move to my account");
       moveBtn.addEventListener("click", async () => {
         moveBtn.disabled = true; moveBtn.textContent = "Moving…";
-        try { for (const p of onDevice) { await store.save(p.id, p.data); await local.remove(p.id); } showProfiles(true); }
+        try { for (const p of onDevice) { await store.create(p.id, p.data); await local.remove(p.id); } showProfiles(true); }
         catch (e) { moveBtn.disabled = false; moveBtn.textContent = "Move to my account"; showToast("Couldn't move them yet. Check your connection and try again."); }
       });
       movePanel = h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
@@ -472,14 +529,20 @@ async function showProfiles(force) {
       : store.canSignIn
         ? h("div", { class: "panel stack-s" }, h("p", { class: "small" }, "Progress is saving on this device only. Sign in to keep it in sync between your phone and laptop."), h("button", { class: "btn", onclick: signIn }, "Sign in with Google"))
         : h("p", { class: "muted small" }, "Progress saves on this device only.");
+  const learnerBtn = p => {
+    const owned = Object.values(p.data.words || {}).filter(w => w.meaning && w.meaning.lvl === 3).length;
+    const done = Object.keys(p.data.sessions || {}).length;
+    return h("button", { class: "opt", onclick: () => openProfile(p) },
+      h("div", { class: "row between" }, h("b", null, p.data.name || "Learner"),
+        h("span", { class: "muted small" }, p.role === "helper" ? `${p.meta.ownerName && p.meta.ownerName !== p.data.name ? "from " + p.meta.ownerName + " · " : ""}${done} of 5 sessions` : `Session ${Math.min(done + 1, 5)} of 5 · ${owned} owned`)));
+  };
+  const mine = list.filter(p => p.role !== "helper").sort((a, b) => (a.data.created || 0) - (b.data.created || 0));
+  const shared = list.filter(p => p.role === "helper");
   frame(h("div", { class: "stack" }, movePanel,
     h("h1", null, "Who's learning?"),
-    list.length ? h("div", { class: "stack-s" }, list.sort((a, b) => a.data.created - b.data.created).map(p => {
-      const owned = Object.values(p.data.words || {}).filter(w => w.meaning && w.meaning.lvl === 3).length;
-      const done = Object.keys(p.data.sessions || {}).length;
-      return h("button", { class: "opt", onclick: () => openProfile(p) },
-        h("div", { class: "row between" }, h("b", null, p.data.name), h("span", { class: "muted small" }, `Session ${Math.min(done + 1, 5)} of 5 · ${owned} owned`)));
-    })) : h("p", { class: "muted" }, "Add a learner to start. Each person gets their own placement and progress."),
+    mine.length ? h("div", { class: "stack-s" }, mine.map(learnerBtn))
+      : h("p", { class: "muted" }, "Add a learner to start. Each person gets their own placement and progress."),
+    shared.length ? h("div", { class: "stack-s" }, h("span", { class: "label" }, "Shared with you"), shared.map(learnerBtn)) : null,
     h("div", { class: "panel stack-s" },
       h("label", { for: "new-name", class: "label" }, "Add a learner"),
       h("div", { class: "row" }, h("div", { style: "flex:1;min-width:0" }, nameInput), h("button", { class: "btn primary", onclick: add }, "Add"))),
@@ -1097,8 +1160,42 @@ function summary(sess, r, title) {
 }
 
 /* ================= PARENT VIEW ================= */
+/* Invite links look like …/LearningKnight/?join=CODE. Accepting needs a signed-in Google account. */
+let pendingJoin = (() => { try { return new URLSearchParams(location.search).get("join"); } catch (e) { return null; } })();
+function clearJoinParam() { try { const u = new URL(location.href); u.searchParams.delete("join"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (e) {} }
+async function handleJoin() {
+  if (!pendingJoin) return false;
+  if (store.kind !== "firebase") {
+    if (!store.canSignIn) { pendingJoin = null; clearJoinParam(); return false; }
+    frame(h("div", { class: "panel stack" },
+      h("h2", null, "You've been invited"),
+      h("p", null, "Someone shared a learner's progress with you. Sign in with Google to accept, and they'll appear under Shared with you."),
+      h("div", { class: "row" }, h("button", { class: "btn primary", onclick: signIn }, "Sign in with Google"),
+        h("button", { class: "btn ghost", onclick: () => { pendingJoin = null; clearJoinParam(); showProfiles(true); } }, "Not now"))));
+    return true;
+  }
+  const code = pendingJoin; pendingJoin = null; clearJoinParam();
+  frame(h("div", { class: "panel" }, h("p", null, "Opening the invite…")));
+  try {
+    const v = await store.join(code);
+    showToast(v.own ? "That invite is for your own learner." : `You can now follow ${v.learnerName || "their"} progress. Find them under Shared with you.`);
+  } catch (e) {
+    showToast(e && e.code === "invite-expired" ? "That invite link has expired. Ask for a new one." : "That invite link didn't work. Ask for a new one.");
+  }
+  showProfiles(true);
+  return true;
+}
+
 async function showParent() {
   ensure(P);
+  // Pick up helpers who joined (or reviews made) since this learner was loaded.
+  if (store.meta && !showParent.refreshing) {
+    showParent.refreshing = true;
+    store.meta(P.id).then(m => {
+      showParent.refreshing = false;
+      if (m && P && JSON.stringify(m) !== JSON.stringify(P.meta)) { P.meta = m; if (screen === "parent") showParent(); }
+    }).catch(() => { showParent.refreshing = false; });
+  }
   const d = P.data, t = today();
   const attempts = d.attempts.filter(a => a.w);
   const misses = {};
@@ -1111,12 +1208,21 @@ async function showParent() {
   const sticky = Object.entries(misses).sort((a, b) => b[1].length - a[1].length).slice(0, 4);
   const graded = attempts.filter(a => a.s === "meaning");
   const acc = graded.length ? Math.round(100 * graded.filter(a => a.ok).length / graded.length) : null;
-  const queue = d.sentences.filter(s => !s.review);
-  const reviewed = d.sentences.filter(s => s.review);
+  const reviewOf = s => (P.meta && P.meta.reviews && P.meta.reviews[s.id]) || s.review || null;
+  const queue = d.sentences.filter(s => !reviewOf(s));
+  const reviewed = d.sentences.filter(s => reviewOf(s)).map(s => ({ ...s, review: reviewOf(s) }));
+  const helper = isHelper(), owner = !helper;
 
   const sentenceCard = s => {
     const note = h("input", { class: "spell", id: "note-" + s.id, placeholder: "Optional note", style: "font-size:.95rem" });
-    const mark = async verdict => { s.review = { verdict, note: note.value.trim(), day: t }; await persist(); showParent(); };
+    const mark = async verdict => {
+      const review = { verdict, note: note.value.trim(), day: t, by: (store.me && (store.me.name || store.me.email)) || "" };
+      try {
+        if (store.review) { await store.review(P.id, s.id, review); P.meta = P.meta || {}; P.meta.reviews = { ...(P.meta.reviews || {}), [s.id]: review }; }
+        else { s.review = review; await persist(); }
+      } catch (e) { showToast("Couldn't save that review. Check your connection and try again."); return; }
+      showParent();
+    };
     return h("div", { class: "sentence stack-s" },
       h("span", { class: "label" }, wordByKey(s.word).word + " · " + dayLabel(s.day)),
       h("p", null, "“", s.text, "”"),
@@ -1130,8 +1236,48 @@ async function showParent() {
   const resetBtn = h("button", { class: "btn small", onclick: askReset }, "Reset this learner");
   resetBox.append(resetBtn);
 
+  // Sharing (owner, signed in): invite helpers by link, see who has access, remove anyone.
+  let sharePanel = null;
+  if (owner && store.kind === "firebase" && store.invite) {
+    const helpers = (P.meta && P.meta.helpers) || [];
+    const info = (P.meta && P.meta.helperInfo) || {};
+    const linkBox = h("div", { class: "stack-s" });
+    const makeLink = async () => {
+      linkBox.replaceChildren(h("p", { class: "small muted" }, "Creating a link…"));
+      try {
+        const code = await store.invite(P.id, d.name);
+        const url = location.origin + location.pathname + "?join=" + code;
+        const field = h("input", { class: "spell", id: "invite-link", value: url, readonly: true, style: "font-size:.85rem" });
+        const copy = h("button", { class: "btn small" }, "Copy link");
+        copy.addEventListener("click", async () => { try { await navigator.clipboard.writeText(url); copy.textContent = "Copied"; } catch (e) { field.select(); } });
+        linkBox.replaceChildren(field, h("div", { class: "row" }, copy),
+          h("p", { class: "small muted" }, `Send it to the people who should see ${d.name}'s progress. It works for 7 days. They'll need to sign in with Google.`));
+      } catch (e) { linkBox.replaceChildren(h("p", { class: "small" }, "Couldn't create a link. Check your connection and try again.")); }
+    };
+    sharePanel = h("section", { class: "panel stack-s" },
+      h("h3", null, "Share progress"),
+      h("p", { class: "small muted" }, "People you share with can see this page and review sentences. They can't change progress or who has access."),
+      helpers.length ? h("div", { class: "wordlist" }, helpers.map(uid => {
+        const who = info[uid] || {};
+        return h("div", { class: "wl" }, h("span", null, who.name || who.email || "Someone", who.email && who.name ? h("span", { class: "small muted" }, " · " + who.email) : null),
+          h("button", { class: "btn small ghost", onclick: async () => {
+            try { await store.removeHelper(P.id, uid); P.meta.helpers = helpers.filter(x => x !== uid); delete info[uid]; showParent(); }
+            catch (e) { showToast("Couldn't remove them. Check your connection and try again."); }
+          } }, "Remove"));
+      })) : h("p", { class: "small" }, "Not shared with anyone yet."),
+      h("button", { class: "btn", onclick: makeLink }, "Create invite link"),
+      linkBox);
+  }
+  const helperBanner = helper ? h("div", { class: "note row between" },
+    h("span", null, `Shared with you by ${(P.meta && P.meta.ownerName) || "the owner"}. You can follow progress and review sentences.`),
+    h("button", { class: "btn small ghost", onclick: async () => {
+      try { await store.leave(P.id); showToast(`You'll no longer see ${d.name}'s progress.`); showProfiles(true); }
+      catch (e) { showToast("Couldn't do that right now. Check your connection and try again."); }
+    } }, "Stop following")) : null;
+
   frame(h("div", { class: "stack" },
-    h("div", { class: "row between" }, h("h1", null, d.name + "'s week"), h("button", { class: "btn", onclick: showHome }, "Back")),
+    h("div", { class: "row between" }, h("h1", null, d.name + "'s week"), h("button", { class: "btn", onclick: helper ? () => showProfiles(true) : showHome }, "Back")),
+    helperBanner,
     h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, Object.keys(d.sessions).length + "/5"), h("span", { class: "small muted" }, "sessions")),
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
@@ -1177,7 +1323,9 @@ async function showParent() {
             h("td", { class: "small" }, nxt.length ? (Math.min(...nxt) <= t ? "Due now" : dayLabel(Math.min(...nxt))) : "–"));
         }))))),
 
-    h("section", { class: "panel stack-s" },
+    sharePanel,
+
+    helper ? null : h("section", { class: "panel stack-s" },
       h("h3", null, "Testing tools"),
       h("p", { class: "small muted" }, `For trying the prototype without waiting a real day. App date: ${dayLabel(t)}${d.dayOffset ? ` (${d.dayOffset} day${d.dayOffset === 1 ? "" : "s"} ahead)` : ""}.`),
       h("div", { class: "row" },
@@ -1194,6 +1342,7 @@ async function showParent() {
           ? h("div", { class: "stack-s" }, h("p", { class: "small" }, "Saving on this device only. Sign in with Google to sync between phone and laptop."), h("button", { class: "btn small", onclick: signIn }, "Sign in with Google"))
           : h("p", { class: "small muted" }, store.kind === "claude" ? "Saved to this claude.ai account." : "Saved on this device only."))
   ));
+  screen = "parent";
 }
 
 /* ================= BOOT ================= */
@@ -1208,6 +1357,7 @@ async function boot() {
   }
   store = await makeStore();
   window.addEventListener("unhandledrejection", e => { if (e.reason === "left") e.preventDefault(); });
+  if (await handleJoin()) return;
   showProfiles();
 }
 boot();

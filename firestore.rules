@@ -1,10 +1,68 @@
 rules_version = '2';
-// Each signed-in adult can read and write only their own learners.
-// Nothing else in the database is readable or writable.
+// Learning Knight database rules.
+// - Each learner belongs to one owner (the person who created it).
+// - The owner can share it by invite link. People who accept become helpers:
+//   they can see progress and review sentences, but never change progress
+//   or who has access.
+// - Nothing else in the database is readable or writable.
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+
+    function validInvite(code, learnerId) {
+      let inv = get(/databases/$(database)/documents/invites/$(code)).data;
+      return inv.learnerId == learnerId && inv.expiresAt > request.time;
+    }
+
+    match /learners/{learnerId} {
+      function isOwner() { return signedIn() && resource.data.ownerUid == me(); }
+      function isHelper() { return signedIn() && me() in resource.data.helpers; }
+      function changed() { return request.resource.data.diff(resource.data).affectedKeys(); }
+      function onlyMyHelperInfo() {
+        return request.resource.data.helperInfo.diff(resource.data.helperInfo).affectedKeys().hasOnly([me()]);
+      }
+
+      allow read: if isOwner() || isHelper();
+
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == me()
+        && request.resource.data.helpers == []
+        && request.resource.data.helperInfo == {};
+
+      allow delete: if isOwner();
+
+      allow update: if
+        // Owner: anything except giving the learner to someone else.
+        (isOwner() && request.resource.data.ownerUid == me())
+        // Helper: sentence reviews only.
+        || (isHelper() && changed().hasOnly(['reviews', 'updatedAt']))
+        // Helper leaving: removes only themselves.
+        || (isHelper() && changed().hasOnly(['helpers', 'helperInfo'])
+            && request.resource.data.helpers == resource.data.helpers.removeAll([me()])
+            && onlyMyHelperInfo())
+        // Accepting a valid invite: adds only yourself.
+        || (signedIn() && !isHelper() && !isOwner()
+            && changed().hasOnly(['helpers', 'helperInfo', 'joinCode'])
+            && request.resource.data.helpers.hasAll(resource.data.helpers)
+            && request.resource.data.helpers.removeAll(resource.data.helpers).hasOnly([me()])
+            && onlyMyHelperInfo()
+            && validInvite(request.resource.data.joinCode, learnerId));
+    }
+
+    // Invite codes are long and random; you can only read one if you already have its code.
+    match /invites/{code} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == me()
+        && get(/databases/$(database)/documents/learners/$(request.resource.data.learnerId)).data.ownerUid == me();
+      allow delete: if signedIn() && resource.data.ownerUid == me();
+    }
+
+    // Where the first version stored learners. Kept so they can be moved to /learners automatically.
     match /users/{uid}/profiles/{profileId} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if signedIn() && me() == uid;
     }
   }
 }
