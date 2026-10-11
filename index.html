@@ -1378,6 +1378,42 @@ function assessReading(res) {
     : `Word parts: ${res.parts.right} of ${res.parts.total}. Learning common prefixes and roots would help you work out words you haven't seen.`);
   return tips;
 }
+/* Plain-text copy of a result, with every miss and what was picked, to paste into a chat for review. */
+function resultText(res) {
+  const pct = x => `${x.right}/${x.total}`;
+  const lv = (part, S) => aLevels(part).filter(l => S[l]).map(l => `${levelName(l)} ${pct(S[l])}`).join(", ");
+  const lines = [`Learning Knight placement check: ${P.data.name}, version ${res.form}, ${dayLabel(res.day)}`,
+    `Pass mark: ${Math.round((res.passMark || ASSESS.passMark) * 100)}% per level`,
+    `Vocabulary: solid through ${levelName(res.vocab.secure)} (${lv("vocab", res.vocab.levels)})`,
+    `Word parts: ${res.parts.right}/${res.parts.total}`,
+    `Reading: solid through ${res.reading.secure ? levelName(res.reading.secure) : "below Grade 6"} (${lv("reading", res.reading.levels)})`,
+    "Reading skills: " + Object.keys(ASSESS.skills).map(k => `${ASSESS.skills[k]} ${pct(res.reading.skills[k] || { right: 0, total: 0 })}`).join(", "),
+    "", "Vocabulary and word parts missed:"];
+  res.answers.filter(a => !a.ok && AITEM[a.id] && AITEM[a.id].part !== "reading").forEach(a => {
+    const it = AITEM[a.id];
+    lines.push(`- ${it.word} [${it.part === "parts" ? "word part" : levelName(it.level)}]: picked "${a.pick || "I don't know"}"; answer "${it.options[it.answer]}"`);
+  });
+  lines.push("", "Reading missed:");
+  res.answers.filter(a => !a.ok && AITEM[a.id] && AITEM[a.id].part === "reading").forEach(a => {
+    const q = AITEM[a.id];
+    lines.push(`- ${APASS[q.passage].title} [${levelName(q.level)}, ${ASSESS.skills[q.skill]}]: ${q.stem} Picked "${a.pick || "-"}"; answer "${q.options[q.answer]}"`);
+  });
+  return lines.join("\n");
+}
+function copyResultsButton(res) {
+  const box = h("div", { class: "stack-s" });
+  const btn = h("button", { class: "btn" }, "Copy results to share");
+  btn.addEventListener("click", async () => {
+    const text = resultText(res);
+    try { await navigator.clipboard.writeText(text); btn.textContent = "Copied. Paste it into your chat"; }
+    catch (e) {   // no clipboard access: show the text to copy by hand
+      const ta = h("textarea", { readonly: true, style: "min-height:12rem;font-size:.8rem" }); ta.value = text;
+      box.replaceChildren(h("p", { class: "small muted" }, "Select all of this and copy it:"), ta); ta.focus(); ta.select();
+    }
+  });
+  box.append(btn, h("p", { class: "small muted" }, "Copies a summary plus every missed question and what was picked, so it can be reviewed in a chat."));
+  return box;
+}
 function showAssessResult(res, back) {
   useForm(res.form);
   const pass = res.passMark || ASSESS.passMark;
@@ -1414,6 +1450,7 @@ function showAssessResult(res, back) {
           h("p", { class: "small" }, h("b", null, "Best answer: "), q.options[q.answer]),
           h("p", { class: "small muted" }, q.why))))) : null,
     h("p", { class: "small muted" }, "This is a home-built check, not an official test. Levels come from how common each word is and how complex each passage is, so treat them as a guide. Taking the same version again will score higher because you've seen the questions."),
+    copyResultsButton(res),
     continueBtn(back, "Done")));
   screen = "results";
 }
