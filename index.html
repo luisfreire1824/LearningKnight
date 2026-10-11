@@ -766,6 +766,7 @@ async function continueRun() {
   const used = new Set(run.used || []);
   const R = run.results;
   inSession = true;
+  let shownPassage = null;   // which passage the reader has in front of them this sitting
   try {
     for (let i = run.i; i < run.steps.length; i++) {
       run.i = i;
@@ -791,6 +792,12 @@ async function continueRun() {
       }
       const st = hyd(o);
       if (!st) continue;  // content changed since this run was saved; skip the missing piece
+      if (st.kind === "apassage") shownPassage = st.passage;
+      if (st.kind === "aq" && st.item.passage && st.item.passage !== shownPassage) {
+        const again = await renderStep({ kind: "apassage", passage: st.item.passage, label: "Read it again before you continue" }, { i, n: run.steps.length, title: run.title });
+        if (again === "leave") { await persist(); inSession = false; showHome(); return; }
+        shownPassage = st.item.passage;
+      }
       st.save = () => { o.wi = st.wi; o.keys = st.keys; o.first = st.first; o.right = st.right; persist(); };
       const out = await renderStep(st, { i, n: run.steps.length, title: run.title });
       if (out === "leave") { await persist(); inSession = false; showHome(); return; }
@@ -1265,7 +1272,7 @@ function aLevelSteps(part, level) {
   const steps = [];
   for (const p of shuffle(ASSESS.reading.levels.find(l => l.id === level).passages)) {
     steps.push({ kind: "apassage", passage: p.id, label: "Reading" });
-    p.questions.forEach(q => steps.push({ kind: "aq", item: q.id, label: "Reading" }));
+    p.questions.forEach(q => steps.push({ kind: "aq", item: q.id, label: `Reading · ${p.title}` }));
   }
   return steps;
 }
@@ -1313,10 +1320,15 @@ RENDER.apassage = (st, body, done) => {
 };
 RENDER.aq = (st, body, done) => {
   const it = st.item;
+  // Reading (Luis): every question names its passage, and the passage stays open with it.
+  // Laptop: passage above the question. Phone: question first, passage right below it.
+  let passageBox = null;
   if (it.passage) {
     const p = APASS[it.passage];
-    body.append(h("details", { class: "panel", open: isPhone() ? null : true }, h("summary", null, `${p.title}: reread the passage`), h("div", { style: "margin-top:8px" }, passageNode(p))));
-    body.append(h("p", { class: "quote" }, it.stem));
+    passageBox = h("section", { class: "panel stack-s" }, h("h3", null, `The passage: ${p.title}`), passageNode(p));
+    if (!isPhone()) body.append(passageBox);
+    body.append(h("p", { class: "small muted", style: "margin:0" }, `Question about "${p.title}"`),
+      h("p", { class: "quote", "data-passage": p.title }, it.stem));
   } else body.append(h("p", { class: "muted" }, "What does the word in bold mean here?"), boldWord(it.sentence));
   const order = shuffle(it.options.map((_, i) => i));
   const opts = h("div", { class: "opts" });
@@ -1327,6 +1339,7 @@ RENDER.aq = (st, body, done) => {
   if (it.part !== "reading") opts.append(h("button", { class: "opt idk", onclick: e => pick(-1, e.currentTarget) }, "I don't know"));
   next.addEventListener("click", () => done({ assess: { id: it.id, part: it.part, level: it.level, skill: it.skill || null, ok: picked === it.answer, pick: picked >= 0 ? it.options[picked] : null } }));
   body.append(opts, next);
+  if (passageBox && isPhone()) body.append(passageBox);
 };
 
 /* Results: levels with scores, the reading skill profile, what it means, and everything missed. */

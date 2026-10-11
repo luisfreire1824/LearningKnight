@@ -68,6 +68,16 @@ def main(path):
             for q in p["questions"]:
                 ids.append(q["id"])
                 check_options(q["id"], q["options"], q["answer"], SPREAD_READING, problems)
+                # A question must be about its own passage (Luis): quoted phrases and the things a
+                # "compare X to Y" question names have to appear in that passage.
+                text = " ".join(p["paragraphs"]).lower()
+                named = re.findall(r'"([^"]+)"', q["stem"])
+                m = re.search(r"compare (?:a |an |the )?([\w-]+).*? (?:to|with) (?:a |an |the )?([\w-]+)", q["stem"].lower())
+                if m:
+                    named += [m.group(1), m.group(2)]
+                for n in named:
+                    if n.lower().rstrip("s")[:6] not in text:
+                        problems.append(f"{q['id']}: question mentions \"{n}\", which isn't in its passage")
                 if q["skill"] == "vocab":
                     m = re.search(r"what does (\w+) mean", q["stem"])
                     if not m or m.group(1) not in " ".join(p["paragraphs"]):
