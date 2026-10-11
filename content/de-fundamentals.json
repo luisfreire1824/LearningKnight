@@ -1,0 +1,212 @@
+{
+ "id": "de-fundamentals",
+ "title": "Data engineering: Fundamentals",
+ "passMark": 0.9,
+ "topics": [
+  {
+   "id": "F1",
+   "title": "Dimensional modeling",
+   "about": "Grain, fact table types, conformed and special dimensions",
+   "items": [
+    {
+     "id": "de-f1-grain",
+     "concept": "Declaring the grain",
+     "stem": "You're designing a retail sales fact table. The register system records one row per item scanned. Which grain should you declare?",
+     "options": [
+      "One row per item on each receipt",
+      "One row per receipt, with its total",
+      "One row per store for each day",
+      "One row per product for each week"
+     ],
+     "answer": 0,
+     "why": "Start at the most atomic grain the source supports. You can always roll item lines up to receipts, days or weeks; you can never break a daily total back down into items."
+    },
+    {
+     "id": "de-f1-mixed",
+     "concept": "Keeping one grain per fact table",
+     "stem": "This fact table is one row per order line. Someone added each order's shipping cost to every line. What goes wrong?",
+     "options": [
+      "Summing shipping overstates it",
+      "Lines can no longer join to dates",
+      "The product key stops being unique",
+      "Quantity stops adding up by order"
+     ],
+     "answer": 0,
+     "why": "Shipping cost belongs to the order, not the line, so it repeats on every line and sums to 2x or 3x the real amount. Allocate it across lines, or keep it in an order-grain fact table.",
+     "table": {
+      "cols": [
+       "order_no",
+       "line",
+       "product",
+       "qty",
+       "shipping_cost"
+      ],
+      "rows": [
+       [
+        "1001",
+        "1",
+        "Mug",
+        "2",
+        "8.00"
+       ],
+       [
+        "1001",
+        "2",
+        "Plate",
+        "4",
+        "8.00"
+       ],
+       [
+        "1001",
+        "3",
+        "Bowl",
+        "1",
+        "8.00"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "de-f1-periodic",
+     "concept": "Fact table types: periodic snapshot",
+     "stem": "Finance wants every account's balance at the end of each month, including accounts with no activity that month. Which fact table fits?",
+     "options": [
+      "A snapshot: one row per account per month",
+      "A transaction fact: one row per deposit",
+      "One row per account, updated over time",
+      "A factless fact: one row per account opened"
+     ],
+     "answer": 0,
+     "why": "A periodic snapshot records the state of every account at a regular interval, whether anything happened or not. A transaction fact only has rows when something happens."
+    },
+    {
+     "id": "de-f1-accum",
+     "concept": "Fact table types: accumulating snapshot",
+     "stem": "You need to track each insurance claim from filed to approved to paid, and report the days between those steps. Which design fits best?",
+     "options": [
+      "One row per claim, updated each step",
+      "One row per claim event, never updated",
+      "A monthly snapshot of all open claims",
+      "A claim dimension with type 2 history"
+     ],
+     "answer": 0,
+     "why": "An accumulating snapshot has one row per claim with a date for each milestone, revisited as the claim moves along. Lags like days from filed to approved become simple column math."
+    },
+    {
+     "id": "de-f1-conformed",
+     "concept": "Conformed dimensions and drill-across",
+     "stem": "Sales and returns are separate fact tables. Leadership wants return rate by product category. What makes that report reliable?",
+     "options": [
+      "Both facts use one conformed product dimension",
+      "Both facts are stored in the same database schema",
+      "Returns are loaded after sales every night",
+      "Each fact keeps its own copy of the product table"
+     ],
+     "answer": 0,
+     "why": "Drilling across two facts works when they share a conformed dimension: same keys, same attribute values. Separate product tables drift, and the categories stop lining up."
+    },
+    {
+     "id": "de-f1-surrogate",
+     "concept": "Surrogate keys",
+     "stem": "Why give a customer dimension its own surrogate key instead of using the source system's customer ID?",
+     "options": [
+      "To keep several versions of one customer",
+      "To make the table smaller than the source",
+      "To hide customer identities from analysts",
+      "To remove the need for a date dimension"
+     ],
+     "answer": 0,
+     "why": "A surrogate key lets one source customer have several rows over time (type 2 history), and shields the warehouse from source ID changes or merges across systems."
+    },
+    {
+     "id": "de-f1-roleplay",
+     "concept": "Role-playing dimensions",
+     "stem": "An orders fact has an order date, a ship date and a delivery date. What is the standard way to model these?",
+     "options": [
+      "Join one date dimension three times, by role",
+      "Build three separate date dimension tables",
+      "Store all three dates as text in the fact",
+      "Keep order date; work out the rest in reports"
+     ],
+     "answer": 0,
+     "why": "One physical date dimension plays three roles, usually through views or aliases (order date, ship date, delivery date). It stays consistent and only has to be maintained once."
+    },
+    {
+     "id": "de-f1-degenerate",
+     "concept": "Degenerate dimensions",
+     "stem": "Each order-line row carries the order number. There's nothing else to describe about an order that other dimensions don't already cover. Where should the order number live?",
+     "options": [
+      "In the fact, as a degenerate dimension",
+      "In its own one-column order dimension table",
+      "In the customer dimension, beside the name",
+      "Nowhere; it isn't needed for any analysis"
+     ],
+     "answer": 0,
+     "why": "An order number with no attributes of its own stays in the fact table as a degenerate dimension. It's still useful for grouping lines into orders and tracing back to the source."
+    },
+    {
+     "id": "de-f1-junk",
+     "concept": "Junk dimensions",
+     "stem": "A sales fact has five yes/no flags: gift wrap, rush, coupon used, online and member. What is a common way to model them?",
+     "options": [
+      "Combine them into one junk dimension",
+      "Give each flag its own dimension table",
+      "Add all five to the product dimension",
+      "Drop them; flags don't belong in a model"
+     ],
+     "answer": 0,
+     "why": "A junk dimension holds the combinations of small low-cardinality flags in one table, so the fact gets one key instead of five, and the flags stay out of unrelated dimensions."
+    },
+    {
+     "id": "de-f1-factless",
+     "concept": "Factless fact tables",
+     "stem": "You need to record which students attended which class sessions. There is no amount or quantity to measure. What do you build?",
+     "options": [
+      "A factless fact table of attendance events",
+      "A student dimension listing their classes",
+      "A periodic snapshot of each class's grades",
+      "A bridge table between student and teacher"
+     ],
+     "answer": 0,
+     "why": "A factless fact records that an event happened, with keys and no measures. You count rows. A coverage version (who was enrolled) also answers who didn't show up."
+    }
+   ]
+  },
+  {
+   "id": "F2",
+   "title": "Change over time",
+   "about": "Slowly changing dimensions, late-arriving data",
+   "soon": true
+  },
+  {
+   "id": "F3",
+   "title": "Measures and grain-safe SQL",
+   "about": "Additivity, fan-out, NULLs, windows, MERGE",
+   "soon": true
+  },
+  {
+   "id": "F4",
+   "title": "Pipelines",
+   "about": "Incremental loads, idempotency, backfills, orchestration",
+   "soon": true
+  },
+  {
+   "id": "F5",
+   "title": "Storage and the lakehouse",
+   "about": "Columnar files, partitioning, Delta, medallion layers",
+   "soon": true
+  },
+  {
+   "id": "F6",
+   "title": "Data quality",
+   "about": "Expectations, reconciliation, freshness, contracts",
+   "soon": true
+  },
+  {
+   "id": "F7",
+   "title": "Metrics and the semantic layer",
+   "about": "One definition per metric, ratio traps, serving BI",
+   "soon": true
+  }
+ ]
+}

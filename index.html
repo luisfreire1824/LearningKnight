@@ -174,6 +174,7 @@ let UNITS = [];          // every unit, in course order
 let WORDS = [], BANK = [], FINDABLE = [], SENTENCES = [], GLOSS = {};  // looked up across the whole course
 let C = null;            // the unit being worked on right now
 let SWEEP = null;         // adult vocabulary sweep (content/sweep-en.json)
+let DE = null;            // data engineering fundamentals (content/de-fundamentals.json)
 let ASSESS = null, FORMS = {}, AITEM = {}, APASS = {};  // placement check: one file per version (form A, B…); ASSESS = the form in use
 let store = null;        // storage adapter
 let P = null;            // current profile {id, data}
@@ -385,7 +386,7 @@ function ensure(p) {
 }
 const TRACKS = [
   { id: "sweep", name: "Vocabulary sweep", about: "Grade 9 to College words. Only the ones you miss become lessons." },
-  { id: "de", name: "Data engineering", about: "Fundamentals path, starting with dimensional modeling.", soon: true },
+  { id: "de", name: "Data engineering", about: "Fundamentals path: a diagnostic per topic, starting with dimensional modeling." },
   { id: "acct", name: "Accounting", about: "Planned from the placement check results.", soon: true }];
 const isAdult = d => (d || (P && P.data) || {}).track === "adult";
 /* Units unlock in order: the current unit is the first one with a session still to do. */
@@ -637,6 +638,7 @@ function showAdultHome() {
     resumePanel(d),
     noCheck ? assessPanel(d) : null,
     active.includes("sweep") ? sweepPanel(d) : null,
+    active.includes("de") ? dePanel(d) : null,
     noCheck ? null : assessPanel(d)));
   screen = "home";
 }
@@ -854,7 +856,7 @@ async function continueRun() {
       st.save = () => { o.wi = st.wi; o.keys = st.keys; o.first = st.first; o.right = st.right; persist(); };
       const out = await renderStep(st, { i, n: run.steps.length, title: run.title });
       if (out === "leave") { await persist(); inSession = false; showHome(); return; }
-      if (out && out.assess) { if (run.type === "sweep") sweepRecord(run, out.assess); else run.assess.answers.push(out.assess); }
+      if (out && out.assess) { if (run.type === "sweep") sweepRecord(run, out.assess); else if (run.type === "diag") run.diag.answers.push(out.assess); else run.assess.answers.push(out.assess); }
       if (out && typeof out === "object") {
         if (out.graded) { R.total++; if (out.ok) R.right++; if (st.check) { R.checkTotal++; if (out.ok) R.checkRight++; } }
         (out.changes || []).forEach(c => c && R.changes.push(c));
@@ -868,6 +870,12 @@ async function continueRun() {
   } finally { inSession = false; }
   delete P.data.run;
   if (run.type === "sweep") { await persist(); return sweepSummary(run); }
+  if (run.type === "diag") {
+    const res = diagResult(run);
+    P.data.de = P.data.de || {}; (P.data.de[res.topic] = P.data.de[res.topic] || []).push(res);
+    await persist();
+    return showDiagResult(res, showHome);
+  }
   if (run.type === "assess") {
     const res = assessResult(run);
     P.data.assessments.push(res);
@@ -1392,7 +1400,8 @@ RENDER.aq = (st, body, done) => {
     if (!isPhone()) body.append(passageBox);
     body.append(h("p", { class: "small muted", style: "margin:0" }, `Question about "${p.title}"`),
       h("p", { class: "quote", "data-passage": p.title }, it.stem));
-  } else body.append(h("p", { class: "muted" }, "What does the word in bold mean here?"), boldWord(it.sentence));
+  } else if (it.part === "de") body.append(h("p", { class: "quote" }, it.stem), it.table ? tableNode(it.table) : null);
+  else body.append(h("p", { class: "muted" }, "What does the word in bold mean here?"), boldWord(it.sentence));
   const order = shuffle(it.options.map((_, i) => i));
   const opts = h("div", { class: "opts" });
   const next = h("button", { class: "btn primary wide", disabled: true }, "Next");
@@ -1624,6 +1633,71 @@ function sweepPanel(d) {
     busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
 }
 
+/* ================= DATA ENGINEERING: FUNDAMENTALS =================
+   Each topic opens with a 10-question diagnostic (90% = solid, skip the topic).
+   Scenario questions, "I don't know" allowed, no feedback until the end. */
+const deTopic = id => DE.topics.find(t => t.id === id);
+const deResults = (d, id) => ((d.de || {})[id] || []);
+function tableNode(tb) {
+  return h("div", { class: "tablebox" }, h("table", null,
+    h("thead", null, h("tr", null, tb.cols.map(c => h("th", null, c)))),
+    h("tbody", null, tb.rows.map(r => h("tr", null, r.map(c => h("td", null, c)))))));
+}
+function runDiag(topicId) {
+  const T = deTopic(topicId);
+  const steps = [{ kind: "note", label: `${T.title} diagnostic`, text: `${T.items.length} scenario questions on ${T.title.toLowerCase()}. Pick the best answer, or "I don't know" if you'd be guessing: an honest gap is more useful than a lucky guess. Get ${Math.round(DE.passMark * T.items.length)} or more right and this topic is marked solid.` },
+    ...T.items.map(it => ({ kind: "aq", item: AITEM[it.id], label: `Data engineering · ${T.title}` }))];
+  return startRun({ type: "diag", title: `${T.title} diagnostic`, diag: { topic: topicId, answers: [] } }, steps, new Set());
+}
+function diagResult(run) {
+  const ans = run.diag.answers;
+  return { topic: run.diag.topic, day: today(), at: Date.now(), right: ans.filter(a => a.ok).length, total: ans.length, answers: ans.map(a => ({ id: a.id, ok: a.ok, pick: a.pick })) };
+}
+function diagText(res) {
+  const T = deTopic(res.topic);
+  const lines = [`Learning Knight data engineering diagnostic: ${P.data.name}, ${res.topic} ${T.title}, ${dayLabel(res.day)}`, `Score: ${res.right}/${res.total} (pass ${Math.round(DE.passMark * 100)}%)`, "", "Missed:"];
+  res.answers.filter(a => !a.ok).forEach(a => { const q = AITEM[a.id]; lines.push(`- ${q.concept}: ${q.stem} Picked "${a.pick || "I don't know"}"; best answer "${q.options[q.answer]}"`); });
+  lines.push("", "Right: " + res.answers.filter(a => a.ok).map(a => AITEM[a.id].concept).join("; "));
+  return lines.join("\n");
+}
+function showDiagResult(res, back) {
+  const T = deTopic(res.topic), pass = res.right / res.total >= DE.passMark;
+  const missed = res.answers.filter(a => !a.ok), got = res.answers.filter(a => a.ok);
+  const copy = h("button", { class: "btn" }, "Copy results to share");
+  copy.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(diagText(res)); copy.textContent = "Copied. Paste it into your chat"; }
+    catch (e) { const ta = h("textarea", { readonly: true, style: "min-height:10rem;font-size:.8rem" }); ta.value = diagText(res); copy.replaceWith(ta); ta.select(); }
+  });
+  frame(h("div", { class: "stack" },
+    h("div", { class: "row between" }, h("span", { class: "label" }, `${res.topic} · ${T.title} · ${dayLabel(res.day)}`), h("button", { class: "btn", onclick: back }, "Back")),
+    h("h1", null, `${res.right} of ${res.total}`),
+    h("p", { class: "panel" }, pass ? `Solid. ${T.title} is marked done, so you can skip its lessons.` : `Below ${Math.round(DE.passMark * 100)}%, so ${T.title} stays on your path. The lessons will focus on the ${missed.length} concept${missed.length === 1 ? "" : "s"} below.`),
+    missed.length ? h("section", { class: "panel stack-s" }, h("h3", null, pass ? "The one to tidy up" : "Concepts to learn"),
+      missed.map(a => { const q = AITEM[a.id]; return h("details", null, h("summary", null, q.concept),
+        h("div", { class: "stack-s", style: "margin-top:8px" }, h("p", null, q.stem), q.table ? tableNode(q.table) : null,
+          h("p", { class: "small" }, h("b", null, "Your answer: "), a.pick || "I don't know"),
+          h("p", { class: "small" }, h("b", null, "Best answer: "), q.options[q.answer]),
+          h("p", { class: "small muted" }, q.why))); })) : null,
+    got.length ? h("section", { class: "panel stack-s" }, h("h3", null, "Already solid"), h("p", { class: "small" }, got.map(a => AITEM[a.id].concept).join(" · "))) : null,
+    copy,
+    continueBtn(back, "Done")));
+  screen = "results";
+}
+function dePanel(d) {
+  if (!DE || isHelper()) return null;
+  const busy = !!d.run;
+  return h("div", { class: "panel stack-s" },
+    h("div", { class: "row between" }, h("h3", null, "Data engineering"), h("span", { class: "small muted" }, "Fundamentals")),
+    h("div", { class: "wordlist" }, DE.topics.map(T => {
+      const rs = deResults(d, T.id), last = rs[rs.length - 1];
+      const status = T.soon ? h("span", { class: "small muted" }, "coming soon")
+        : last ? h("button", { class: "btn small", onclick: () => showDiagResult(last, showHome) }, `${last.right}/${last.total} · results`)
+        : h("button", { class: "btn small primary", onclick: () => runDiag(T.id), disabled: busy || null }, "Take the diagnostic");
+      return h("div", { class: "wl", style: "gap:10px" }, h("span", { class: "small" }, h("b", null, `${T.id} ${T.title}`), h("br"), h("span", { class: "muted" }, T.about)), status);
+    })),
+    busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
+}
+
 /* ================= PARENT VIEW ================= */
 /* Invite links look like …/LearningKnight/?join=CODE. Accepting needs a signed-in Google account. */
 let pendingJoin = (() => { try { return new URLSearchParams(location.search).get("join"); } catch (e) { return null; } })();
@@ -1760,6 +1834,11 @@ async function showParent() {
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
       h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
 
+    DE && d.de && Object.keys(d.de).length ? h("section", { class: "panel stack-s" },
+      h("h3", null, "Data engineering"),
+      DE.topics.filter(T => deResults(d, T.id).length).map(T => { const r = deResults(d, T.id).slice(-1)[0];
+        return h("div", { class: "row between" }, h("span", { class: "small" }, h("b", null, `${T.id} ${T.title}`), ` · ${r.right}/${r.total} · ${dayLabel(r.day)}`),
+          h("button", { class: "btn small", onclick: () => showDiagResult(r, showParent) }, "Results")); })) : null,
     SWEEP && d.sweep && Object.keys(d.sweep).length ? h("section", { class: "panel stack-s" },
       h("h3", null, "Vocabulary sweep"),
       SWEEP.levels.map(L => ({ L, st: sweepStats(d, L) })).filter(x => x.st.checked).map(({ L, st }) =>
@@ -1863,6 +1942,12 @@ async function boot() {
       } catch (e) { /* the course still works without the check */ }
     }
     ASSESS = FORMS.A || FORMS[formKeys()[0]] || null;
+    if (COURSE.de) {
+      try {
+        DE = await get(base + COURSE.de);
+        for (const T of DE.topics) (T.items || []).forEach(it => { AITEM[it.id] = { ...it, part: "de", level: T.id }; });
+      } catch (e) { DE = null; }
+    }
     if (COURSE.sweep) {
       try {
         SWEEP = await get(base + COURSE.sweep);

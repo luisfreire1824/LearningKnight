@@ -1,0 +1,50 @@
+# Data engineering Fundamentals, F1 Dimensional modeling: diagnostic (10 questions, 90% to pass).
+# Correct answer first; the app shuffles. concept = what a miss says to learn.
+def Q(id, concept, stem, options, why, table=None):
+    q = {"id": "de-f1-" + id, "concept": concept, "stem": stem, "options": options, "answer": 0, "why": why}
+    if table: q["table"] = table
+    return q
+
+F1 = [
+  Q("grain", "Declaring the grain",
+    "You're designing a retail sales fact table. The register system records one row per item scanned. Which grain should you declare?",
+    ["One row per item on each receipt", "One row per receipt, with its total", "One row per store for each day", "One row per product for each week"],
+    "Start at the most atomic grain the source supports. You can always roll item lines up to receipts, days or weeks; you can never break a daily total back down into items."),
+  Q("mixed", "Keeping one grain per fact table",
+    "This fact table is one row per order line. Someone added each order's shipping cost to every line. What goes wrong?",
+    ["Summing shipping overstates it", "Lines can no longer join to dates", "The product key stops being unique", "Quantity stops adding up by order"],
+    "Shipping cost belongs to the order, not the line, so it repeats on every line and sums to 2x or 3x the real amount. Allocate it across lines, or keep it in an order-grain fact table.",
+    {"cols": ["order_no", "line", "product", "qty", "shipping_cost"], "rows": [["1001", "1", "Mug", "2", "8.00"], ["1001", "2", "Plate", "4", "8.00"], ["1001", "3", "Bowl", "1", "8.00"]]}),
+  Q("periodic", "Fact table types: periodic snapshot",
+    "Finance wants every account's balance at the end of each month, including accounts with no activity that month. Which fact table fits?",
+    ["A snapshot: one row per account per month", "A transaction fact: one row per deposit", "One row per account, updated over time", "A factless fact: one row per account opened"],
+    "A periodic snapshot records the state of every account at a regular interval, whether anything happened or not. A transaction fact only has rows when something happens."),
+  Q("accum", "Fact table types: accumulating snapshot",
+    "You need to track each insurance claim from filed to approved to paid, and report the days between those steps. Which design fits best?",
+    ["One row per claim, updated each step", "One row per claim event, never updated", "A monthly snapshot of all open claims", "A claim dimension with type 2 history"],
+    "An accumulating snapshot has one row per claim with a date for each milestone, revisited as the claim moves along. Lags like days from filed to approved become simple column math."),
+  Q("conformed", "Conformed dimensions and drill-across",
+    "Sales and returns are separate fact tables. Leadership wants return rate by product category. What makes that report reliable?",
+    ["Both facts use one conformed product dimension", "Both facts are stored in the same database schema", "Returns are loaded after sales every night", "Each fact keeps its own copy of the product table"],
+    "Drilling across two facts works when they share a conformed dimension: same keys, same attribute values. Separate product tables drift, and the categories stop lining up."),
+  Q("surrogate", "Surrogate keys",
+    "Why give a customer dimension its own surrogate key instead of using the source system's customer ID?",
+    ["To keep several versions of one customer", "To make the table smaller than the source", "To hide customer identities from analysts", "To remove the need for a date dimension"],
+    "A surrogate key lets one source customer have several rows over time (type 2 history), and shields the warehouse from source ID changes or merges across systems."),
+  Q("roleplay", "Role-playing dimensions",
+    "An orders fact has an order date, a ship date and a delivery date. What is the standard way to model these?",
+    ["Join one date dimension three times, by role", "Build three separate date dimension tables", "Store all three dates as text in the fact", "Keep order date; work out the rest in reports"],
+    "One physical date dimension plays three roles, usually through views or aliases (order date, ship date, delivery date). It stays consistent and only has to be maintained once."),
+  Q("degenerate", "Degenerate dimensions",
+    "Each order-line row carries the order number. There's nothing else to describe about an order that other dimensions don't already cover. Where should the order number live?",
+    ["In the fact, as a degenerate dimension", "In its own one-column order dimension table", "In the customer dimension, beside the name", "Nowhere; it isn't needed for any analysis"],
+    "An order number with no attributes of its own stays in the fact table as a degenerate dimension. It's still useful for grouping lines into orders and tracing back to the source."),
+  Q("junk", "Junk dimensions",
+    "A sales fact has five yes/no flags: gift wrap, rush, coupon used, online and member. What is a common way to model them?",
+    ["Combine them into one junk dimension", "Give each flag its own dimension table", "Add all five to the product dimension", "Drop them; flags don't belong in a model"],
+    "A junk dimension holds the combinations of small low-cardinality flags in one table, so the fact gets one key instead of five, and the flags stay out of unrelated dimensions."),
+  Q("factless", "Factless fact tables",
+    "You need to record which students attended which class sessions. There is no amount or quantity to measure. What do you build?",
+    ["A factless fact table of attendance events", "A student dimension listing their classes", "A periodic snapshot of each class's grades", "A bridge table between student and teacher"],
+    "A factless fact records that an event happened, with keys and no measures. You count rows. A coverage version (who was enrolled) also answers who didn't show up."),
+]
