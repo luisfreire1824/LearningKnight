@@ -20,6 +20,9 @@ Live site: https://luisfreire1824.github.io/LearningKnight/
   `content/` plus one line here.
 - `firebase-config.js` — Firebase web settings. Empty = this-device-only mode.
 - `firestore.rules` — database security rules (paste into the Firebase console)
+- `content/sweep-en.json` — adult vocabulary sweep (Grade 9 so far, 151 words). Built from
+  `tools/sweep_g9_source.py` with `tools/build_sweep.py` (wrong choices are other words'
+  meanings, same part of speech, never near-synonyms, lengths balanced).
 - `tools/check_items.py` — run before shipping any unit (checks every unit, and
   that words and item ids are unique across the course):
   `python3 tools/check_items.py content/course.json`

@@ -1,0 +1,1978 @@
+{
+ "id": "sweep-en",
+ "title": "Vocabulary sweep",
+ "batch": 20,
+ "confirmAfter": 7,
+ "passMark": 0.9,
+ "levels": [
+  {
+   "id": "g9",
+   "name": "Grade 9",
+   "items": [
+    {
+     "id": "sw-g9-comparative",
+     "word": "comparative",
+     "pos": "adj",
+     "sentence": "The report shows the [comparative] cost of each option.",
+     "options": [
+      "measured against something else",
+      "easily affected or harmed",
+      "opposite in meaning or direction",
+      "happening slowly over time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-emergence",
+     "word": "emergence",
+     "pos": "n",
+     "sentence": "Analysts tracked the [emergence] of new competitors.",
+     "options": [
+      "the process of coming into existence",
+      "a weakness open to attack or harm",
+      "the ability to last without causing harm",
+      "a combination of parts into a whole"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-formulate",
+     "word": "formulate",
+     "pos": "v",
+     "sentence": "The team needs to [formulate] a response by Friday.",
+     "options": [
+      "to create or develop carefully",
+      "to be a typical example of",
+      "to stick to a rule or plan",
+      "to involve as a necessary part"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-manipulation",
+     "word": "manipulation",
+     "pos": "n",
+     "sentence": "The regulator found evidence of price [manipulation].",
+     "options": [
+      "unfair control or influence",
+      "agreement in direction or goals",
+      "conflict or disagreement",
+      "a range with no sharp divisions"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-manifest",
+     "word": "manifest",
+     "pos": "v",
+     "sentence": "The stress began to [manifest] itself in missed deadlines.",
+     "options": [
+      "to show clearly",
+      "to sort into groups",
+      "to make less severe",
+      "to work together"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-respective",
+     "word": "respective",
+     "pos": "adj",
+     "sentence": "The two managers returned to their [respective] offices.",
+     "options": [
+      "belonging to each one separately",
+      "small and not very important",
+      "increasing by adding up over time",
+      "not done or caused straight away"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-entail",
+     "word": "entail",
+     "pos": "v",
+     "sentence": "The new role will [entail] some travel.",
+     "options": [
+      "to involve as a necessary part",
+      "to make something continue",
+      "to become or make stronger",
+      "to develop over time with effort"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-encompass",
+     "word": "encompass",
+     "pos": "v",
+     "sentence": "The project will [encompass] all three regions.",
+     "options": [
+      "to include a wide range of",
+      "to copy or repeat exactly",
+      "to show someone was involved",
+      "to stick to a rule or plan"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-governance",
+     "word": "governance",
+     "pos": "n",
+     "sentence": "Investors raised questions about the company's [governance].",
+     "options": [
+      "how an organization is run",
+      "gradual wearing away or weakening",
+      "a range with no sharp divisions",
+      "a decline in quality or condition"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-rationale",
+     "word": "rationale",
+     "pos": "n",
+     "sentence": "She explained the [rationale] for the price change.",
+     "options": [
+      "the reasons behind a decision",
+      "the way the parts are arranged",
+      "an official order or authority to act",
+      "dependence on someone or something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-configuration",
+     "word": "configuration",
+     "pos": "n",
+     "sentence": "The new [configuration] of the office surprised everyone.",
+     "options": [
+      "the way the parts are arranged",
+      "an interruption that causes problems",
+      "agreement in direction or goals",
+      "gradual wearing away or weakening"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-indirect",
+     "word": "indirect",
+     "pos": "adj",
+     "sentence": "The change had an [indirect] effect on sales.",
+     "options": [
+      "not done or caused straight away",
+      "accepting things without acting",
+      "able to adjust to new conditions",
+      "relevant to a particular case"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-differentiate",
+     "word": "differentiate",
+     "pos": "v",
+     "sentence": "The brand tries to [differentiate] itself from rivals.",
+     "options": [
+      "to show or see how things differ",
+      "to copy or repeat exactly",
+      "to create or develop carefully",
+      "to increase or make more intense"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-optimal",
+     "word": "optimal",
+     "pos": "adj",
+     "sentence": "They found the [optimal] time to launch.",
+     "options": [
+      "best or most favorable",
+      "slowed by official rules",
+      "likely to happen or be true",
+      "logical and consistent"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-passive",
+     "word": "passive",
+     "pos": "adj",
+     "sentence": "The board took a [passive] role in the decision.",
+     "options": [
+      "accepting things without acting",
+      "in conflict with each other",
+      "increasing by adding up over time",
+      "in the middle between two levels"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-justification",
+     "word": "justification",
+     "pos": "n",
+     "sentence": "There was little [justification] for the delay.",
+     "options": [
+      "a good reason for something",
+      "something used in place of another",
+      "a person who supports an idea",
+      "a person's usual mood or attitude"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-relevance",
+     "word": "relevance",
+     "pos": "n",
+     "sentence": "He questioned the [relevance] of the data.",
+     "options": [
+      "how much something matters to the topic",
+      "a possible future event planned for",
+      "a range with no sharp divisions",
+      "the ability to last without causing harm"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-marginal",
+     "word": "marginal",
+     "pos": "adj",
+     "sentence": "The update made only a [marginal] difference.",
+     "options": [
+      "small and not very important",
+      "opposite in meaning or direction",
+      "next to or very near something",
+      "easily affected or harmed"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-maximize",
+     "word": "maximize",
+     "pos": "v",
+     "sentence": "The plan is designed to [maximize] profit.",
+     "options": [
+      "to make as large as possible",
+      "to increase or make more intense",
+      "to become or make stronger",
+      "to stick to a rule or plan"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-implicit",
+     "word": "implicit",
+     "pos": "adj",
+     "sentence": "There was an [implicit] threat in his email.",
+     "options": [
+      "suggested but not stated directly",
+      "general, not specific or branded",
+      "including everyone or everything",
+      "increasing by adding up over time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-erosion",
+     "word": "erosion",
+     "pos": "n",
+     "sentence": "The scandal led to an [erosion] of trust.",
+     "options": [
+      "gradual wearing away or weakening",
+      "a serious attempt or effort",
+      "a good reason for something",
+      "a person's usual mood or attitude"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-continuity",
+     "word": "continuity",
+     "pos": "n",
+     "sentence": "The new CEO promised [continuity] for customers.",
+     "options": [
+      "staying the same without breaks",
+      "a serious attempt or effort",
+      "openness about how things are done",
+      "dependence on someone or something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-analogy",
+     "word": "analogy",
+     "pos": "n",
+     "sentence": "She used a sports [analogy] to explain the plan.",
+     "options": [
+      "a comparison that explains something",
+      "a change that makes something misleading",
+      "the quality of being new and unusual",
+      "unfair use of people or things for profit"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-allocation",
+     "word": "allocation",
+     "pos": "n",
+     "sentence": "The [allocation] of the budget caused an argument.",
+     "options": [
+      "the sharing out of something for a purpose",
+      "openness about how things are done",
+      "a move from public to private ownership",
+      "a situation that seems to contradict itself"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-coordination",
+     "word": "coordination",
+     "pos": "n",
+     "sentence": "The launch required [coordination] across five teams.",
+     "options": [
+      "getting people or parts to work together",
+      "an official order or authority to act",
+      "a move from public to private ownership",
+      "a situation that seems to contradict itself"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-exert",
+     "word": "exert",
+     "pos": "v",
+     "sentence": "The largest investor can [exert] real pressure.",
+     "options": [
+      "to use force or influence",
+      "to stress the importance of",
+      "to make more difficult",
+      "to improve by small changes"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-dominance",
+     "word": "dominance",
+     "pos": "n",
+     "sentence": "The company's [dominance] of the market is fading.",
+     "options": [
+      "power or control over others",
+      "the quality of being unclear",
+      "openness about how things are done",
+      "something used in place of another"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-embed",
+     "word": "embed",
+     "pos": "v",
+     "sentence": "Security is [embedded] in every step of the process.",
+     "options": [
+      "to fix firmly inside something",
+      "to become or make stronger",
+      "to be the real cause beneath",
+      "to increase or make more intense"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-endeavor",
+     "word": "endeavor",
+     "pos": "n",
+     "sentence": "Starting a business is a risky [endeavor].",
+     "options": [
+      "a serious attempt or effort",
+      "a range with no sharp divisions",
+      "a rapid increase in number",
+      "a weakness open to attack or harm"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-contrary",
+     "word": "contrary",
+     "pos": "adj",
+     "sentence": "The results were [contrary] to our expectations.",
+     "options": [
+      "opposite in meaning or direction",
+      "including everyone or everything",
+      "general, not specific or branded",
+      "in the middle between two levels"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-mediate",
+     "word": "mediate",
+     "pos": "v",
+     "sentence": "A neutral party was brought in to [mediate].",
+     "options": [
+      "to help two sides reach agreement",
+      "to come before in time or order",
+      "to justify or make necessary",
+      "to suggest a possible explanation"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-ambiguity",
+     "word": "ambiguity",
+     "pos": "n",
+     "sentence": "The [ambiguity] in the contract caused a dispute.",
+     "options": [
+      "the quality of being unclear",
+      "a comparison that explains something",
+      "a large difference or inequality",
+      "gradual wearing away or weakening"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-applicable",
+     "word": "applicable",
+     "pos": "adj",
+     "sentence": "The rule is not [applicable] to part-time staff.",
+     "options": [
+      "relevant to a particular case",
+      "in conflict with each other",
+      "extremely important and urgent",
+      "existing in large amounts"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-cultivate",
+     "word": "cultivate",
+     "pos": "v",
+     "sentence": "She worked to [cultivate] relationships with clients.",
+     "options": [
+      "to develop over time with effort",
+      "to be a typical example of",
+      "to create or develop carefully",
+      "to suggest a possible explanation"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-precede",
+     "word": "precede",
+     "pos": "v",
+     "sentence": "A short meeting will [precede] the main event.",
+     "options": [
+      "to come before in time or order",
+      "to stick to a rule or plan",
+      "to make impossible in advance",
+      "to show or see how things differ"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-static",
+     "word": "static",
+     "pos": "adj",
+     "sentence": "Sales have been [static] for two quarters.",
+     "options": [
+      "not moving or changing",
+      "in conflict with each other",
+      "likely to happen or be true",
+      "strong and hard to break"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-vulnerability",
+     "word": "vulnerability",
+     "pos": "n",
+     "sentence": "The audit found a [vulnerability] in the system.",
+     "options": [
+      "a weakness open to attack or harm",
+      "a good reason for something",
+      "something used in place of another",
+      "the people a leader represents"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-selective",
+     "word": "selective",
+     "pos": "adj",
+     "sentence": "The firm is very [selective] about new hires.",
+     "options": [
+      "choosing carefully",
+      "acting independently",
+      "logical and consistent",
+      "countless or very many"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-autonomous",
+     "word": "autonomous",
+     "pos": "adj",
+     "sentence": "Each region runs as an [autonomous] unit.",
+     "options": [
+      "acting independently",
+      "existing in large amounts",
+      "imagined as a possibility",
+      "made of several parts"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-proponent",
+     "word": "proponent",
+     "pos": "n",
+     "sentence": "He is a strong [proponent] of remote work.",
+     "options": [
+      "a person who supports an idea",
+      "conflict or disagreement",
+      "the people a leader represents",
+      "staying the same without breaks"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-elicit",
+     "word": "elicit",
+     "pos": "v",
+     "sentence": "The survey aims to [elicit] honest feedback.",
+     "options": [
+      "to draw out a response",
+      "to include a wide range of",
+      "to treat as the same",
+      "to use force or influence"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-hypothesize",
+     "word": "hypothesize",
+     "pos": "v",
+     "sentence": "Researchers [hypothesize] that price drove the change.",
+     "options": [
+      "to suggest a possible explanation",
+      "to improve by small changes",
+      "to give authority or confidence to",
+      "to be the real cause beneath"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-underlie",
+     "word": "underlie",
+     "pos": "v",
+     "sentence": "Several problems [underlie] the drop in sales.",
+     "options": [
+      "to be the real cause beneath",
+      "to stick to a rule or plan",
+      "to fix firmly inside something",
+      "to make impossible in advance"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-analytical",
+     "word": "analytical",
+     "pos": "adj",
+     "sentence": "The role requires strong [analytical] skills.",
+     "options": [
+      "using careful logical study",
+      "suggested but not stated directly",
+      "likely to happen or be true",
+      "happening slowly over time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-replicate",
+     "word": "replicate",
+     "pos": "v",
+     "sentence": "Other labs could not [replicate] the result.",
+     "options": [
+      "to copy or repeat exactly",
+      "to wear away gradually",
+      "to improve by small changes",
+      "to explain in more detail"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-synthesis",
+     "word": "synthesis",
+     "pos": "n",
+     "sentence": "The report is a [synthesis] of five studies.",
+     "options": [
+      "a combination of parts into a whole",
+      "something that causes a change",
+      "getting involved where not wanted",
+      "an interruption that causes problems"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-adaptive",
+     "word": "adaptive",
+     "pos": "adj",
+     "sentence": "The software uses an [adaptive] pricing model.",
+     "options": [
+      "able to adjust to new conditions",
+      "spreading through every part",
+      "belonging to each one separately",
+      "happening slowly over time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-underscore",
+     "word": "underscore",
+     "pos": "v",
+     "sentence": "The outage [underscores] the need for backups.",
+     "options": [
+      "to stress the importance of",
+      "to make two things agree",
+      "to be a typical example of",
+      "to check that something is true"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-composite",
+     "word": "composite",
+     "pos": "adj",
+     "sentence": "The [composite] index tracks fifty companies.",
+     "options": [
+      "made of several parts",
+      "the same in all cases",
+      "happening without planning",
+      "likely to happen or be true"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-privatization",
+     "word": "privatization",
+     "pos": "n",
+     "sentence": "The [privatization] of the railway was controversial.",
+     "options": [
+      "a move from public to private ownership",
+      "the sharing out of something for a purpose",
+      "a decline in quality or condition",
+      "a weakness open to attack or harm"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-hierarchical",
+     "word": "hierarchical",
+     "pos": "adj",
+     "sentence": "The company has a very [hierarchical] structure.",
+     "options": [
+      "arranged in ranks or levels",
+      "best or most favorable",
+      "happening slowly over time",
+      "spreading through every part"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-linkage",
+     "word": "linkage",
+     "pos": "n",
+     "sentence": "Researchers found a [linkage] between the two trends.",
+     "options": [
+      "a connection between things",
+      "a rapid increase in number",
+      "progress or promotion",
+      "a lack of proper proportion"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-constrain",
+     "word": "constrain",
+     "pos": "v",
+     "sentence": "A small budget will [constrain] our options.",
+     "options": [
+      "to limit or restrict",
+      "to sort into groups",
+      "to make two things agree",
+      "to treat as the same"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-mobilize",
+     "word": "mobilize",
+     "pos": "v",
+     "sentence": "The union moved quickly to [mobilize] its members.",
+     "options": [
+      "to organize people for action",
+      "to create or develop carefully",
+      "to stress the importance of",
+      "to go beyond the limits of"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-disposition",
+     "word": "disposition",
+     "pos": "n",
+     "sentence": "He has a calm [disposition] under pressure.",
+     "options": [
+      "a person's usual mood or attitude",
+      "a move from public to private ownership",
+      "dependence on someone or something",
+      "a possible future event planned for"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-proliferation",
+     "word": "proliferation",
+     "pos": "n",
+     "sentence": "The [proliferation] of apps has confused users.",
+     "options": [
+      "a rapid increase in number",
+      "unfair control or influence",
+      "a serious attempt or effort",
+      "a connection between things"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-reliance",
+     "word": "reliance",
+     "pos": "n",
+     "sentence": "The company's [reliance] on one supplier is risky.",
+     "options": [
+      "dependence on someone or something",
+      "a good reason for something",
+      "a possible future event planned for",
+      "a large difference or inequality"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-categorize",
+     "word": "categorize",
+     "pos": "v",
+     "sentence": "We [categorize] tickets by urgency.",
+     "options": [
+      "to sort into groups",
+      "to make less severe",
+      "to limit or restrict",
+      "to draw out a response"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-exploitation",
+     "word": "exploitation",
+     "pos": "n",
+     "sentence": "The report documented the [exploitation] of workers.",
+     "options": [
+      "unfair use of people or things for profit",
+      "something used in place of another",
+      "the process of coming into existence",
+      "the sharing out of something for a purpose"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-collaborate",
+     "word": "collaborate",
+     "pos": "v",
+     "sentence": "The two teams will [collaborate] on the launch.",
+     "options": [
+      "to work together",
+      "to sort into groups",
+      "to show clearly",
+      "to understand fully"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-abundant",
+     "word": "abundant",
+     "pos": "adj",
+     "sentence": "Cheap labor was [abundant] in the region.",
+     "options": [
+      "existing in large amounts",
+      "easily affected or harmed",
+      "happening slowly over time",
+      "practical rather than idealistic"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-interference",
+     "word": "interference",
+     "pos": "n",
+     "sentence": "The CEO complained about political [interference].",
+     "options": [
+      "getting involved where not wanted",
+      "a possible future event planned for",
+      "a weakness open to attack or harm",
+      "a person's usual mood or attitude"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-verify",
+     "word": "verify",
+     "pos": "v",
+     "sentence": "Please [verify] the numbers before sending.",
+     "options": [
+      "to check that something is true",
+      "to show someone was involved",
+      "to add to something to improve it",
+      "to make as large as possible"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-instability",
+     "word": "instability",
+     "pos": "n",
+     "sentence": "Market [instability] worried investors.",
+     "options": [
+      "a lack of steadiness",
+      "conflict or disagreement",
+      "an argument or claim",
+      "nearness in space or time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-conform",
+     "word": "conform",
+     "pos": "v",
+     "sentence": "All products must [conform] to safety rules.",
+     "options": [
+      "to follow accepted rules or standards",
+      "to make impossible in advance",
+      "to discuss together before deciding",
+      "to spread out in different directions"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-advancement",
+     "word": "advancement",
+     "pos": "n",
+     "sentence": "The job offers little chance of [advancement].",
+     "options": [
+      "progress or promotion",
+      "an argument or claim",
+      "conflict or disagreement",
+      "how an organization is run"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-validate",
+     "word": "validate",
+     "pos": "v",
+     "sentence": "We need to [validate] the model with new data.",
+     "options": [
+      "to confirm that something is correct",
+      "to help two sides reach agreement",
+      "to have to pay a cost or penalty",
+      "to follow accepted rules or standards"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-warrant",
+     "word": "warrant",
+     "pos": "v",
+     "sentence": "The results don't [warrant] a price increase.",
+     "options": [
+      "to justify or make necessary",
+      "to happen at the same time",
+      "to make as large as possible",
+      "to show or see how things differ"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-coherent",
+     "word": "coherent",
+     "pos": "adj",
+     "sentence": "She gave a [coherent] explanation of the plan.",
+     "options": [
+      "logical and consistent",
+      "settling something clearly",
+      "countless or very many",
+      "using careful logical study"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-intermediate",
+     "word": "intermediate",
+     "pos": "adj",
+     "sentence": "The course is aimed at [intermediate] users.",
+     "options": [
+      "in the middle between two levels",
+      "settling something clearly",
+      "practical rather than idealistic",
+      "opposite in meaning or direction"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-empower",
+     "word": "empower",
+     "pos": "v",
+     "sentence": "The new policy will [empower] local managers.",
+     "options": [
+      "to give authority or confidence to",
+      "to involve as a necessary part",
+      "to be the real cause beneath",
+      "to discuss together before deciding"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-prevalent",
+     "word": "prevalent",
+     "pos": "adj",
+     "sentence": "Fraud is more [prevalent] online.",
+     "options": [
+      "widespread or common",
+      "best or most favorable",
+      "imagined as a possibility",
+      "easily affected or harmed"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-compatible",
+     "word": "compatible",
+     "pos": "adj",
+     "sentence": "The new system is not [compatible] with the old one.",
+     "options": [
+      "able to work together",
+      "arranged in ranks or levels",
+      "settling something clearly",
+      "easily affected or harmed"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-monopoly",
+     "word": "monopoly",
+     "pos": "n",
+     "sentence": "The firm was accused of running a [monopoly].",
+     "options": [
+      "complete control of a market by one company",
+      "a possible future event planned for",
+      "the arrival of something important",
+      "a situation that seems to contradict itself"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-disparity",
+     "word": "disparity",
+     "pos": "n",
+     "sentence": "There is a wide pay [disparity] between the teams.",
+     "options": [
+      "a large difference or inequality",
+      "a state of relying on something",
+      "something that causes a change",
+      "how much something matters to the topic"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-prevailing",
+     "word": "prevailing",
+     "pos": "adj",
+     "sentence": "The [prevailing] view is that rates will fall.",
+     "options": [
+      "most common at a particular time",
+      "increasing by adding up over time",
+      "settling something clearly",
+      "arranged in ranks or levels"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-disruption",
+     "word": "disruption",
+     "pos": "n",
+     "sentence": "The strike caused major [disruption].",
+     "options": [
+      "an interruption that causes problems",
+      "the reasons behind a decision",
+      "power or control over others",
+      "a comparison that explains something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-uniform",
+     "word": "uniform",
+     "pos": "adj",
+     "sentence": "Prices are [uniform] across all stores.",
+     "options": [
+      "the same in all cases",
+      "happening without planning",
+      "settling something clearly",
+      "slowed by official rules"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-generic",
+     "word": "generic",
+     "pos": "adj",
+     "sentence": "The pharmacy sells the [generic] version.",
+     "options": [
+      "general, not specific or branded",
+      "happening slowly over time",
+      "using careful logical study",
+      "able to adjust to new conditions"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-degradation",
+     "word": "degradation",
+     "pos": "n",
+     "sentence": "Users noticed a [degradation] in performance.",
+     "options": [
+      "a decline in quality or condition",
+      "getting involved where not wanted",
+      "a combination of parts into a whole",
+      "the ability to last without causing harm"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-complicate",
+     "word": "complicate",
+     "pos": "v",
+     "sentence": "New rules will [complicate] the merger.",
+     "options": [
+      "to make more difficult",
+      "to stress the importance of",
+      "to stick to a rule or plan",
+      "to reach a final point"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-transcend",
+     "word": "transcend",
+     "pos": "v",
+     "sentence": "Good design can [transcend] language barriers.",
+     "options": [
+      "to go beyond the limits of",
+      "to make two things agree",
+      "to draw out a response",
+      "to be the real cause beneath"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-coincide",
+     "word": "coincide",
+     "pos": "v",
+     "sentence": "The launch will [coincide] with the holiday sale.",
+     "options": [
+      "to happen at the same time",
+      "to make something continue",
+      "to draw out a response",
+      "to wear away gradually"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-dependency",
+     "word": "dependency",
+     "pos": "n",
+     "sentence": "The country has a heavy [dependency] on imports.",
+     "options": [
+      "a state of relying on something",
+      "agreement in direction or goals",
+      "the quality of being unclear",
+      "a comparison that explains something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-supplement",
+     "word": "supplement",
+     "pos": "v",
+     "sentence": "She does freelance work to [supplement] her salary.",
+     "options": [
+      "to add to something to improve it",
+      "to include a wide range of",
+      "to increase or make more intense",
+      "to suggest a possible explanation"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-sustainability",
+     "word": "sustainability",
+     "pos": "n",
+     "sentence": "The report focuses on [sustainability] goals.",
+     "options": [
+      "the ability to last without causing harm",
+      "a change that makes something misleading",
+      "how much something matters to the topic",
+      "the order of who takes over next"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-pervasive",
+     "word": "pervasive",
+     "pos": "adj",
+     "sentence": "There was a [pervasive] sense of uncertainty.",
+     "options": [
+      "spreading through every part",
+      "next to or very near something",
+      "using careful logical study",
+      "suggested but not stated directly"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-gradual",
+     "word": "gradual",
+     "pos": "adj",
+     "sentence": "There has been a [gradual] rise in costs.",
+     "options": [
+      "happening slowly over time",
+      "belonging to each one separately",
+      "including everyone or everything",
+      "easily affected or harmed"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-exemplify",
+     "word": "exemplify",
+     "pos": "v",
+     "sentence": "The project [exemplifies] the team's approach.",
+     "options": [
+      "to be a typical example of",
+      "to make something continue",
+      "to become or make stronger",
+      "to make as large as possible"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-activate",
+     "word": "activate",
+     "pos": "v",
+     "sentence": "Click the link to [activate] your account.",
+     "options": [
+      "to make something start working",
+      "to go beyond the limits of",
+      "to help two sides reach agreement",
+      "to involve as a necessary part"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-directive",
+     "word": "directive",
+     "pos": "n",
+     "sentence": "Staff received a [directive] to cut travel.",
+     "options": [
+      "an official instruction",
+      "a lack of steadiness",
+      "progress or promotion",
+      "conflict or disagreement"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-proximity",
+     "word": "proximity",
+     "pos": "n",
+     "sentence": "The store's [proximity] to the station helps sales.",
+     "options": [
+      "nearness in space or time",
+      "the reasons behind a decision",
+      "the way the parts are arranged",
+      "a large difference or inequality"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-bureaucratic",
+     "word": "bureaucratic",
+     "pos": "adj",
+     "sentence": "The approval process is slow and [bureaucratic].",
+     "options": [
+      "slowed by official rules",
+      "happening without planning",
+      "next to or very near something",
+      "small and not very important"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-refine",
+     "word": "refine",
+     "pos": "v",
+     "sentence": "We will [refine] the design after testing.",
+     "options": [
+      "to improve by small changes",
+      "to have to pay a cost or penalty",
+      "to become or make stronger",
+      "to organize people for action"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-substitute",
+     "word": "substitute",
+     "pos": "n",
+     "sentence": "There is no [substitute] for experience.",
+     "options": [
+      "something used in place of another",
+      "a gradual gathering of more",
+      "a state of relying on something",
+      "a possible future event planned for"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-robust",
+     "word": "robust",
+     "pos": "adj",
+     "sentence": "The system needs a more [robust] backup plan.",
+     "options": [
+      "strong and hard to break",
+      "existing in large amounts",
+      "accepting things without acting",
+      "imagined as a possibility"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-adhere",
+     "word": "adhere",
+     "pos": "v",
+     "sentence": "All vendors must [adhere] to the contract.",
+     "options": [
+      "to stick to a rule or plan",
+      "to happen at the same time",
+      "to make as large as possible",
+      "to make impossible in advance"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-intensify",
+     "word": "intensify",
+     "pos": "v",
+     "sentence": "Competition will [intensify] next year.",
+     "options": [
+      "to become or make stronger",
+      "to create or develop carefully",
+      "to copy or repeat exactly",
+      "to go beyond the limits of"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-continuum",
+     "word": "continuum",
+     "pos": "n",
+     "sentence": "Opinions fall along a [continuum].",
+     "options": [
+      "a range with no sharp divisions",
+      "a combination of parts into a whole",
+      "how much something matters to the topic",
+      "a weakness open to attack or harm"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-elaborate",
+     "word": "elaborate",
+     "pos": "v",
+     "sentence": "Could you [elaborate] on that point?",
+     "options": [
+      "to explain in more detail",
+      "to justify or make necessary",
+      "to show or see how things differ",
+      "to stress the importance of"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-paradox",
+     "word": "paradox",
+     "pos": "n",
+     "sentence": "It's a [paradox]: more choice made people less happy.",
+     "options": [
+      "a situation that seems to contradict itself",
+      "something used in place of another",
+      "the quality of being new and unusual",
+      "complete control of a market by one company"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-distortion",
+     "word": "distortion",
+     "pos": "n",
+     "sentence": "The chart's scale created a [distortion].",
+     "options": [
+      "a change that makes something misleading",
+      "unfair use of people or things for profit",
+      "the ability to last without causing harm",
+      "dependence on someone or something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-contradictory",
+     "word": "contradictory",
+     "pos": "adj",
+     "sentence": "The witnesses gave [contradictory] accounts.",
+     "options": [
+      "in conflict with each other",
+      "extremely important and urgent",
+      "settling something clearly",
+      "practical rather than idealistic"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-alignment",
+     "word": "alignment",
+     "pos": "n",
+     "sentence": "There is little [alignment] between the two teams.",
+     "options": [
+      "agreement in direction or goals",
+      "the people a leader represents",
+      "an interruption that causes problems",
+      "a range with no sharp divisions"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-preclude",
+     "word": "preclude",
+     "pos": "v",
+     "sentence": "The contract does not [preclude] future talks.",
+     "options": [
+      "to make impossible in advance",
+      "to improve by small changes",
+      "to fix firmly inside something",
+      "to happen at the same time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-constituency",
+     "word": "constituency",
+     "pos": "n",
+     "sentence": "The senator listened to her [constituency].",
+     "options": [
+      "the people a leader represents",
+      "how an organization is run",
+      "a rapid increase in number",
+      "a decline in quality or condition"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-inclusive",
+     "word": "inclusive",
+     "pos": "adj",
+     "sentence": "The company wants a more [inclusive] workplace.",
+     "options": [
+      "including everyone or everything",
+      "happening slowly over time",
+      "spreading through every part",
+      "opposite in meaning or direction"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-reconcile",
+     "word": "reconcile",
+     "pos": "v",
+     "sentence": "Accountants must [reconcile] the two sets of figures.",
+     "options": [
+      "to make two things agree",
+      "to make progress difficult",
+      "to be a typical example of",
+      "to improve by small changes"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-pragmatic",
+     "word": "pragmatic",
+     "pos": "adj",
+     "sentence": "She took a [pragmatic] approach to the budget.",
+     "options": [
+      "practical rather than idealistic",
+      "imagined as a possibility",
+      "likely to happen or be true",
+      "in the middle between two levels"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-susceptible",
+     "word": "susceptible",
+     "pos": "adj",
+     "sentence": "Older systems are more [susceptible] to attack.",
+     "options": [
+      "easily affected or harmed",
+      "accepting things without acting",
+      "most common at a particular time",
+      "not done or caused straight away"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-cumulative",
+     "word": "cumulative",
+     "pos": "adj",
+     "sentence": "The [cumulative] effect of small delays was large.",
+     "options": [
+      "increasing by adding up over time",
+      "general, not specific or branded",
+      "relevant to a particular case",
+      "suggested but not stated directly"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-succession",
+     "word": "succession",
+     "pos": "n",
+     "sentence": "The board discussed [succession] planning.",
+     "options": [
+      "the order of who takes over next",
+      "the ability to last without causing harm",
+      "the arrival of something important",
+      "how much something matters to the topic"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-decisive",
+     "word": "decisive",
+     "pos": "adj",
+     "sentence": "The vote was a [decisive] win for management.",
+     "options": [
+      "settling something clearly",
+      "likely to happen or be true",
+      "easily affected or harmed",
+      "strong and hard to break"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-spontaneous",
+     "word": "spontaneous",
+     "pos": "adj",
+     "sentence": "The crowd broke into [spontaneous] applause.",
+     "options": [
+      "happening without planning",
+      "imagined as a possibility",
+      "logical and consistent",
+      "arranged in ranks or levels"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-contention",
+     "word": "contention",
+     "pos": "n",
+     "sentence": "His main [contention] is that costs are too high.",
+     "options": [
+      "an argument or claim",
+      "the start or beginning",
+      "progress or promotion",
+      "conflict or disagreement"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-discern",
+     "word": "discern",
+     "pos": "v",
+     "sentence": "It is hard to [discern] a pattern in the data.",
+     "options": [
+      "to notice or understand with effort",
+      "to create or develop carefully",
+      "to combine into one stronger whole",
+      "to confirm that something is correct"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-accumulation",
+     "word": "accumulation",
+     "pos": "n",
+     "sentence": "The [accumulation] of debt worried lenders.",
+     "options": [
+      "a gradual gathering of more",
+      "the people a leader represents",
+      "openness about how things are done",
+      "getting involved where not wanted"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-displace",
+     "word": "displace",
+     "pos": "v",
+     "sentence": "New technology may [displace] some jobs.",
+     "options": [
+      "to push out of its usual place",
+      "to follow accepted rules or standards",
+      "to increase or make more intense",
+      "to check that something is true"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-broaden",
+     "word": "broaden",
+     "pos": "v",
+     "sentence": "The company plans to [broaden] its product line.",
+     "options": [
+      "to make wider in range",
+      "to use force or influence",
+      "to justify or make necessary",
+      "to improve by small changes"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-perpetuate",
+     "word": "perpetuate",
+     "pos": "v",
+     "sentence": "The policy may [perpetuate] old inequalities.",
+     "options": [
+      "to make something continue",
+      "to show or see how things differ",
+      "to explain in more detail",
+      "to show someone was involved"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-definitive",
+     "word": "definitive",
+     "pos": "adj",
+     "sentence": "There is no [definitive] answer yet.",
+     "options": [
+      "final and authoritative",
+      "not moving or changing",
+      "using careful logical study",
+      "countless or very many"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-hypothetical",
+     "word": "hypothetical",
+     "pos": "adj",
+     "sentence": "Let's consider a [hypothetical] case.",
+     "options": [
+      "imagined as a possibility",
+      "in conflict with each other",
+      "able to work together",
+      "made of several parts"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-confer",
+     "word": "confer",
+     "pos": "v",
+     "sentence": "The lawyers asked to [confer] privately.",
+     "options": [
+      "to discuss together before deciding",
+      "to stress the importance of",
+      "to be the real cause beneath",
+      "to notice or understand with effort"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-scarce",
+     "word": "scarce",
+     "pos": "adj",
+     "sentence": "Skilled engineers are [scarce] right now.",
+     "options": [
+      "hard to find; in short supply",
+      "easily affected or harmed",
+      "final and authoritative",
+      "relevant to a particular case"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-alleviate",
+     "word": "alleviate",
+     "pos": "v",
+     "sentence": "The new hires should [alleviate] the backlog.",
+     "options": [
+      "to make less severe",
+      "to sort into groups",
+      "to reach a final point",
+      "to make wider in range"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-imperative",
+     "word": "imperative",
+     "pos": "adj",
+     "sentence": "It is [imperative] that we meet the deadline.",
+     "options": [
+      "extremely important and urgent",
+      "easily affected or harmed",
+      "using careful logical study",
+      "belonging to each one separately"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-probable",
+     "word": "probable",
+     "pos": "adj",
+     "sentence": "Rain is [probable] this afternoon.",
+     "options": [
+      "likely to happen or be true",
+      "not moving or changing",
+      "existing in large amounts",
+      "in conflict with each other"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-consolidate",
+     "word": "consolidate",
+     "pos": "v",
+     "sentence": "The bank will [consolidate] its two offices.",
+     "options": [
+      "to combine into one stronger whole",
+      "to improve by small changes",
+      "to show or see how things differ",
+      "to discuss together before deciding"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-adjacent",
+     "word": "adjacent",
+     "pos": "adj",
+     "sentence": "The parking lot is [adjacent] to the building.",
+     "options": [
+      "next to or very near something",
+      "imagined as a possibility",
+      "arranged in ranks or levels",
+      "general, not specific or branded"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-hinder",
+     "word": "hinder",
+     "pos": "v",
+     "sentence": "Poor data will [hinder] the analysis.",
+     "options": [
+      "to make progress difficult",
+      "to fix firmly inside something",
+      "to come before in time or order",
+      "to justify or make necessary"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-friction",
+     "word": "friction",
+     "pos": "n",
+     "sentence": "There was [friction] between the two departments.",
+     "options": [
+      "conflict or disagreement",
+      "the way the parts are arranged",
+      "the quality of being unclear",
+      "the people a leader represents"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-culminate",
+     "word": "culminate",
+     "pos": "v",
+     "sentence": "The project will [culminate] in a public launch.",
+     "options": [
+      "to reach a final point",
+      "to make as large as possible",
+      "to go beyond the limits of",
+      "to make two things agree"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-mandate",
+     "word": "mandate",
+     "pos": "n",
+     "sentence": "The board gave her a [mandate] to cut costs.",
+     "options": [
+      "an official order or authority to act",
+      "a range with no sharp divisions",
+      "a possible future event planned for",
+      "a move from public to private ownership"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-advent",
+     "word": "advent",
+     "pos": "n",
+     "sentence": "The [advent] of email changed office work.",
+     "options": [
+      "the arrival of something important",
+      "agreement in direction or goals",
+      "getting people or parts to work together",
+      "a possible future event planned for"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-imbalance",
+     "word": "imbalance",
+     "pos": "n",
+     "sentence": "There is an [imbalance] between supply and demand.",
+     "options": [
+      "a lack of proper proportion",
+      "the start or beginning",
+      "a good reason for something",
+      "nearness in space or time"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-comprehend",
+     "word": "comprehend",
+     "pos": "v",
+     "sentence": "Few people [comprehend] the full risk.",
+     "options": [
+      "to understand fully",
+      "to make two things agree",
+      "to sort into groups",
+      "to draw out a response"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-erode",
+     "word": "erode",
+     "pos": "v",
+     "sentence": "Inflation will [erode] the value of savings.",
+     "options": [
+      "to wear away gradually",
+      "to show someone was involved",
+      "to make something continue",
+      "to copy or repeat exactly"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-contingency",
+     "word": "contingency",
+     "pos": "n",
+     "sentence": "We have a plan for every [contingency].",
+     "options": [
+      "a possible future event planned for",
+      "how much something matters to the topic",
+      "the arrival of something important",
+      "a state of relying on something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-incur",
+     "word": "incur",
+     "pos": "v",
+     "sentence": "You will [incur] a fee for late payment.",
+     "options": [
+      "to have to pay a cost or penalty",
+      "to discuss together before deciding",
+      "to be the real cause beneath",
+      "to give authority or confidence to"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-benchmark",
+     "word": "benchmark",
+     "pos": "n",
+     "sentence": "The index is the industry [benchmark].",
+     "options": [
+      "a standard used for comparison",
+      "a lack of proper proportion",
+      "a decline in quality or condition",
+      "getting involved where not wanted"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-equate",
+     "word": "equate",
+     "pos": "v",
+     "sentence": "Don't [equate] activity with progress.",
+     "options": [
+      "to treat as the same",
+      "to make more difficult",
+      "to reach a final point",
+      "to make less severe"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-myriad",
+     "word": "myriad",
+     "pos": "adj",
+     "sentence": "The app has [myriad] uses.",
+     "options": [
+      "countless or very many",
+      "arranged in ranks or levels",
+      "made of several parts",
+      "final and authoritative"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-outset",
+     "word": "outset",
+     "pos": "n",
+     "sentence": "We set clear goals at the [outset].",
+     "options": [
+      "the start or beginning",
+      "an official penalty",
+      "an official instruction",
+      "a fault or weakness"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-disperse",
+     "word": "disperse",
+     "pos": "v",
+     "sentence": "The crowd began to [disperse] after the speech.",
+     "options": [
+      "to spread out in different directions",
+      "to discuss together before deciding",
+      "to come before in time or order",
+      "to follow accepted rules or standards"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-shortcoming",
+     "word": "shortcoming",
+     "pos": "n",
+     "sentence": "The report admits several [shortcomings].",
+     "options": [
+      "a fault or weakness",
+      "an argument or claim",
+      "the start or beginning",
+      "an official instruction"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-transparency",
+     "word": "transparency",
+     "pos": "n",
+     "sentence": "Customers want more [transparency] on fees.",
+     "options": [
+      "openness about how things are done",
+      "a range with no sharp divisions",
+      "dependence on someone or something",
+      "a combination of parts into a whole"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-catalyst",
+     "word": "catalyst",
+     "pos": "n",
+     "sentence": "The merger was a [catalyst] for reform.",
+     "options": [
+      "something that causes a change",
+      "an official order or authority to act",
+      "a person's usual mood or attitude",
+      "a comparison that explains something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-implicate",
+     "word": "implicate",
+     "pos": "v",
+     "sentence": "The emails [implicate] two senior managers.",
+     "options": [
+      "to show someone was involved",
+      "to confirm that something is correct",
+      "to discuss together before deciding",
+      "to fix firmly inside something"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-sanction",
+     "word": "sanction",
+     "pos": "n",
+     "sentence": "The country faces new trade [sanctions].",
+     "options": [
+      "an official penalty",
+      "a fault or weakness",
+      "a lack of steadiness",
+      "an argument or claim"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-novelty",
+     "word": "novelty",
+     "pos": "n",
+     "sentence": "The [novelty] of the product soon wore off.",
+     "options": [
+      "the quality of being new and unusual",
+      "the reasons behind a decision",
+      "the order of who takes over next",
+      "an official order or authority to act"
+     ],
+     "answer": 0
+    },
+    {
+     "id": "sw-g9-heighten",
+     "word": "heighten",
+     "pos": "v",
+     "sentence": "The news will [heighten] concerns about the deal.",
+     "options": [
+      "to increase or make more intense",
+      "to organize people for action",
+      "to create or develop carefully",
+      "to add to something to improve it"
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ]
+}

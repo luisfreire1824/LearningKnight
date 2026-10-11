@@ -173,6 +173,7 @@ let COURSE = null;       // content/course.json
 let UNITS = [];          // every unit, in course order
 let WORDS = [], BANK = [], FINDABLE = [], SENTENCES = [], GLOSS = {};  // looked up across the whole course
 let C = null;            // the unit being worked on right now
+let SWEEP = null;         // adult vocabulary sweep (content/sweep-en.json)
 let ASSESS = null, FORMS = {}, AITEM = {}, APASS = {};  // placement check: one file per version (form A, B…); ASSESS = the form in use
 let store = null;        // storage adapter
 let P = null;            // current profile {id, data}
@@ -638,6 +639,7 @@ function showHome() {
     })),
     action,
     assessPanel(d),
+    sweepPanel(d),
     missedPanel,
     h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, met), h("span", { class: "small muted" }, "words met")),
@@ -802,7 +804,7 @@ async function continueRun() {
       st.save = () => { o.wi = st.wi; o.keys = st.keys; o.first = st.first; o.right = st.right; persist(); };
       const out = await renderStep(st, { i, n: run.steps.length, title: run.title });
       if (out === "leave") { await persist(); inSession = false; showHome(); return; }
-      if (out && out.assess) run.assess.answers.push(out.assess);
+      if (out && out.assess) { if (run.type === "sweep") sweepRecord(run, out.assess); else run.assess.answers.push(out.assess); }
       if (out && typeof out === "object") {
         if (out.graded) { R.total++; if (out.ok) R.right++; if (st.check) { R.checkTotal++; if (out.ok) R.checkRight++; } }
         (out.changes || []).forEach(c => c && R.changes.push(c));
@@ -815,6 +817,7 @@ async function continueRun() {
     }
   } finally { inSession = false; }
   delete P.data.run;
+  if (run.type === "sweep") { await persist(); return sweepSummary(run); }
   if (run.type === "assess") {
     const res = assessResult(run);
     P.data.assessments.push(res);
@@ -1485,6 +1488,92 @@ function assessPanel(d) {
     busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
 }
 
+/* ================= VOCABULARY SWEEP (adult track) =================
+   Every word in a level gets one quick check, 20 at a time. Right first time = known; wrong or
+   "I don't know" = goes on the words-to-learn list. A week later, known words come back once
+   (a confirm round) so a lucky guess can't hide a gap. The next level opens as soon as a level
+   is swept. Word cards are written for the words-to-learn list only. */
+const sweepState = (d, lv) => { d.sweep = d.sweep || {}; return (d.sweep[lv] = d.sweep[lv] || { words: {} }); };
+function sweepStats(d, L) {
+  const S = ((d.sweep || {})[L.id] || { words: {} }).words, t = today();
+  const st = { total: L.items.length, checked: 0, known: 0, learn: 0, confirmed: 0, confirmDue: 0 };
+  for (const it of L.items) {
+    const w = S[it.id]; if (!w) continue;
+    st.checked++;
+    if (w.status === "learn") st.learn++;
+    else { st.known++; if (w.confirmed) st.confirmed++; else if (t - w.day >= SWEEP.confirmAfter) st.confirmDue++; }
+  }
+  return st;
+}
+const sweepCurrent = d => SWEEP.levels.find(L => sweepStats(d, L).checked < L.items.length) || null;
+function runSweep(level, mode) {
+  const L = SWEEP.levels.find(x => x.id === level), S = sweepState(P.data, level).words, t = today();
+  const pool = mode === "confirm"
+    ? L.items.filter(it => S[it.id] && S[it.id].status === "known" && !S[it.id].confirmed && t - S[it.id].day >= SWEEP.confirmAfter)
+    : L.items.filter(it => !S[it.id]);
+  const pick = shuffle(pool).slice(0, SWEEP.batch);
+  const label = `${L.name} · ${mode === "confirm" ? "confirm round" : "sweep"}`;
+  const steps = pick.map(it => ({ kind: "aq", item: AITEM[it.id], label }));   // startRun saves each step by item id
+  return startRun({ type: "sweep", title: `Vocabulary sweep · ${L.name}`, sweep: { level, mode, ids: pick.map(i => i.id) } }, steps, new Set());
+}
+function sweepRecord(run, a) {
+  const S = sweepState(P.data, run.sweep.level).words, prev = S[a.id];
+  if (run.sweep.mode === "confirm" && prev) {
+    if (a.ok) prev.confirmed = today();
+    else { prev.status = "learn"; prev.slipped = today(); prev.pick = a.pick; }
+  } else S[a.id] = { status: a.ok ? "known" : "learn", day: today(), pick: a.pick };
+}
+function sweepSummary(run) {
+  const S = sweepState(P.data, run.sweep.level).words, L = SWEEP.levels.find(x => x.id === run.sweep.level);
+  const ids = run.sweep.ids.filter(id => S[id]);
+  const toLearn = ids.filter(id => S[id].status === "learn").map(id => AITEM[id]);
+  const st = sweepStats(P.data, L), confirm = run.sweep.mode === "confirm";
+  frame(h("div", { class: "stack" },
+    h("span", { class: "label" }, `${L.name} · ${confirm ? "confirm round" : "sweep"} done`),
+    h("h1", null, `${ids.length - toLearn.length} of ${ids.length} ${confirm ? "confirmed" : "known"}`),
+    toLearn.length ? h("section", { class: "panel stack-s" }, h("h3", null, confirm ? "Slipped since last week" : "Added to your words to learn"),
+      h("div", { class: "wordlist" }, toLearn.map(it => h("div", { class: "wl", style: "align-items:flex-start;gap:12px" }, h("b", null, it.word), h("span", { class: "small", style: "text-align:right" }, it.options[it.answer])))))
+      : h("p", { class: "panel" }, "Nothing missed in this batch."),
+    h("p", { class: "muted" }, `${L.name}: ${st.checked} of ${st.total} checked · ${st.learn} to learn.` + (st.checked === st.total ? " This level is swept." : "")),
+    continueBtn(showHome, "Back to home")));
+  screen = "sweep";
+}
+function sweepText(d) {
+  const lines = [`Learning Knight vocabulary sweep: ${d.name}, ${dayLabel(today())}`];
+  for (const L of SWEEP.levels) {
+    const st = sweepStats(d, L); if (!st.checked) continue;
+    const S = d.sweep[L.id].words;
+    lines.push("", `${L.name}: ${st.checked}/${st.total} checked, ${st.known} known (${st.confirmed} confirmed), ${st.learn} to learn`);
+    L.items.filter(it => S[it.id] && S[it.id].status === "learn").forEach(it =>
+      lines.push(`- ${it.word} (${it.pos}): picked "${S[it.id].pick || "I don't know"}"${S[it.id].slipped ? " [slipped in confirm round]" : ""}; meaning "${it.options[it.answer]}"`));
+  }
+  return lines.join("\n");
+}
+function sweepPanel(d) {
+  if (!SWEEP || isHelper()) return null;
+  const busy = !!d.run, cur = sweepCurrent(d);
+  const rows = SWEEP.levels.map(L => ({ L, st: sweepStats(d, L) })).filter(x => x.st.checked);
+  const due = rows.filter(x => x.st.confirmDue);
+  const copy = h("button", { class: "btn small ghost" }, "Copy words to learn");
+  copy.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(sweepText(d)); copy.textContent = "Copied"; }
+    catch (e) { const ta = h("textarea", { readonly: true, style: "min-height:10rem;font-size:.8rem" }); ta.value = sweepText(d); copy.replaceWith(ta); ta.select(); }
+  });
+  const curSt = cur ? sweepStats(d, cur) : null;
+  return h("div", { class: "panel stack-s" },
+    h("div", { class: "row between" }, h("h3", null, "Vocabulary sweep"), h("span", { class: "small muted" }, `${SWEEP.batch} words a batch, about 3 min`)),
+    !rows.length ? h("p", { class: "small" }, "A quick check of every word in a level. Words you know get skipped; only the ones you miss become lessons.") : null,
+    rows.length ? h("div", { class: "wordlist" }, rows.map(({ L, st }) => h("div", { class: "wl" },
+      h("span", { class: "small" }, h("b", null, L.name), ` · ${st.checked}/${st.total} checked`),
+      h("span", { class: "small muted" }, `${st.learn} to learn · ${st.confirmed}/${st.known} confirmed`)))) : null,
+    cur ? h("button", { class: "btn primary", onclick: () => runSweep(cur.id, "sweep"), disabled: busy || null },
+      curSt.checked ? `Next ${Math.min(SWEEP.batch, curSt.total - curSt.checked)} words: ${cur.name}` : `Start ${cur.name}`)
+      : h("p", { class: "small" }, "Every level available so far is swept."),
+    due.map(({ L, st }) => h("button", { class: "btn", onclick: () => runSweep(L.id, "confirm"), disabled: busy || null }, `Confirm round: ${L.name} (${Math.min(SWEEP.batch, st.confirmDue)} words)`)),
+    rows.some(x => x.st.learn) ? copy : null,
+    busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
+}
+
 /* ================= PARENT VIEW ================= */
 /* Invite links look like …/LearningKnight/?join=CODE. Accepting needs a signed-in Google account. */
 let pendingJoin = (() => { try { return new URLSearchParams(location.search).get("join"); } catch (e) { return null; } })();
@@ -1609,6 +1698,10 @@ async function showParent() {
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
       h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
 
+    SWEEP && d.sweep && Object.keys(d.sweep).length ? h("section", { class: "panel stack-s" },
+      h("h3", null, "Vocabulary sweep"),
+      SWEEP.levels.map(L => ({ L, st: sweepStats(d, L) })).filter(x => x.st.checked).map(({ L, st }) =>
+        h("p", { class: "small" }, h("b", null, L.name), ` · ${st.checked}/${st.total} checked · ${st.learn} to learn · ${st.confirmed} confirmed`))) : null,
     (d.assessments || []).length ? h("section", { class: "panel stack-s" },
       h("h3", null, "Placement checks"),
       h("div", { class: "wordlist" }, d.assessments.slice().reverse().map(r => h("div", { class: "wl", style: "gap:10px" },
@@ -1708,6 +1801,12 @@ async function boot() {
       } catch (e) { /* the course still works without the check */ }
     }
     ASSESS = FORMS.A || FORMS[formKeys()[0]] || null;
+    if (COURSE.sweep) {
+      try {
+        SWEEP = await get(base + COURSE.sweep);
+        for (const L of SWEEP.levels) L.items.forEach(it => { AITEM[it.id] = { ...it, part: "sweep", level: L.id }; });
+      } catch (e) { SWEEP = null; }
+    }
   } catch (e) {
     app.replaceChildren(topbar(), h("div", { class: "panel stack-s" }, h("h2", null, "Couldn't load the lessons"), h("p", { class: "muted" }, "The lesson files didn't load. Reload the page to try again.")));
     return;
