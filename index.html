@@ -360,8 +360,8 @@ function showToast(msg) {
 }
 
 /* ---------- profile model ---------- */
-function newProfile(name) {
-  return { name, created: Date.now(), dayOffset: 0, units: {}, words: {}, attempts: [], sentences: [], missed: {} };
+function newProfile(name, track = "course") {
+  return { name, track, tracks: [], created: Date.now(), dayOffset: 0, units: {}, words: {}, attempts: [], sentences: [], missed: {} };
 }
 function ensure(p) {
   const d = p.data;
@@ -374,8 +374,20 @@ function ensure(p) {
     u.sessions = { ...d.sessions, ...u.sessions };
   }
   delete d.sessions; delete d.unit;
+  // Learning track (Luis): "course" = the Band 6 course for kids and teens; "adult" = placement check first,
+  // then only the tracks switched on for that person. Older profiles: adult if they've only done adult things.
+  if (!d.track) {
+    const courseWork = Object.keys(d.units).length || Object.keys(d.words).length;
+    d.track = !courseWork && (d.assessments.length || (d.sweep && Object.keys(d.sweep).length)) ? "adult" : "course";
+  }
+  if (!d.tracks) d.tracks = d.sweep && Object.keys(d.sweep).length ? ["sweep"] : [];
   return p;
 }
+const TRACKS = [
+  { id: "sweep", name: "Vocabulary sweep", about: "Grade 9 to College words. Only the ones you miss become lessons." },
+  { id: "de", name: "Data engineering", about: "Fundamentals path, starting with dimensional modeling.", soon: true },
+  { id: "acct", name: "Accounting", about: "Planned from the placement check results.", soon: true }];
+const isAdult = d => (d || (P && P.data) || {}).track === "adult";
 /* Units unlock in order: the current unit is the first one with a session still to do. */
 const sessionsIn = (d, u) => ((d.units || {})[u.id] || {}).sessions || {};
 const unitDone = (d, u) => u.sessions.every(s => sessionsIn(d, u)[s.n]);
@@ -507,7 +519,7 @@ function topbar() {
   const right = h("div", { class: "row" });
   if (P && !inSession) {
     right.append(h("button", { class: "chip", onclick: () => showProfiles(true), "aria-label": "Switch learner" }, P.data.name, " ▾"));
-    right.append(h("button", { class: "btn ghost small", onclick: showParent }, "Parent view"));
+    right.append(h("button", { class: "btn ghost small", onclick: showParent }, isAdult() ? "Progress" : "Parent view"));
   }
   return h("div", { class: "topbar" },
     h("div", { class: "brand", html: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11h8M12 7v10" stroke="currentColor" stroke-width="1.8"/></svg><span>Learning Knight</span>' }),
@@ -527,11 +539,19 @@ async function showProfiles(force) {
   // Reopening the page goes straight back to the last learner on this device.
   if (!force) { const p = list.find(x => x.id === lastId()); if (p) return openProfile(p); }
   const nameInput = h("input", { class: "spell", id: "new-name", placeholder: "First name", maxlength: "24", autocomplete: "off", style: "font-size:1rem" });
+  let newTrack = "adult";
+  const trackPick = h("div", { class: "opts two", role: "radiogroup", "aria-label": "Who is this for?" });
+  [["adult", "Adult", "Placement check, then personal tracks"], ["course", "Kid or teen", "The Band 6 vocabulary course"]].forEach(([k, label, sub]) => {
+    const b = h("button", { class: "opt" + (k === newTrack ? " picked" : ""), role: "radio", "aria-checked": String(k === newTrack), "data-track": k },
+      h("b", null, label), h("br"), h("span", { class: "small muted" }, sub));
+    b.addEventListener("click", () => { newTrack = k; [...trackPick.children].forEach(x => { const on = x.dataset.track === k; x.classList.toggle("picked", on); x.setAttribute("aria-checked", String(on)); }); });
+    trackPick.append(b);
+  });
   const add = async () => {
     const name = nameInput.value.trim();
     if (!name) { nameInput.focus(); return; }
     const id = "p-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 16) + "-" + Math.random().toString(36).slice(2, 7);
-    P = { id, data: newProfile(name), role: "owner" };
+    P = { id, data: newProfile(name, newTrack), role: "owner" };
     if (store.create) { try { await store.create(id, P.data); } catch (e) { showToast("Couldn't add the learner to your account. Check your connection and try again."); return; } }
     else await persist();
     openProfile(P);
@@ -566,10 +586,16 @@ async function showProfiles(force) {
     const owned = Object.values(p.data.words).filter(w => w.meaning && w.meaning.lvl === 3).length;
     const u = currentUnit(p.data), n = u.sessions.length;
     const done = Object.keys(sessionsIn(p.data, u)).length;
-    const where = allDone(p.data) ? `All ${UNITS.length} units done` : `Unit ${u.unit} · ${p.role === "helper" ? `${done} of ${n} sessions` : `Session ${Math.min(done + 1, n)} of ${n}`}`;
+    const adultWhere = () => {
+      const cur = SWEEP && p.data.tracks.includes("sweep") ? sweepCurrent(p.data) : null;
+      if (!p.data.assessments.length) return "Adult · placement check to do";
+      if (cur) { const st = sweepStats(p.data, cur); return `Adult · sweep ${cur.name} ${st.checked}/${st.total}`; }
+      return "Adult · placement check done";
+    };
+    const where = isAdult(p.data) ? adultWhere() : allDone(p.data) ? `All ${UNITS.length} units done` : `Unit ${u.unit} · ${p.role === "helper" ? `${done} of ${n} sessions` : `Session ${Math.min(done + 1, n)} of ${n}`}`;
     return h("button", { class: "opt", onclick: () => openProfile(p) },
       h("div", { class: "row between" }, h("b", null, p.data.name || "Learner"),
-        h("span", { class: "muted small" }, p.role === "helper" ? `${p.meta.ownerName && p.meta.ownerName !== p.data.name ? "from " + p.meta.ownerName + " · " : ""}${where}` : `${where} · ${owned} owned`)));
+        h("span", { class: "muted small" }, p.role === "helper" ? `${p.meta.ownerName && p.meta.ownerName !== p.data.name ? "from " + p.meta.ownerName + " · " : ""}${where}` : isAdult(p.data) ? where : `${where} · ${owned} owned`)));
   };
   const mine = list.filter(p => p.role !== "helper").sort((a, b) => (a.data.created || 0) - (b.data.created || 0));
   const shared = list.filter(p => p.role === "helper");
@@ -580,14 +606,44 @@ async function showProfiles(force) {
     shared.length ? h("div", { class: "stack-s" }, h("span", { class: "label" }, "Shared with you"), shared.map(learnerBtn)) : null,
     h("div", { class: "panel stack-s" },
       h("label", { for: "new-name", class: "label" }, "Add a learner"),
+      trackPick,
       h("div", { class: "row" }, h("div", { style: "flex:1;min-width:0" }, nameInput), h("button", { class: "btn primary", onclick: add }, "Add"))),
     saveNote
   ));
 }
 
 /* ---------- home ---------- */
+/* Something in progress (a session, review, check or sweep batch): resume it or start over. */
+function resumePanel(d) {
+  if (!d.run) return null;
+  const run = d.run;
+  return h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
+    h("span", { class: "label" }, "In progress"),
+    h("button", { class: "btn primary wide", onclick: continueRun }, `Resume ${run.title}`),
+    h("p", { class: "muted small" }, `You're on step ${Math.min(run.i + 1, run.steps.length)} of ${run.steps.length}. Everything you've answered is saved.`),
+    h("button", { class: "btn ghost small", onclick: async () => { delete d.run; await persist(); showHome(); } }, "Start over instead"));
+}
+/* Adult home (Luis): only what this person is working on. No check yet → the placement check is the whole page. */
+function showAdultHome() {
+  const d = P.data;
+  const active = d.tracks.filter(id => TRACKS.some(tr => tr.id === id && !tr.soon));
+  const noCheck = !d.assessments.length;
+  frame(h("div", { class: "stack" },
+    h("div", { class: "stack-s" },
+      h("span", { class: "label" }, "Adult track"),
+      h("h1", null, `${d.name}'s learning`),
+      h("p", { class: "muted" }, noCheck ? "Start with the placement check. Your learning tracks are designed from its results."
+        : active.length ? "Your tracks, built from your placement check." : "Your tracks are being designed from your placement check. They'll appear here.")),
+    resumePanel(d),
+    noCheck ? assessPanel(d) : null,
+    active.includes("sweep") ? sweepPanel(d) : null,
+    noCheck ? null : assessPanel(d)));
+  screen = "home";
+}
 function showHome() {
-  ensure(P); syncUnit();
+  ensure(P);
+  if (isAdult()) return showAdultHome();
+  syncUnit();
   const d = P.data, nx = nextSession(), t = today();
   const row = w => ({ w, m: (d.words[w.key] || {}).meaning, s: (d.words[w.key] || {}).spelling });
   const words = C.words.map(row);
@@ -602,14 +658,8 @@ function showHome() {
     h("span", null, x.m && x.m.lvl > 0 ? x.w.word : h("span", { class: "muted" }, x.w.word)),
     h("span", { class: "row" }, lvlPill(x.m ? x.m.lvl : 0), lvlPill(x.s ? x.s.lvl : 0)));
   let action;
-  if (d.run) {
-    const run = d.run;
-    action = h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
-      h("span", { class: "label" }, "In progress"),
-      h("button", { class: "btn primary wide", onclick: continueRun }, `Resume ${run.title}`),
-      h("p", { class: "muted small" }, `You're on step ${Math.min(run.i + 1, run.steps.length)} of ${run.steps.length}. Everything you've answered is saved.`),
-      h("button", { class: "btn ghost small", onclick: async () => { delete d.run; await persist(); showHome(); } }, "Start over instead"));
-  } else if (nx) {
+  if (d.run) action = resumePanel(d);
+  else if (nx) {
     const sameDay = lastDay === t;
     action = h("div", { class: "stack-s" },
       h("button", { class: "btn primary wide", onclick: () => runSession(nx) }, `Start Session ${nx.n}: ${nx.title}`),
@@ -639,7 +689,7 @@ function showHome() {
     })),
     action,
     assessPanel(d),
-    sweepPanel(d),
+    d.tracks.includes("sweep") ? sweepPanel(d) : null,
     missedPanel,
     h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, met), h("span", { class: "small muted" }, "words met")),
@@ -1690,10 +1740,22 @@ async function showParent() {
       catch (e) { showToast("Couldn't do that right now. Check your connection and try again."); }
     } }, "Stop following")) : null;
 
+  const adult = isAdult(d);
+  const trackPanel = helper ? null : h("section", { class: "panel stack-s" },
+    h("h3", null, "Learning track"),
+    h("div", { class: "row" }, [["course", "Band 6 course"], ["adult", "Adult track"]].map(([k, label]) =>
+      h("button", { class: "btn small" + (d.track === k ? " primary" : ""), "aria-pressed": String(d.track === k), onclick: async () => { d.track = k; await persist(); showParent(); } }, label))),
+    h("p", { class: "small muted" }, d.track === "course" ? "Kids and teens: the Band 6 vocabulary course, one unit at a time." : "Adults: the placement check first, then only the tracks switched on here."),
+    adult ? TRACKS.map(tr => {
+      const cb = h("input", { type: "checkbox", id: "tr-" + tr.id, checked: d.tracks.includes(tr.id) || null, disabled: tr.soon || null });
+      cb.addEventListener("change", async () => { d.tracks = cb.checked ? [...new Set([...d.tracks, tr.id])] : d.tracks.filter(x => x !== tr.id); await persist(); });
+      return h("label", { class: "check", for: "tr-" + tr.id }, cb, h("span", null, h("b", null, tr.name), tr.soon ? " (coming soon)" : "", h("br"), h("span", { class: "small muted" }, tr.about)));
+    }) : null);
   frame(h("div", { class: "stack" },
-    h("div", { class: "row between" }, h("h1", null, d.name + "'s week"), h("button", { class: "btn", onclick: helper ? () => showProfiles(true) : showHome }, "Back")),
+    h("div", { class: "row between" }, h("h1", null, d.name + (adult ? "'s progress" : "'s week")), h("button", { class: "btn", onclick: helper ? () => showProfiles(true) : showHome }, "Back")),
     helperBanner,
-    h("div", { class: "stats" },
+    trackPanel,
+    adult ? null : h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, allDone(d) ? "All ✓" : Object.keys(sessionsIn(d, C)).length + "/" + C.sessions.length), h("span", { class: "small muted" }, allDone(d) ? `${UNITS.length} units` : `Unit ${C.unit} sessions`)),
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
       h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
@@ -1708,12 +1770,12 @@ async function showParent() {
         h("span", { class: "small" }, h("b", null, `Version ${r.form}`), ` · ${dayLabel(r.day)}`, h("br"), versionLine(r)),
         h("button", { class: "btn small", onclick: () => showAssessResult(r, showParent) }, "Results"))))) : null,
 
-    h("section", { class: "panel stack-s" },
+    adult ? null : h("section", { class: "panel stack-s" },
       h("h3", null, `Talk about it this week (Unit ${C.unit})`),
       h("p", { class: "small muted" }, "Using a word in real conversation is one of the strongest ways it sticks."),
       h("ul", { class: "stack-s", style: "margin:0;padding-left:20px" }, C.parentPrompts.map(p => h("li", null, p)))),
 
-    h("section", { class: "panel stack-s" },
+    adult ? null : h("section", { class: "panel stack-s" },
       h("h3", null, "Missed words list"),
       h("p", { class: "small muted" }, "Still wrong after the last chance. A word comes off when they get it right in practice."),
       Object.keys(d.missed).length ? h("div", { class: "tablebox" }, h("table", null,
@@ -1724,20 +1786,20 @@ async function showParent() {
           h("td", { class: "small" }, dayLabel(m.day)))))))
         : h("p", { class: "muted" }, "Empty. Nothing missed twice.")),
 
-    h("section", { class: "panel stack-s" },
+    adult ? null : h("section", { class: "panel stack-s" },
       h("h3", null, "Sticky words"),
       sticky.length ? sticky.map(([k, resps]) => h("div", { class: "stack-s", style: "padding-block:6px;border-bottom:1px solid var(--line)" },
         h("div", { class: "row between" }, h("b", null, wordByKey(k) ? wordByKey(k).word : k), h("span", { class: "small muted" }, `${resps.length} miss${resps.length === 1 ? "" : "es"}`)),
         h("p", { class: "small muted" }, [...new Set(resps)].slice(0, 4).join(" · "))))
         : h("p", { class: "muted" }, "No misses yet.")),
 
-    h("section", { class: "panel stack-s" },
+    adult && !d.sentences.length ? null : h("section", { class: "panel stack-s" },
       h("h3", null, "Sentences to review"),
       h("p", { class: "small muted" }, "Your verdicts become the test set for automatic grading later."),
       queue.length ? queue.map(sentenceCard) : h("p", { class: "muted" }, "Nothing waiting. Sentences arrive in Session 4."),
       reviewed.length ? h("details", null, h("summary", null, `Reviewed (${reviewed.length})`), h("div", { class: "stack-s", style: "margin-top:8px" }, reviewed.map(s => h("p", { class: "small" }, h("b", null, s.review.verdict === "good" ? "Good: " : "Needs work: "), s.text, s.review.note ? ` (${s.review.note})` : "")))) : null),
 
-    h("section", { class: "panel stack-s" },
+    adult ? null : h("section", { class: "panel stack-s" },
       h("h3", null, "Every word"),
       h("div", { class: "tablebox" }, h("table", null,
         h("thead", null, h("tr", null, h("th", null, "Word"), h("th", null, "Meaning"), h("th", null, "Spelling"), h("th", null, "Next review"))),
