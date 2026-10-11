@@ -1366,6 +1366,10 @@ function assessReading(res) {
   if (!vs) tips.push("Vocabulary: start with the basics. The first levels were hard, so new words at the earliest levels will pay off most.");
   else if (vEdge.length) tips.push(`Vocabulary: solid through ${levelName(vs)}. Words start to slip at ${levelName(vEdge[0])}, so that's where new words will pay off most.`);
   else tips.push(`Vocabulary: solid through ${levelName(vs)}${vs === vo[vo.length - 1] ? ", the top of this check" : ""}.`);
+  // Topping out means the check found no ceiling; say so rather than implying College is the limit.
+  const ro = aLevels("reading");
+  if (res.reading.secure === ro[ro.length - 1]) tips.push(`Reading: solid at ${levelName(res.reading.secure)}, the top of this check. Your real ceiling is higher than it can measure.`);
+  else if (res.reading.secure) tips.push(`Reading: solid through ${levelName(res.reading.secure)}.`);
   const sk = Object.entries(res.reading.skills).filter(([, x]) => x.total >= 2).sort((a, b) => share(a[1]) - share(b[1]));
   if (sk.length) {
     const [wk, wx] = sk[0], [st, sx] = sk[sk.length - 1];
