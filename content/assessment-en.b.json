@@ -1,0 +1,1893 @@
+{
+ "id": "assess-en",
+ "title": "Placement check",
+ "passMark": 0.9,
+ "keepGoing": 0.7,
+ "about": "Two parts: vocabulary (about 10 minutes) and reading (about 15 to 20 minutes). It adjusts to you, so it gets harder when you're doing well and stops when it's found your level. You can save and come back at any point.",
+ "skills": {
+  "detail": "Finding details",
+  "vocab": "Words in context",
+  "inference": "Reading between the lines",
+  "main": "Main idea",
+  "purpose": "Author's purpose"
+ },
+ "form": "B",
+ "version": 1,
+ "vocab": {
+  "start": "g8",
+  "levels": [
+   {
+    "id": "g4",
+    "name": "Grade 4",
+    "items": [
+     {
+      "id": "bv-protect",
+      "word": "protect",
+      "pos": "verb",
+      "sentence": "Wear gloves to [protect] your hands.",
+      "options": [
+       "to keep safe from harm",
+       "to wash and clean them",
+       "to show them to others",
+       "to paint them a color"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-reduce",
+      "word": "reduce",
+      "pos": "verb",
+      "sentence": "The store will [reduce] the price next week.",
+      "options": [
+       "to make it less",
+       "to make it more",
+       "to keep it the same",
+       "to print on a tag"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-describe",
+      "word": "describe",
+      "pos": "verb",
+      "sentence": "Can you [describe] the man you saw?",
+      "options": [
+       "to tell what someone is like",
+       "to find where someone went",
+       "to draw a quick picture of",
+       "to call someone on the phone"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-avoid",
+      "word": "avoid",
+      "pos": "verb",
+      "sentence": "He tries to [avoid] that coworker.",
+      "options": [
+       "to stay away from",
+       "to spend time with",
+       "to help out often",
+       "to talk about often"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-prevent",
+      "word": "prevent",
+      "pos": "verb",
+      "sentence": "Sunscreen helps [prevent] sunburn.",
+      "options": [
+       "to stop it happening",
+       "to make much worse",
+       "to heal very quickly",
+       "to notice very early"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-measure",
+      "word": "measure",
+      "pos": "verb",
+      "sentence": "We need to [measure] the window before buying curtains.",
+      "options": [
+       "to find the size of",
+       "to wash and dry it",
+       "to open and close it",
+       "to paint the frame"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-improve",
+      "word": "improve",
+      "pos": "verb",
+      "sentence": "Practice will [improve] your writing.",
+      "options": [
+       "to make better",
+       "to make shorter",
+       "to make faster",
+       "to check over"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-contain",
+      "word": "contain",
+      "pos": "verb",
+      "sentence": "The box [contains] old letters.",
+      "options": [
+       "to have inside",
+       "to be made of",
+       "to be sent with",
+       "to be sold with"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-identify",
+      "word": "identify",
+      "pos": "verb",
+      "sentence": "Can you [identify] the bird in this photo?",
+      "options": [
+       "to recognize and name",
+       "to take a picture of",
+       "to feed and care for",
+       "to scare it away from"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-produce",
+      "word": "produce",
+      "pos": "verb",
+      "sentence": "The factory [produces] car parts.",
+      "options": [
+       "to make",
+       "to repair",
+       "to sell",
+       "to store"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g6",
+    "name": "Grade 6",
+    "items": [
+     {
+      "id": "bv-estimate",
+      "word": "estimate",
+      "pos": "verb",
+      "sentence": "Can you [estimate] how long the trip will take?",
+      "options": [
+       "to make a careful guess",
+       "to say it for certain",
+       "to write down exactly",
+       "to complain loudly about"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-approve",
+      "word": "approve",
+      "pos": "verb",
+      "sentence": "The manager has to [approve] the order.",
+      "options": [
+       "to agree to formally",
+       "to cancel or stop it",
+       "to write up a copy of",
+       "to deliver it quickly"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-convince",
+      "word": "convince",
+      "pos": "verb",
+      "sentence": "She [convinced] her parents to let her go.",
+      "options": [
+       "to get someone to agree",
+       "to ask someone's permission",
+       "to make someone a promise",
+       "to remind someone again"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-accurate",
+      "word": "accurate",
+      "pos": "adjective",
+      "sentence": "The report was [accurate].",
+      "options": [
+       "correct and exact",
+       "long and detailed",
+       "late and rushed",
+       "short and simple"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-predict",
+      "word": "predict",
+      "pos": "verb",
+      "sentence": "Experts [predict] that prices will rise.",
+      "options": [
+       "to say what will happen",
+       "to hope that it happens",
+       "to fear that it happens",
+       "to prove that it happened"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-assist",
+      "word": "assist",
+      "pos": "verb",
+      "sentence": "Volunteers will [assist] the nurses.",
+      "options": [
+       "to help",
+       "to train",
+       "to watch",
+       "to guide"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-profit",
+      "word": "profit",
+      "pos": "noun",
+      "sentence": "The shop made a small [profit] this year.",
+      "options": [
+       "money left after costs",
+       "a change in its prices",
+       "a list of its customers",
+       "a mistake in its records"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-decline",
+      "word": "decline",
+      "pos": "verb",
+      "sentence": "Sales [declined] in the spring.",
+      "options": [
+       "to fall",
+       "to rise",
+       "to stall",
+       "to swing"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-purchase",
+      "word": "purchase",
+      "pos": "verb",
+      "sentence": "You can [purchase] tickets online.",
+      "options": [
+       "to buy",
+       "to sell",
+       "to view",
+       "to swap"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-rely",
+      "word": "rely",
+      "pos": "verb",
+      "sentence": "Many families [rely] on the bus to get to work.",
+      "options": [
+       "to depend",
+       "to insist",
+       "to count",
+       "to plan"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g8",
+    "name": "Grade 8",
+    "items": [
+     {
+      "id": "bv-allocate",
+      "word": "allocate",
+      "pos": "verb",
+      "sentence": "The city will [allocate] $2 million to the parks.",
+      "options": [
+       "to set aside for a use",
+       "to borrow from a bank",
+       "to lose through waste",
+       "to raise through taxes"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-comply",
+      "word": "comply",
+      "pos": "verb",
+      "sentence": "All restaurants must [comply] with the new rules.",
+      "options": [
+       "to follow or obey",
+       "to argue or disagree",
+       "to vote or decide",
+       "to write or publish"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-tangible",
+      "word": "tangible",
+      "pos": "adjective",
+      "sentence": "The program has produced [tangible] results.",
+      "options": [
+       "real and measurable",
+       "expected but uncertain",
+       "small and disappointing",
+       "secret and hidden away"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-interim",
+      "word": "interim",
+      "pos": "adjective",
+      "sentence": "She was named [interim] director.",
+      "options": [
+       "temporary, until one is named",
+       "assistant, under someone else",
+       "permanent, for a long term",
+       "honorary, without real duties"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-plausible",
+      "word": "plausible",
+      "pos": "adjective",
+      "sentence": "His excuse sounded [plausible].",
+      "options": [
+       "believable",
+       "ridiculous",
+       "rehearsed",
+       "rude"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-adverse",
+      "word": "adverse",
+      "pos": "adjective",
+      "sentence": "The medicine has few [adverse] effects.",
+      "options": [
+       "harmful or unwanted",
+       "helpful or wanted",
+       "lasting or permanent",
+       "surprising or rare"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-deter",
+      "word": "deter",
+      "pos": "verb",
+      "sentence": "High fines are meant to [deter] speeding.",
+      "options": [
+       "to discourage",
+       "to encourage it",
+       "to measure it",
+       "to record it"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-preliminary",
+      "word": "preliminary",
+      "pos": "adjective",
+      "sentence": "These are only [preliminary] results.",
+      "options": [
+       "early, not final",
+       "final and official",
+       "confusing and messy",
+       "copied from others"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-surplus",
+      "word": "surplus",
+      "pos": "noun",
+      "sentence": "The state ended the year with a [surplus].",
+      "options": [
+       "more money than needed",
+       "less money than needed",
+       "exactly the right amount",
+       "a new set of tax rules"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-scrutiny",
+      "word": "scrutiny",
+      "pos": "noun",
+      "sentence": "The deal is under [scrutiny] by regulators.",
+      "options": [
+       "close examination",
+       "final approval",
+       "public support",
+       "legal protections"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g10",
+    "name": "Grade 10",
+    "items": [
+     {
+      "id": "bv-tenuous",
+      "word": "tenuous",
+      "pos": "adjective",
+      "sentence": "The link between the two events is [tenuous].",
+      "options": [
+       "weak and doubtful",
+       "clear and proven",
+       "recent and new",
+       "secret and hidden"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-prudent",
+      "word": "prudent",
+      "pos": "adjective",
+      "sentence": "It would be [prudent] to save some money.",
+      "options": [
+       "wise and careful",
+       "exciting and bold",
+       "costly and risky",
+       "common and normal"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-meticulous",
+      "word": "meticulous",
+      "pos": "adjective",
+      "sentence": "She keeps [meticulous] records.",
+      "options": [
+       "careful and precise",
+       "messy and incomplete",
+       "old and outdated",
+       "private and personal"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-impede",
+      "word": "impede",
+      "pos": "verb",
+      "sentence": "Bad weather [impeded] the rescue.",
+      "options": [
+       "to slow or block",
+       "to speed it up",
+       "to call it off",
+       "to get it started"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-candid",
+      "word": "candid",
+      "pos": "adjective",
+      "sentence": "He gave a [candid] answer about his mistakes.",
+      "options": [
+       "honest and direct",
+       "vague and evasive",
+       "short and very rude",
+       "rehearsed and slick"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-circumvent",
+      "word": "circumvent",
+      "pos": "verb",
+      "sentence": "The company found a way to [circumvent] the rules.",
+      "options": [
+       "to get around",
+       "to strengthen",
+       "to rewrite",
+       "to enforce"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-attrition",
+      "word": "attrition",
+      "pos": "noun",
+      "sentence": "The company reduced its staff through [attrition].",
+      "options": [
+       "not replacing people who leave",
+       "firing workers without notice",
+       "moving workers to new offices",
+       "cutting everyone's pay equally"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-sporadic",
+      "word": "sporadic",
+      "pos": "adjective",
+      "sentence": "There were [sporadic] reports of flooding.",
+      "options": [
+       "happening now and then",
+       "happening all the time",
+       "confirmed by officials",
+       "spreading very fast"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-deplete",
+      "word": "deplete",
+      "pos": "verb",
+      "sentence": "The long winter [depleted] the town's salt supply.",
+      "options": [
+       "to use up",
+       "to refill",
+       "to protect",
+       "to count"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-stagnant",
+      "word": "stagnant",
+      "pos": "adjective",
+      "sentence": "Wages have been [stagnant] for years.",
+      "options": [
+       "not growing",
+       "rising fast",
+       "falling hard",
+       "set by law"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "g12",
+    "name": "Grade 12",
+    "items": [
+     {
+      "id": "bv-disparage",
+      "word": "disparage",
+      "pos": "verb",
+      "sentence": "He often [disparages] his rivals in interviews.",
+      "options": [
+       "to speak badly of",
+       "to praise highly",
+       "to compete against",
+       "to copy closely"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-exorbitant",
+      "word": "exorbitant",
+      "pos": "adjective",
+      "sentence": "The hotel charged [exorbitant] fees.",
+      "options": [
+       "far too high",
+       "fair and low",
+       "kept secret",
+       "paid upfront"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-untenable",
+      "word": "untenable",
+      "pos": "adjective",
+      "sentence": "The company's position became [untenable].",
+      "options": [
+       "impossible to defend",
+       "stronger than before",
+       "widely respected",
+       "easier to improve"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-deleterious",
+      "word": "deleterious",
+      "pos": "adjective",
+      "sentence": "Smoking has [deleterious] effects on health.",
+      "options": [
+       "harmful",
+       "helpful",
+       "minor",
+       "unknown"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-tacit",
+      "word": "tacit",
+      "pos": "adjective",
+      "sentence": "They had a [tacit] agreement not to discuss it.",
+      "options": [
+       "understood without words",
+       "written and signed by both",
+       "forced on them by others",
+       "made in front of witnesses"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-extol",
+      "word": "extol",
+      "pos": "verb",
+      "sentence": "The ad [extols] the benefits of the product.",
+      "options": [
+       "to praise",
+       "to list off",
+       "to question",
+       "to conceal"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-lenient",
+      "word": "lenient",
+      "pos": "adjective",
+      "sentence": "The judge was [lenient] with first-time offenders.",
+      "options": [
+       "not strict; gentle",
+       "very strict; harsh",
+       "unfair; biased",
+       "quick; impatient"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-nebulous",
+      "word": "nebulous",
+      "pos": "adjective",
+      "sentence": "The plan's goals remain [nebulous].",
+      "options": [
+       "vague and unclear",
+       "clear and specific",
+       "overly ambitious",
+       "widely accepted"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-equivocal",
+      "word": "equivocal",
+      "pos": "adjective",
+      "sentence": "The senator gave an [equivocal] reply.",
+      "options": [
+       "able to be read two ways",
+       "angry and very insulting",
+       "short and right to the point",
+       "honest and from the heart"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-myopic",
+      "word": "myopic",
+      "pos": "adjective",
+      "sentence": "Critics called the budget cuts [myopic].",
+      "options": [
+       "focused on the short run",
+       "too generous to everyone",
+       "illegal under current law",
+       "carefully thought through"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "col",
+    "name": "College",
+    "items": [
+     {
+      "id": "bv-intransigent",
+      "word": "intransigent",
+      "pos": "adjective",
+      "sentence": "Both sides remained [intransigent] throughout the talks.",
+      "options": [
+       "refusing to change their views",
+       "eager to reach an agreement",
+       "unsure what they really wanted",
+       "quiet and mostly uninvolved"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-inimical",
+      "word": "inimical",
+      "pos": "adjective",
+      "sentence": "Such policies are [inimical] to small businesses.",
+      "options": [
+       "harmful or hostile",
+       "friendly or helpful",
+       "unknown or unclear",
+       "related or connected"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-ostensible",
+      "word": "ostensible",
+      "pos": "adjective",
+      "sentence": "The [ostensible] reason for the trip was business.",
+      "options": [
+       "stated but maybe untrue",
+       "secret and never shared",
+       "real and fully proven",
+       "minor and not important"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-obviate",
+      "word": "obviate",
+      "pos": "verb",
+      "sentence": "The new software [obviates] the need for paper forms.",
+      "options": [
+       "to make unnecessary",
+       "to increase or add to",
+       "to explain or justify",
+       "to delay or postpone"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-polemical",
+      "word": "polemical",
+      "pos": "adjective",
+      "sentence": "The book is openly [polemical].",
+      "options": [
+       "fiercely one-sided",
+       "neutral and balanced",
+       "light and entertaining",
+       "dry and very technical"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-recapitulate",
+      "word": "recapitulate",
+      "pos": "verb",
+      "sentence": "At the end, the speaker [recapitulated] her main points.",
+      "options": [
+       "to summarize",
+       "to take back",
+       "to argue with",
+       "to add onto"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-transgress",
+      "word": "transgress",
+      "pos": "verb",
+      "sentence": "Officials who [transgress] the code will be removed.",
+      "options": [
+       "to break or exceed",
+       "to write or update",
+       "to enforce or apply",
+       "to study or review"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-oligarchy",
+      "word": "oligarchy",
+      "pos": "noun",
+      "sentence": "Critics said the country had become an [oligarchy].",
+      "options": [
+       "rule by a small powerful group",
+       "rule by the whole population",
+       "rule by a council of priests",
+       "rule by a single elected leader"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-ineffable",
+      "word": "ineffable",
+      "pos": "adjective",
+      "sentence": "The view from the summit was [ineffable].",
+      "options": [
+       "beyond words",
+       "plain to see",
+       "hidden by fog",
+       "a big letdown"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-despotism",
+      "word": "despotism",
+      "pos": "noun",
+      "sentence": "The novel depicts life under [despotism].",
+      "options": [
+       "rule by one all-powerful person",
+       "rule by elected representatives",
+       "life without any government",
+       "rule by an occupying army"
+      ],
+      "answer": 0
+     }
+    ]
+   },
+   {
+    "id": "pro",
+    "name": "Professional",
+    "items": [
+     {
+      "id": "bv-amortize",
+      "word": "amortize",
+      "pos": "verb",
+      "sentence": "The company will [amortize] the cost over ten years.",
+      "options": [
+       "to spread over time",
+       "to pay all at once",
+       "to hide from investors",
+       "to win back in court"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-emolument",
+      "word": "emolument",
+      "pos": "noun",
+      "sentence": "Officials may not accept any [emolument] from foreign governments.",
+      "options": [
+       "payment or perk",
+       "written warning",
+       "formal apology",
+       "public criticism"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-probity",
+      "word": "probity",
+      "pos": "noun",
+      "sentence": "The judge was known for her [probity].",
+      "options": [
+       "honesty and integrity",
+       "speed and efficiency",
+       "harshness and severity",
+       "humor and great charm"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-chicanery",
+      "word": "chicanery",
+      "pos": "noun",
+      "sentence": "The audit revealed financial [chicanery].",
+      "options": [
+       "trickery and deception",
+       "careless bookkeeping",
+       "clever long-term plans",
+       "unusually strong growth"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-mendacious",
+      "word": "mendacious",
+      "pos": "adjective",
+      "sentence": "The report called the ad campaign [mendacious].",
+      "options": [
+       "lying and dishonest",
+       "costly and wasteful",
+       "clever and very funny",
+       "dull and repetitive"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-opprobrium",
+      "word": "opprobrium",
+      "pos": "noun",
+      "sentence": "The decision drew public [opprobrium].",
+      "options": [
+       "harsh criticism",
+       "enthusiastic praise",
+       "quiet indifference",
+       "curious attention"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-anodyne",
+      "word": "anodyne",
+      "pos": "adjective",
+      "sentence": "The statement was carefully [anodyne].",
+      "options": [
+       "inoffensive and bland",
+       "bold and provocative",
+       "legally binding on all",
+       "long and very detailed"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-specious",
+      "word": "specious",
+      "pos": "adjective",
+      "sentence": "The argument is [specious].",
+      "options": [
+       "sounds right but is false",
+       "clear and easy to follow",
+       "too long and repetitive",
+       "based on careful research"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-peremptory",
+      "word": "peremptory",
+      "pos": "adjective",
+      "sentence": "She issued a [peremptory] order to stop work.",
+      "options": [
+       "allowing no refusal",
+       "polite and gentle",
+       "unclear and confusing",
+       "written and signed"
+      ],
+      "answer": 0
+     },
+     {
+      "id": "bv-prevaricate",
+      "word": "prevaricate",
+      "pos": "verb",
+      "sentence": "Asked about the losses, the CEO [prevaricated].",
+      "options": [
+       "to avoid the truth",
+       "to apologize fully",
+       "to answer directly",
+       "to refuse to speak"
+      ],
+      "answer": 0
+     }
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "id": "bv-misattribute",
+    "word": "misattribute",
+    "pos": "verb",
+    "sentence": "The quote is often [misattributed] to Einstein.",
+    "options": [
+     "given to the wrong author",
+     "copied without permission",
+     "shortened from the original",
+     "repeated far too many times"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-reapportion",
+    "word": "reapportion",
+    "pos": "verb",
+    "sentence": "The council will [reapportion] the budget among departments.",
+    "options": [
+     "to divide up again",
+     "to cut back entirely",
+     "to freeze for a year",
+     "to report in public"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-unverifiable",
+    "word": "unverifiable",
+    "pos": "adjective",
+    "sentence": "Most of the claims were [unverifiable].",
+    "options": [
+     "impossible to check",
+     "easy to prove as true",
+     "repeated very widely",
+     "made up very recently"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-irredeemable",
+    "word": "irredeemable",
+    "pos": "adjective",
+    "sentence": "Critics called the film [irredeemable].",
+    "options": [
+     "beyond saving",
+     "costly to make",
+     "easy to forget",
+     "long overdue"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-predate",
+    "word": "predate",
+    "pos": "verb",
+    "sentence": "The building [predates] the city itself.",
+    "options": [
+     "to come before",
+     "to be larger than",
+     "to be copied from",
+     "to be paid for by"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-disempower",
+    "word": "disempower",
+    "pos": "verb",
+    "sentence": "The new rules [disempower] local managers.",
+    "options": [
+     "to take power away from",
+     "to give more power to",
+     "to pay more money to",
+     "to train much more fully"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-misprice",
+    "word": "misprice",
+    "pos": "verb",
+    "sentence": "Investors [mispriced] the risk.",
+    "options": [
+     "to value wrongly",
+     "to ignore completely",
+     "to discover too late",
+     "to share with others"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "bv-preapprove",
+    "word": "preapprove",
+    "pos": "verb",
+    "sentence": "The bank [preapproved] her for a loan.",
+    "options": [
+     "to approve in advance",
+     "to approve again later",
+     "to turn down for now",
+     "to review it slowly"
+    ],
+    "answer": 0
+   }
+  ]
+ },
+ "reading": {
+  "levels": [
+   {
+    "id": "g6",
+    "name": "Grade 6",
+    "passages": [
+     {
+      "id": "br-g6-a",
+      "title": "The Taco Truck's Best Corner",
+      "topic": "business",
+      "paragraphs": [
+       "Marcus owns a taco truck, and every morning he has to make the same big decision: where should he park? A good spot can mean three hundred customers, while a bad one can mean thirty.",
+       "At first, Marcus simply guessed, parking wherever he found an open space, and his sales went up and down like a roller coaster. Then his sister, who works with numbers for a living, suggested he keep a notebook. Every day, he wrote down where he parked, what the weather was like, and how many tacos he sold.",
+       "After two months, a pattern appeared. On weekdays, the busy corner near the office buildings was best, because workers wanted a quick lunch. On weekends, those offices were empty, so the park by the soccer fields did much better. Rainy days were slow everywhere, but less slow near the train station, where people waited under the roof.",
+       "Now Marcus checks his notebook and the weather forecast before he starts the engine. His sales are steadier, and he wastes less food, because he can guess how much to cook. \"I used to think business was mostly about good tacos,\" he says. \"It turns out it's also about paying attention.\""
+      ],
+      "questions": [
+       {
+        "id": "br-g6-a-detail",
+        "skill": "detail",
+        "stem": "Where did Marcus sell the most tacos on weekends?",
+        "options": [
+         "By the soccer fields",
+         "By the office towers",
+         "At the train station",
+         "Near his sister's job"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: on weekends, the park by the soccer fields did much better."
+       },
+       {
+        "id": "br-g6-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 3, what does pattern mean?",
+        "options": [
+         "a thing that repeats",
+         "a drawing on fabric",
+         "a rule someone sets",
+         "a really lucky break"
+        ],
+        "answer": 0,
+        "why": "Sales kept turning out the same way in the same places."
+       },
+       {
+        "id": "br-g6-a-inference",
+        "skill": "inference",
+        "stem": "Why was the office corner a poor spot on weekends?",
+        "options": [
+         "Few workers were there to buy lunch",
+         "Trucks were not allowed to park there",
+         "It always rained there on weekends",
+         "Marcus left his notebook at home"
+        ],
+        "answer": 0,
+        "why": "The offices were empty on weekends, so there was no lunch crowd."
+       },
+       {
+        "id": "br-g6-a-main",
+        "skill": "main",
+        "stem": "What is the main idea of the passage?",
+        "options": [
+         "Notes on sales helped Marcus pick better spots.",
+         "Food trucks make the most money on rainy days.",
+         "Marcus's sister wanted to open her own food truck.",
+         "Good tacos are all a food truck needs to succeed."
+        ],
+        "answer": 0,
+        "why": "His notebook showed patterns that steadied his sales."
+       },
+       {
+        "id": "br-g6-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author include Marcus's words at the end?",
+        "options": [
+         "To sum up the lesson he learned",
+         "To show his tacos are the best",
+         "To explain how to make tacos well",
+         "To prove his sister was wrong"
+        ],
+        "answer": 0,
+        "why": "He says business is also about paying attention, which is the point of the story."
+       }
+      ]
+     },
+     {
+      "id": "br-g6-b",
+      "title": "The Dance of the Honeybee",
+      "topic": "science",
+      "paragraphs": [
+       "When a honeybee finds a patch of flowers full of nectar, it does something surprising: it flies back to the hive and dances.",
+       "The dance is not just for fun; it is a set of directions. The bee walks in a straight line while shaking its body from side to side, then circles back and does it again while other bees crowd around to follow along.",
+       "The direction of the straight run tells the other bees which way to fly. Inside the dark hive, the bee uses straight up as a stand-in for the direction of the sun. If the bee waggles straight up, the flowers are toward the sun. If it waggles a little to the right, the flowers are a little to the right of the sun. The length of the run matters too, because the longer the bee waggles, the farther away the food is.",
+       "A scientist named Karl von Frisch spent years watching bees to figure this out, and in 1973 he shared a Nobel Prize for his work. Many people doubted him at first, since it seemed impossible that an insect could share a map. Today, scientists agree that he was right."
+      ],
+      "questions": [
+       {
+        "id": "br-g6-b-detail",
+        "skill": "detail",
+        "stem": "What does a longer waggle run tell the other bees?",
+        "options": [
+         "The food is farther away",
+         "The food is extra sweet",
+         "The sun is about to set",
+         "The hive is in danger now"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: the longer the bee waggles, the farther away the food is."
+       },
+       {
+        "id": "br-g6-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does doubted mean?",
+        "options": [
+         "weren't sure it was true",
+         "were angry at him for it",
+         "were thrilled about it",
+         "were very confused by it"
+        ],
+        "answer": 0,
+        "why": "People thought it seemed impossible, so they weren't sure he was right."
+       },
+       {
+        "id": "br-g6-b-inference",
+        "skill": "inference",
+        "stem": "Why does the bee use \"straight up\" inside the hive?",
+        "options": [
+         "It can't see the sun in the dark",
+         "Bees can only ever walk upward",
+         "Straight up points to the flowers",
+         "The other bees all sit above it"
+        ],
+        "answer": 0,
+        "why": "The hive is dark, so straight up stands in for the sun it can't see."
+       },
+       {
+        "id": "br-g6-b-main",
+        "skill": "main",
+        "stem": "What is the passage mostly about?",
+        "options": [
+         "How bees dance to share where food is",
+         "How bees turn nectar into sweet honey",
+         "Why a scientist won a very big prize",
+         "Why bees build their hives in the dark"
+        ],
+        "answer": 0,
+        "why": "Most of the passage explains how the dance gives directions."
+       },
+       {
+        "id": "br-g6-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author mention that many people doubted von Frisch?",
+        "options": [
+         "To show how surprising the discovery was",
+         "To prove that scientists are often wrong",
+         "To explain how bees find their flowers",
+         "To suggest von Frisch was hard to like"
+        ],
+        "answer": 0,
+        "why": "It seemed impossible that an insect could share a map."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "g8",
+    "name": "Grade 8",
+    "passages": [
+     {
+      "id": "br-g8-a",
+      "title": "Where the Latte Money Goes",
+      "topic": "business",
+      "paragraphs": [
+       "When Dana Ruiz raised the price of a latte at her café, Morning Mill, from $4.50 to $5.00, a few regulars complained. One asked how a drink made from coffee beans and milk could possibly cost five dollars. So Dana did something unusual: she taped a chart to the counter showing where the money from each latte went.",
+       "The answer surprised many customers, because the coffee beans and milk in a single drink cost her well under a dollar. The largest share went to wages for the people behind the counter, followed by rent for a corner shop on a busy street. Smaller slices covered cups and lids, electricity for the espresso machine, card payment fees, and insurance. After all of that, Dana kept about thirty cents as profit.",
+       "Dana explained that her costs had risen over the past year. Her landlord had raised the rent, and she had given her employees a raise so they wouldn't leave for jobs elsewhere. Raising prices was the only way to keep the café open without cutting staff.",
+       "Most customers accepted the explanation, although a few switched to a cheaper chain down the street. But Dana noticed something she hadn't expected: tips went up. Once people understood how thin her margin was, many seemed more willing to support a small business they liked."
+      ],
+      "questions": [
+       {
+        "id": "br-g8-a-detail",
+        "skill": "detail",
+        "stem": "According to the chart, what took the largest share of each latte's price?",
+        "options": [
+         "Wages for the workers",
+         "Rent for the corner shop",
+         "Coffee beans and milk",
+         "Cups, lids and power"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: the largest share went to wages."
+       },
+       {
+        "id": "br-g8-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does margin mean?",
+        "options": [
+         "the money left as profit",
+         "the edge of a printed page",
+         "the line between two shops",
+         "the price of a single drink"
+        ],
+        "answer": 0,
+        "why": "Dana kept about thirty cents a drink: a thin margin."
+       },
+       {
+        "id": "br-g8-a-inference",
+        "skill": "inference",
+        "stem": "Why did some customers start leaving bigger tips?",
+        "options": [
+         "They saw how little the café earned",
+         "Dana asked every customer for a tip",
+         "The cheaper chain did not take tips",
+         "The chart said tips were required"
+        ],
+        "answer": 0,
+        "why": "Once they understood how thin the margin was, they wanted to support the café."
+       },
+       {
+        "id": "br-g8-a-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Showing her costs helped a café owner explain a price rise.",
+         "Coffee shops make most of their money from beans and milk.",
+         "A café owner lost most of her customers after raising prices.",
+         "Small cafés should never raise prices, even when costs go up."
+        ],
+        "answer": 0,
+        "why": "The chart explained the increase, and most customers accepted it."
+       },
+       {
+        "id": "br-g8-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author describe the regular who complained?",
+        "options": [
+         "To show what led Dana to make the chart",
+         "To prove that most customers were angry",
+         "To explain how a latte is actually made",
+         "To show that the chain was cheaper"
+        ],
+        "answer": 0,
+        "why": "The complaint is what prompted the chart."
+       }
+      ]
+     },
+     {
+      "id": "br-g8-b",
+      "title": "The Day of Two Noons",
+      "topic": "history",
+      "paragraphs": [
+       "Before 1883, every town in the United States set its own time. When the sun was highest in the sky, it was noon, and the clock in the local church tower or jeweler's window was set to match. Because the sun is overhead at slightly different moments in different places, noon in Chicago came nearly twenty minutes later than noon in Detroit.",
+       "For most of history, this caused few problems, because people rarely traveled far or fast enough to notice. The railroads changed that, because a train crossing the country passed through dozens of local times, and each railroad company kept its own schedule based on the time in its home city. Travelers reading timetables had to do complicated math, and confusion over times could lead to dangerous mistakes.",
+       "On November 18, 1883, the railroads took matters into their own hands. They divided the country into four time zones and reset their clocks to match. In many cities, clocks were moved back a few minutes at noon, so the town experienced noon twice. Newspapers called it \"the day of two noons.\"",
+       "Not everyone was pleased. Some people objected that the railroads had no right to decide what time it was, and a few cities refused to switch for years. But standard time proved so convenient that most of the country soon adopted it. Congress did not make the time zones official until 1918, more than three decades after the railroads had put them into practice."
+      ],
+      "questions": [
+       {
+        "id": "br-g8-b-detail",
+        "skill": "detail",
+        "stem": "When did Congress make the time zones official?",
+        "options": [
+         "In 1918",
+         "In 1883",
+         "In 1901",
+         "In 1876"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: Congress made them official in 1918."
+       },
+       {
+        "id": "br-g8-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does objected mean?",
+        "options": [
+         "said they were against it",
+         "said it really confused them",
+         "said they had suggested it",
+         "said they would pay for it"
+        ],
+        "answer": 0,
+        "why": "They argued the railroads had no right to decide the time."
+       },
+       {
+        "id": "br-g8-b-inference",
+        "skill": "inference",
+        "stem": "Why were clocks in many cities moved back at noon?",
+        "options": [
+         "Their local time ran ahead of the zone",
+         "Their clocks had been broken for years",
+         "The railroads wanted longer workdays",
+         "The sun rose later in the winter"
+        ],
+        "answer": 0,
+        "why": "Moving clocks back means local time was ahead of the new standard time."
+       },
+       {
+        "id": "br-g8-b-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Railroads made time zones to end confusion over local times.",
+         "Congress invented time zones to help farmers plan their days.",
+         "Most cities refused to use standard time until the 1900s.",
+         "Clocks in the 1800s were less accurate than the clocks today."
+        ],
+        "answer": 0,
+        "why": "The passage explains why the railroads set up zones and how they spread."
+       },
+       {
+        "id": "br-g8-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author include the phrase \"the day of two noons\"?",
+        "options": [
+         "To show how odd the switch felt then",
+         "To prove newspapers often got facts wrong",
+         "To explain why trains left twice a day",
+         "To show noon is the most important hour"
+        ],
+        "answer": 0,
+        "why": "Clocks moved back at noon, so towns lived through noon twice."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "g10",
+    "name": "Grade 10",
+    "passages": [
+     {
+      "id": "br-g10-a",
+      "title": "Why the Milk Is in the Back",
+      "topic": "business",
+      "paragraphs": [
+       "Walk into almost any grocery store and you will find the milk, eggs, and other everyday staples at the back of the building. Many shoppers suspect this is a deliberate strategy, and they are partly right.",
+       "Grocery stores earn thin profits on most items, so they depend on volume and on persuading customers to buy more than they planned. Placing essentials far from the entrance forces a shopper who came in for a gallon of milk to walk past snacks, seasonal displays, and new products along the way. Each of those displays is an invitation to make an unplanned purchase, and across thousands of shoppers, small impulse buys add up to significant revenue.",
+       "There is also a practical explanation, which store designers are quick to point out. Milk arrives by truck at the loading dock, which is usually at the back of the store, and it must move quickly into refrigerated cases. Keeping the dairy section close to the dock shortens that trip and reduces the risk of spoilage.",
+       "The two explanations are not mutually exclusive. A layout that began as a matter of convenience may persist because it also happens to be profitable. Some stores have experimented with placing a small cooler of milk near the entrance for customers in a hurry, but most have kept the traditional arrangement, which suggests that the walk through the aisles is worth more to them than the shopper's time."
+      ],
+      "questions": [
+       {
+        "id": "br-g10-a-detail",
+        "skill": "detail",
+        "stem": "According to the passage, what is the practical reason milk is kept in the back?",
+        "options": [
+         "It arrives at a dock in the back",
+         "Shoppers like to buy milk last",
+         "Coolers only fit on the back wall",
+         "Milk is the store's priciest item"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: milk arrives at the loading dock, usually in the back."
+       },
+       {
+        "id": "br-g10-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 1, what does staples mean?",
+        "options": [
+         "basic items people need",
+         "metal pins for paper",
+         "items that are on sale",
+         "foods that spoil quickly"
+        ],
+        "answer": 0,
+        "why": "Milk and eggs are everyday basics."
+       },
+       {
+        "id": "br-g10-a-inference",
+        "skill": "inference",
+        "stem": "What does the author suggest about stores that keep the traditional layout?",
+        "options": [
+         "They value extra sales over your time",
+         "They don't know where to put new coolers",
+         "They lose money on every gallon of milk",
+         "They plan to move milk to the front soon"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: the walk through the aisles is worth more to them than the shopper's time."
+       },
+       {
+        "id": "br-g10-a-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Milk sits in back for practical reasons and to boost sales.",
+         "Grocery stores lose money because of how they arrange aisles.",
+         "Shoppers should always make a list to avoid impulse buying.",
+         "Refrigerated cases are the costliest part of a grocery store."
+        ],
+        "answer": 0,
+        "why": "The passage gives both explanations and says they work together."
+       },
+       {
+        "id": "br-g10-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author mention stores that put a small cooler near the entrance?",
+        "options": [
+         "To show most stores still kept the old layout",
+         "To prove that milk spoils near the front door",
+         "To recommend that all stores move their milk",
+         "To explain how small coolers keep milk cold"
+        ],
+        "answer": 0,
+        "why": "The experiment exists, but most stores kept milk in the back."
+       }
+      ]
+     },
+     {
+      "id": "br-g10-b",
+      "title": "The Gaps in the Bridge",
+      "topic": "science",
+      "paragraphs": [
+       "If you have ever driven across a long bridge, you may have felt a rhythmic thump as your tires crossed metal strips set into the road. Those strips cover expansion joints, deliberate gaps that keep the bridge from tearing itself apart.",
+       "Most materials expand when they warm up and contract when they cool down, and although the change is tiny for a single brick or rod, it accumulates across a long structure. A steel bridge hundreds of meters long can grow and shrink by tens of centimeters between a cold winter night and a hot summer afternoon. If the bridge were built as one rigid piece with no room to move, that force would have nowhere to go: concrete would crack, steel would buckle, and the supports could be pushed out of place.",
+       "Expansion joints solve the problem by allowing sections of the bridge to slide slightly toward or away from each other. Some joints look like interlocking metal fingers, while others use rubber that squeezes and stretches. Engineers calculate how much movement to expect based on the bridge's length, the materials used, and the range of temperatures in the area.",
+       "The same principle appears in less obvious places. Sidewalks are poured with lines cut into them at regular intervals, railroad tracks are laid with small gaps or special joints, and even the glass in tall buildings is set in frames that give it room to shift. Wherever temperatures change, designers must leave space for materials to move."
+      ],
+      "questions": [
+       {
+        "id": "br-g10-b-detail",
+        "skill": "detail",
+        "stem": "According to the passage, what do engineers consider when planning expansion joints?",
+        "options": [
+         "Length, materials and local temperatures",
+         "How many cars cross the bridge each day",
+         "The color and type of the road's paint",
+         "How loud the joints will sound to drivers"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3 lists length, materials and the range of temperatures."
+       },
+       {
+        "id": "br-g10-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 2, what does contract mean?",
+        "options": [
+         "get smaller",
+         "sign a deal",
+         "get warmer",
+         "break apart"
+        ],
+        "answer": 0,
+        "why": "The opposite of expand: materials shrink as they cool."
+       },
+       {
+        "id": "br-g10-b-inference",
+        "skill": "inference",
+        "stem": "Why might a bridge in a place with mild weather need smaller expansion joints?",
+        "options": [
+         "Its temperature changes less in a year",
+         "Mild weather makes steel much stronger",
+         "Fewer cars travel in mild weather",
+         "Rubber joints only work in the cold"
+        ],
+        "answer": 0,
+        "why": "Smaller temperature swings mean less growing and shrinking."
+       },
+       {
+        "id": "br-g10-b-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Gaps let structures grow and shrink safely with heat and cold.",
+         "Steel bridges are more dangerous than bridges built of concrete.",
+         "Sidewalks crack because builders use concrete of poor quality.",
+         "Engineers prefer rubber joints to metal fingers on most bridges."
+        ],
+        "answer": 0,
+        "why": "The passage explains why designers leave room for materials to move."
+       },
+       {
+        "id": "br-g10-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author mention sidewalks and railroad tracks?",
+        "options": [
+         "To show the idea is used in many places",
+         "To argue that sidewalks need better joints",
+         "To explain how railroad tracks are built",
+         "To show that bridges cost more than roads"
+        ],
+        "answer": 0,
+        "why": "\"The same principle appears in less obvious places.\""
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "g12",
+    "name": "Grade 12",
+    "passages": [
+     {
+      "id": "br-g12-a",
+      "title": "The Sunk Cost Trap",
+      "topic": "business",
+      "paragraphs": [
+       "Suppose you have paid for a nonrefundable concert ticket, and on the night of the show you are exhausted and the weather is miserable. Many people go anyway, reasoning that they would otherwise \"waste\" the money. Economists consider this reasoning a mistake. The money is gone regardless of what you do; the only real question is whether the evening at the concert is worth more to you than an evening at home.",
+       "Costs that have already been incurred and cannot be recovered are called sunk costs, and the tendency to let them drive future decisions is known as the sunk cost fallacy. Its effects can be trivial, as with the concert, or enormous. Businesses sometimes keep pouring money into failing projects because abandoning them would mean admitting that earlier spending was wasted. The supersonic Concorde airliner, which its British and French sponsors continued to fund long after it was clear it would never be profitable, is cited so often that the error is sometimes called the Concorde fallacy.",
+       "Psychologists offer several explanations. People dislike losses more than they enjoy equivalent gains, and walking away makes a loss feel real. Managers may also worry about their reputations, since ending a project they championed is an implicit admission of a poor decision.",
+       "The remedy is simple to state and hard to practice: evaluate each decision by its future costs and benefits alone. Some organizations build this into their process by assigning a fresh reviewer, someone with no stake in past choices, to decide whether a struggling project should continue."
+      ],
+      "questions": [
+       {
+        "id": "br-g12-a-detail",
+        "skill": "detail",
+        "stem": "According to the passage, why might a manager keep funding a failing project?",
+        "options": [
+         "Ending it would admit a poor decision",
+         "The project will soon become profitable",
+         "Laws require projects to be finished",
+         "Investors always demand more spending"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: ending a project they championed admits a poor decision."
+       },
+       {
+        "id": "br-g12-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 2, what does trivial mean?",
+        "options": [
+         "minor",
+         "costly",
+         "common",
+         "sudden"
+        ],
+        "answer": 0,
+        "why": "The concert is the small example; failing business projects are the enormous one."
+       },
+       {
+        "id": "br-g12-a-inference",
+        "skill": "inference",
+        "stem": "Why would a fresh reviewer be less likely to fall into the sunk cost trap?",
+        "options": [
+         "They didn't make the earlier calls",
+         "They know much more about the project",
+         "They care less about the company",
+         "They are paid to cancel projects"
+        ],
+        "answer": 0,
+        "why": "With no stake in past choices, they have no reputation to protect."
+       },
+       {
+        "id": "br-g12-a-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Past spending shouldn't drive future choices, but it often does.",
+         "Concert tickets should always be refundable to protect buyers.",
+         "The Concorde failed because its designers made engineering errors.",
+         "Businesses should never cancel a project once money is spent."
+        ],
+        "answer": 0,
+        "why": "It defines the fallacy, explains why people fall for it, and gives the remedy."
+       },
+       {
+        "id": "br-g12-a-purpose",
+        "skill": "purpose",
+        "stem": "What is the main purpose of the concert example in the first paragraph?",
+        "options": [
+         "To introduce the idea with a familiar case",
+         "To argue that concert tickets cost too much",
+         "To show that tired people make good choices",
+         "To explain why tickets are nonrefundable"
+        ],
+        "answer": 0,
+        "why": "An everyday case sets up the definition in paragraph 2."
+       }
+      ]
+     },
+     {
+      "id": "br-g12-b",
+      "title": "Turn Off the Inbox",
+      "topic": "work",
+      "paragraphs": [
+       "Sometime in the last two decades, the workday quietly lost its edges. Email arrives on our phones at dinner, on weekends, and on vacation, and many of us feel obliged to answer within minutes. Employers rarely demand this outright; they do not have to. When a manager sends a message at ten at night, the unspoken expectation travels with it.",
+       "The costs of this arrangement are easy to overlook because they accumulate gradually. Workers who never fully disconnect report more stress and poorer sleep, and the quality of their work suffers accordingly. Constant availability also rewards responsiveness over thoughtfulness: the employee who replies fastest appears most dedicated, even if a slower, more considered answer would have been more useful.",
+       "Some governments have begun to respond. France, for example, requires larger companies to negotiate rules about when employees may ignore work email. Critics argue that such laws are clumsy, since a single policy cannot fit every industry or every worker who prefers flexible hours.",
+       "That objection has merit, but it argues for better rules, not for no rules at all. Companies do not need legislation to act. A simple norm, such as scheduling evening messages to arrive the next morning, costs nothing and signals that rest is expected rather than merely tolerated. The question is not whether workers can be reached at all hours, which technology settled long ago, but whether they should be."
+      ],
+      "questions": [
+       {
+        "id": "br-g12-b-detail",
+        "skill": "detail",
+        "stem": "What does the author suggest companies do with messages written in the evening?",
+        "options": [
+         "Have them arrive the next morning",
+         "Delete them before they are sent",
+         "Send them only to fellow managers",
+         "Mark every one of them as urgent"
+        ],
+        "answer": 0,
+        "why": "Paragraph 4: schedule evening messages to arrive the next morning."
+       },
+       {
+        "id": "br-g12-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 2, what does accumulate mean?",
+        "options": [
+         "build up",
+         "fade out",
+         "speed up",
+         "break off"
+        ],
+        "answer": 0,
+        "why": "The costs pile up gradually, which is why they're easy to overlook."
+       },
+       {
+        "id": "br-g12-b-inference",
+        "skill": "inference",
+        "stem": "Why might the fastest responder not be the most useful employee?",
+        "options": [
+         "Quick replies can be less thoughtful",
+         "Managers dislike getting fast replies",
+         "Fast replies are often sent by mistake",
+         "Slow workers are paid higher salaries"
+        ],
+        "answer": 0,
+        "why": "Paragraph 2: a slower, more considered answer can be more useful."
+       },
+       {
+        "id": "br-g12-b-main",
+        "skill": "main",
+        "stem": "What is the author's main argument?",
+        "options": [
+         "Always-on email harms workers, and limits should be set.",
+         "Governments should ban all work email after business hours.",
+         "Workers who reply quickly are the most dedicated employees.",
+         "Technology has made it impossible to separate work and home."
+        ],
+        "answer": 0,
+        "why": "The author describes the harm and argues for rules or norms that limit it."
+       },
+       {
+        "id": "br-g12-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author mention critics of laws like France's?",
+        "options": [
+         "To answer an objection, then restate the case",
+         "To show that the French law has clearly failed",
+         "To argue laws work better than company rules",
+         "To explain how most French companies are run"
+        ],
+        "answer": 0,
+        "why": "The author grants the point, then argues it calls for better rules, not none."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "col",
+    "name": "College",
+    "passages": [
+     {
+      "id": "br-col-a",
+      "title": "The Commons, Reconsidered",
+      "topic": "economics",
+      "paragraphs": [
+       "In 1968, the ecologist Garrett Hardin published an essay that became one of the most influential arguments of the century. Imagine, he wrote, a pasture open to all herders, each of whom gains the full benefit of adding another animal but bears only a fraction of the cost of the resulting overgrazing, which is shared by everyone. Rational individuals will therefore keep adding animals until the pasture is ruined; Hardin called this the tragedy of the commons, and he concluded that shared resources must be either privatized or regulated by a central authority.",
+       "For decades, the argument was treated as something close to a law of nature, but the political scientist Elinor Ostrom was not persuaded by it. Rather than reasoning from a hypothetical pasture, she studied actual ones: Swiss alpine meadows managed jointly for centuries, irrigation systems in Spain and the Philippines, lobster fisheries in Maine. Many of these communities had avoided ruin without privatization or outside control, through rules they devised and enforced themselves.",
+       "Ostrom identified features that successful arrangements tended to share. Their boundaries were clearly defined, so that everyone knew who held rights to the resource, and users participated in making the rules, monitored one another, and imposed penalties that escalated gradually, with a warning first and stiffer sanctions only for repeated violations. Disputes could be resolved quickly and cheaply.",
+       "Her work, which earned her the Nobel Prize in economics in 2009, did not refute Hardin entirely, because unmanaged commons do collapse. But she showed that the choice is not simply between markets and governments; communities themselves can be capable stewards of what they share."
+      ],
+      "questions": [
+       {
+        "id": "br-col-a-detail",
+        "skill": "detail",
+        "stem": "According to the passage, how did successful communities handle rule-breakers?",
+        "options": [
+         "Penalties grew for repeat offenses",
+         "They were expelled on a first offense",
+         "The government was asked to step in",
+         "They had to sell their share of it"
+        ],
+        "answer": 0,
+        "why": "Paragraph 3: a warning first, stiffer sanctions for repeated violations."
+       },
+       {
+        "id": "br-col-a-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 4, what does refute mean?",
+        "options": [
+         "disprove",
+         "endorse",
+         "rephrase",
+         "repeat"
+        ],
+        "answer": 0,
+        "why": "Her work showed Hardin wasn't entirely wrong, so it didn't fully disprove him."
+       },
+       {
+        "id": "br-col-a-inference",
+        "skill": "inference",
+        "stem": "Which situation would Ostrom most likely expect to end in overuse?",
+        "options": [
+         "A lake anyone may fish, with no rules",
+         "A pasture shared under rules users set",
+         "A fishery whose members watch each other",
+         "A meadow with clear limits on its users"
+        ],
+        "answer": 0,
+        "why": "No boundaries, rules or monitoring: none of the features she found in successful commons."
+       },
+       {
+        "id": "br-col-a-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Communities can manage shared resources well on their own.",
+         "Hardin proved every shared resource will eventually be ruined.",
+         "Privatization is the only reliable way to protect resources.",
+         "Swiss meadows are better run than fisheries in the United States."
+        ],
+        "answer": 0,
+        "why": "Ostrom showed a third option beyond markets and governments."
+       },
+       {
+        "id": "br-col-a-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author note that \"unmanaged commons do collapse\"?",
+        "options": [
+         "To grant the part of Hardin's argument that holds",
+         "To show that Ostrom's research was mistaken",
+         "To argue for more government control of resources",
+         "To explain why lobster fisheries are struggling"
+        ],
+        "answer": 0,
+        "why": "It concedes what Hardin got right before stating Ostrom's correction."
+       }
+      ]
+     },
+     {
+      "id": "br-col-b",
+      "title": "The Planes That Didn't Come Back",
+      "topic": "business",
+      "paragraphs": [
+       "During the Second World War, the American military asked a group of statisticians a practical question: where should armor be added to bombers? Armor protects a plane but also makes it heavier and less efficient, so it could not simply be applied everywhere, and the only evidence available came from planes returning from missions, which showed bullet holes concentrated on the wings and fuselage and comparatively few on the engines.",
+       "The intuitive recommendation was to reinforce the areas with the most damage, but the statistician Abraham Wald reportedly argued the opposite. The data, he observed, came only from planes that had survived; if hits to the engines were rare among returning aircraft, the likeliest explanation was not that engines were seldom hit, but that planes hit in the engines seldom made it home. The armor belonged where the returning planes showed the least damage.",
+       "Wald's insight illustrates what is now called survivorship bias: drawing conclusions from a sample that has been filtered, invisibly, by the very outcome under study. The error is pervasive, and it is rarely announced by the data themselves. Studies of successful companies identify the habits of firms that thrived without examining how many failed firms shared the same habits. Investment funds that perform poorly are often closed or merged, so the average performance of the funds that remain looks better than the record of all the funds that were ever offered.",
+       "The corrective is to ask, before interpreting any dataset, what process determined which cases ended up in it, and which cases that process may have quietly excluded."
+      ],
+      "questions": [
+       {
+        "id": "br-col-b-detail",
+        "skill": "detail",
+        "stem": "According to the passage, why couldn't armor be added to the whole plane?",
+        "options": [
+         "It would make the plane too heavy",
+         "It would cover up the bullet holes",
+         "There was not enough metal for it",
+         "Pilots refused to fly heavy planes"
+        ],
+        "answer": 0,
+        "why": "Paragraph 1: armor makes a plane heavier and less efficient."
+       },
+       {
+        "id": "br-col-b-vocab",
+        "skill": "vocab",
+        "stem": "In paragraph 3, what does pervasive mean?",
+        "options": [
+         "widespread",
+         "harmless",
+         "recent",
+         "deliberate"
+        ],
+        "answer": 0,
+        "why": "The error shows up everywhere, from companies to investment funds."
+       },
+       {
+        "id": "br-col-b-inference",
+        "skill": "inference",
+        "stem": "A study finds that most people who lived past 100 drank coffee daily. Based on the passage, what should a careful reader ask first?",
+        "options": [
+         "How many coffee drinkers died young",
+         "Which brand of coffee they all drank",
+         "Whether they also drank tea daily",
+         "How their coffee was usually made"
+        ],
+        "answer": 0,
+        "why": "The sample is filtered by survival; the coffee drinkers who died younger aren't in it."
+       },
+       {
+        "id": "br-col-b-main",
+        "skill": "main",
+        "stem": "Which sentence best states the main idea?",
+        "options": [
+         "Data from survivors can mislead unless we ask what was left out.",
+         "Bombers in World War II needed more armor on their wings.",
+         "Investment funds that close early are usually poorly managed.",
+         "Statisticians should not advise the military on technical matters."
+        ],
+        "answer": 0,
+        "why": "The bomber story introduces survivorship bias and the habit that corrects it."
+       },
+       {
+        "id": "br-col-b-purpose",
+        "skill": "purpose",
+        "stem": "Why does the author give the examples of companies and investment funds?",
+        "options": [
+         "To show the error appears outside war",
+         "To argue that most companies will fail",
+         "To recommend investing in older funds",
+         "To explain how bombers were designed"
+        ],
+        "answer": 0,
+        "why": "\"The error is pervasive\": the examples show it beyond the war."
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

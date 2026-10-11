@@ -2,7 +2,7 @@
  "id": "vocab-en.b6",
  "course": "vocab-en",
  "title": "Vocabulary · Band 6",
- "assessment": "assessment-en.a.json",
+ "assessments": ["assessment-en.a.json", "assessment-en.b.json"],
  "units": [
   { "id": "vocab-en.b6.m1.u1", "unit": "1.1", "file": "vocab-en.b6.m1.u1.json" },
   { "id": "vocab-en.b6.m1.u2", "unit": "1.2", "file": "vocab-en.b6.m1.u2.json" }

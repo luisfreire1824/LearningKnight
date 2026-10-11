@@ -173,7 +173,7 @@ let COURSE = null;       // content/course.json
 let UNITS = [];          // every unit, in course order
 let WORDS = [], BANK = [], FINDABLE = [], SENTENCES = [], GLOSS = {};  // looked up across the whole course
 let C = null;            // the unit being worked on right now
-let ASSESS = null, AITEM = {}, APASS = {};  // placement check (content/assessment-*.json)
+let ASSESS = null, FORMS = {}, AITEM = {}, APASS = {};  // placement check: one file per version (form A, B…); ASSESS = the form in use
 let store = null;        // storage adapter
 let P = null;            // current profile {id, data}
 let saveChain = Promise.resolve();
@@ -762,6 +762,7 @@ async function continueRun() {
   const run = P.data.run;
   if (!run) return showHome();
   syncUnit();
+  if (run.type === "assess") useForm(run.assess.form || "A");
   const unit = C;
   const used = new Set(run.used || []);
   const R = run.results;
@@ -1287,7 +1288,16 @@ function expandAssess(run, o) {
   A.tried[o.part].push(lvl);
   return [...aLevelSteps(o.part, lvl), { kind: "anext", part: o.part }];
 }
-function runAssess() {
+/* Versions (Luis): a first check uses A; a retake uses a version that learner hasn't taken, so the questions are new. */
+const formKeys = () => Object.keys(FORMS).sort();
+const takenForms = d => new Set((d.assessments || []).map(a => a.form));
+const nextForm = d => formKeys().find(f => !takenForms(d).has(f)) || null;
+const useForm = f => { if (FORMS[f]) ASSESS = FORMS[f]; return ASSESS; };
+const versionLine = r => `Vocabulary: ${levelName(r.vocab.secure)} · Reading: ${r.reading.secure ? levelName(r.reading.secure) : "Below Grade 6"}`;
+function runAssess(form) {
+  const d = P.data;
+  form = (typeof form === "string" && FORMS[form]) ? form : (nextForm(d) || formKeys()[(d.assessments || []).length % formKeys().length]);
+  useForm(form);
   const steps = [
     { kind: "note", label: "Placement check", text: ASSESS.about + " Answer on your own, without looking anything up. If you don't know a word, choose \"I don't know\": a guess that happens to be right makes your results less useful." },
     { kind: "note", label: "Vocabulary", text: "Part 1: vocabulary. Each question shows a word in a sentence. Pick what it means." },
@@ -1295,7 +1305,7 @@ function runAssess() {
     { kind: "anext", part: "parts" },
     { kind: "note", label: "Reading", text: "Part 2: reading. Read each passage, then answer five questions. You can reread the passage while you answer." },
     { kind: "anext", part: "reading" }];
-  return startRun({ type: "assess", title: "Placement check", started: Date.now(), assess: { answers: [], tried: { vocab: [], reading: [] } } }, steps, new Set());
+  return startRun({ type: "assess", title: `Placement check · version ${form}`, started: Date.now(), assess: { form, answers: [], tried: { vocab: [], reading: [] } } }, steps, new Set());
 }
 function assessResult(run) {
   const ans = run.assess.answers;
@@ -1369,16 +1379,20 @@ function assessReading(res) {
   return tips;
 }
 function showAssessResult(res, back) {
+  useForm(res.form);
   const pass = res.passMark || ASSESS.passMark;
+  const all = P.data.assessments || [];
+  const prev = all.slice(0, all.indexOf(res) < 0 ? all.length : all.indexOf(res)).reverse().find(a => a.form !== res.form);
   const byId = Object.fromEntries(res.answers.map(a => [a.id, a]));
   const missedV = res.answers.filter(a => !a.ok && AITEM[a.id] && AITEM[a.id].part !== "reading").map(a => AITEM[a.id]);
   const missedR = res.answers.filter(a => !a.ok && AITEM[a.id] && AITEM[a.id].part === "reading").map(a => AITEM[a.id]);
   frame(h("div", { class: "stack" },
-    h("div", { class: "row between" }, h("span", { class: "label" }, `Placement check · ${dayLabel(res.day)}`), h("button", { class: "btn", onclick: back }, "Back")),
+    h("div", { class: "row between" }, h("span", { class: "label" }, `Placement check · version ${res.form} · ${dayLabel(res.day)}`), h("button", { class: "btn", onclick: back }, "Back")),
     h("h1", null, `${P.data.name}'s results`),
     h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, levelName(res.vocab.secure)), h("span", { class: "small muted" }, "vocabulary")),
       h("div", { class: "stat" }, h("b", null, res.reading.secure ? levelName(res.reading.secure) : "Below Grade 6"), h("span", { class: "small muted" }, "reading"))),
+    prev ? h("p", { class: "note" }, `Last time (version ${prev.form}, ${dayLabel(prev.day)}): ${versionLine(prev)}`) : null,
     h("p", { class: "small muted" }, `Each level is solid at ${Math.round(pass * 100)}% or better. Green passed, amber was close, red wasn't there yet.`),
     h("section", { class: "panel stack-s" }, h("h3", null, "What this tells us"), h("ul", { class: "stack-s", style: "margin:0;padding-left:20px" }, assessReading(res).map(t => h("li", null, t)))),
     h("section", { class: "panel stack-s" }, h("h3", null, "Vocabulary by level"), h("div", { class: "path" }, aLevels("vocab").map(l => levelChip(res.vocab.levels, l)))),
@@ -1410,17 +1424,24 @@ function assessPanel(d) {
   if (!last) return h("div", { class: "panel stack-s", style: "border-color:var(--accent)" },
     h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, "about 30 min")),
     h("p", { class: "small" }, "Find your level in vocabulary and reading. It adjusts as you go, and you can save and come back."),
-    h("button", { class: "btn primary", onclick: runAssess, disabled: busy || null }, "Start the check"),
+    h("button", { class: "btn primary", onclick: () => runAssess(), disabled: busy || null }, "Start the check"),
     busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
+  const fresh = nextForm(d);
   const again = h("div", { class: "row" });
-  const ask = () => again.replaceChildren(h("span", { class: "small" }, "You've seen these questions, so a retake will score higher. Take it anyway?"),
-    h("button", { class: "btn small", onclick: runAssess, disabled: busy || null }, "Yes"), h("button", { class: "btn small ghost", onclick: () => again.replaceChildren(againBtn) }, "No"));
-  const againBtn = h("button", { class: "btn small ghost", onclick: ask }, "Take it again");
+  const ask = () => again.replaceChildren(h("span", { class: "small" }, "You've seen every version's questions, so a retake will score higher. Take it anyway?"),
+    h("button", { class: "btn small", onclick: () => runAssess(), disabled: busy || null }, "Yes"), h("button", { class: "btn small ghost", onclick: () => again.replaceChildren(againBtn) }, "No"));
+  const againBtn = fresh
+    ? h("button", { class: "btn small", onclick: () => runAssess(fresh), disabled: busy || null }, `Take version ${fresh} (all new questions)`)
+    : h("button", { class: "btn small ghost", onclick: ask }, "Take it again");
   again.append(againBtn);
+  const history = d.assessments.slice().reverse();
   return h("div", { class: "panel stack-s" },
-    h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, dayLabel(last.day))),
-    h("p", { class: "small" }, `Vocabulary: ${levelName(last.vocab.secure)} · Reading: ${last.reading.secure ? levelName(last.reading.secure) : "Below Grade 6"}`),
-    h("div", { class: "row" }, h("button", { class: "btn small", onclick: () => showAssessResult(last, showHome) }, "See results"), again));
+    h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, `${history.length} taken`)),
+    h("div", { class: "wordlist" }, history.map(r => h("div", { class: "wl", style: "gap:10px" },
+      h("span", { class: "small" }, h("b", null, `Version ${r.form}`), ` · ${dayLabel(r.day)}`, h("br"), versionLine(r)),
+      h("button", { class: "btn small", onclick: () => showAssessResult(r, showHome) }, "Results")))),
+    again,
+    busy ? h("p", { class: "small muted" }, "Finish or start over on what's in progress first.") : null);
 }
 
 /* ================= PARENT VIEW ================= */
@@ -1547,13 +1568,11 @@ async function showParent() {
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
       h("div", { class: "stat" }, h("b", null, queue.length), h("span", { class: "small muted" }, "to review"))),
 
-    (d.assessments || []).length ? (() => {
-      const last = d.assessments[d.assessments.length - 1];
-      return h("section", { class: "panel stack-s" },
-        h("div", { class: "row between" }, h("h3", null, "Placement check"), h("span", { class: "small muted" }, dayLabel(last.day))),
-        h("p", null, `Vocabulary: ${levelName(last.vocab.secure)} · Reading: ${last.reading.secure ? levelName(last.reading.secure) : "Below Grade 6"}`),
-        h("button", { class: "btn small", onclick: () => showAssessResult(last, showParent) }, "See full results"));
-    })() : null,
+    (d.assessments || []).length ? h("section", { class: "panel stack-s" },
+      h("h3", null, "Placement checks"),
+      h("div", { class: "wordlist" }, d.assessments.slice().reverse().map(r => h("div", { class: "wl", style: "gap:10px" },
+        h("span", { class: "small" }, h("b", null, `Version ${r.form}`), ` · ${dayLabel(r.day)}`, h("br"), versionLine(r)),
+        h("button", { class: "btn small", onclick: () => showAssessResult(r, showParent) }, "Results"))))) : null,
 
     h("section", { class: "panel stack-s" },
       h("h3", null, `Talk about it this week (Unit ${C.unit})`),
@@ -1635,17 +1654,19 @@ async function boot() {
       Object.assign(GLOSS, u.glossary || {});
     }
     C = UNITS[0];
-    if (COURSE.assessment) {
+    for (const file of COURSE.assessments || []) {
       try {
-        ASSESS = await get(base + COURSE.assessment);
-        for (const l of ASSESS.vocab.levels) l.items.forEach(it => { AITEM[it.id] = { ...it, part: "vocab", level: l.id }; });
-        ASSESS.vocab.parts.forEach(it => { AITEM[it.id] = { ...it, part: "parts", level: "parts" }; });
-        for (const l of ASSESS.reading.levels) for (const p of l.passages) {
+        const F = await get(base + file);
+        FORMS[F.form] = F;
+        for (const l of F.vocab.levels) l.items.forEach(it => { AITEM[it.id] = { ...it, part: "vocab", level: l.id }; });
+        F.vocab.parts.forEach(it => { AITEM[it.id] = { ...it, part: "parts", level: "parts" }; });
+        for (const l of F.reading.levels) for (const p of l.passages) {
           APASS[p.id] = p;
           p.questions.forEach(q => { AITEM[q.id] = { ...q, part: "reading", level: l.id, passage: p.id }; });
         }
-      } catch (e) { ASSESS = null; }  // the course still works without the check
+      } catch (e) { /* the course still works without the check */ }
     }
+    ASSESS = FORMS.A || FORMS[formKeys()[0]] || null;
   } catch (e) {
     app.replaceChildren(topbar(), h("div", { class: "panel stack-s" }, h("h2", null, "Couldn't load the lessons"), h("p", { class: "muted" }, "The lesson files didn't load. Reload the page to try again.")));
     return;

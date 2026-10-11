@@ -23,7 +23,9 @@ Live site: https://luisfreire1824.github.io/LearningKnight/
 - `tools/check_items.py` — run before shipping any unit (checks every unit, and
   that words and item ids are unique across the course):
   `python3 tools/check_items.py content/course.json`
-- `content/assessment-en.a.json` — placement check, form A. Check it with
+- `content/assessment-en.a.json`, `content/assessment-en.b.json` — placement check,
+  versions A and B (no shared words or passages). A first check uses A; a retake
+  uses a version that learner hasn't taken. Each version: Check it with
   `python3 tools/check_assessment.py content/assessment-en.a.json` (answer-length
   giveaways, one question per reading skill, passage difficulty rising by level).
 
