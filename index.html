@@ -1638,8 +1638,10 @@ function sweepPanel(d) {
    Scenario questions, "I don't know" allowed, no feedback until the end. */
 const deTopic = id => DE.topics.find(t => t.id === id);
 const deResults = (d, id) => ((d.de || {})[id] || []);
+// A question can show one table or several (each with a caption), e.g. two tables to be joined.
 function tableNode(tb) {
-  return h("div", { class: "tablebox" }, h("table", null,
+  if (Array.isArray(tb)) return h("div", { class: "stack-s" }, tb.map(tableNode));
+  return h("div", { class: "tablebox" }, h("table", null, tb.caption ? h("caption", { style: "text-align:left;font-weight:700;padding-bottom:4px" }, tb.caption) : null,
     h("thead", null, h("tr", null, tb.cols.map(c => h("th", null, c)))),
     h("tbody", null, tb.rows.map(r => h("tr", null, r.map(c => h("td", null, c)))))));
 }

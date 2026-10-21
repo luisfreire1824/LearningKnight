@@ -369,31 +369,726 @@
    "id": "F3",
    "title": "Measures and grain-safe SQL",
    "about": "Additivity, fan-out, NULLs, windows, MERGE",
-   "soon": true
+   "items": [
+    {
+     "id": "de-f3-semiadd",
+     "concept": "Semi-additive measures",
+     "stem": "A fact table holds each account's balance at the end of every month. What is the right way to report the Q1 balance for an account?",
+     "options": [
+      "Take the March month-end balance",
+      "Add the three month-end balances",
+      "Average all of the daily balances",
+      "Add January and March together"
+     ],
+     "answer": 0,
+     "why": "Balances are semi-additive: they add across accounts, but not across time. For a period, take the closing value (or an average, if the question is average balance)."
+    },
+    {
+     "id": "de-f3-nonadd",
+     "concept": "Non-additive measures",
+     "stem": "A table stores each store's conversion rate per day. How do you get one store's conversion rate for the week?",
+     "options": [
+      "Divide total conversions by total visits",
+      "Add up the seven daily conversion rates",
+      "Average the seven daily conversion rates",
+      "Take the highest of the seven daily rates"
+     ],
+     "answer": 0,
+     "why": "Ratios are non-additive. Store the numerator and denominator, sum each, then divide. Averaging daily rates weights a slow Tuesday the same as a busy Saturday."
+    },
+    {
+     "id": "de-f3-fanout",
+     "concept": "Join fan-out",
+     "stem": "You join these two tables on order_id and SUM(order_total). What do you get?",
+     "options": [
+      "250, because order A1 is counted twice",
+      "150, the true total of both orders",
+      "100, because only order A1 matches",
+      "200, because each payment row is added"
+     ],
+     "answer": 0,
+     "why": "Order A1 has two payments, so the join returns it twice and its total is summed twice: 100 + 100 + 50 = 250. Aggregate payments to the order grain first, then join.",
+     "table": [
+      {
+       "caption": "orders",
+       "cols": [
+        "order_id",
+        "order_total"
+       ],
+       "rows": [
+        [
+         "A1",
+         "100"
+        ],
+        [
+         "A2",
+         "50"
+        ]
+       ]
+      },
+      {
+       "caption": "payments",
+       "cols": [
+        "order_id",
+        "payment"
+       ],
+       "rows": [
+        [
+         "A1",
+         "60"
+        ],
+        [
+         "A1",
+         "40"
+        ],
+        [
+         "A2",
+         "50"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "de-f3-distinct",
+     "concept": "Distinct counts don't add",
+     "stem": "A daily table has unique users per day. Monday shows 800 and Tuesday shows 700. How many unique users were there across both days?",
+     "options": [
+      "Somewhere from 800 to 1,500",
+      "Exactly 1,500 unique users",
+      "Exactly 750, the average",
+      "Exactly 800, the larger day"
+     ],
+     "answer": 0,
+     "why": "People who came both days are counted once per day. Distinct counts can't be added across time; recount from the event level (or use an approximate sketch)."
+    },
+    {
+     "id": "de-f3-notin",
+     "concept": "NULLs and NOT IN",
+     "stem": "A query uses WHERE customer_id NOT IN (SELECT customer_id FROM churned), and churned has one row with a NULL customer_id. What does the query return?",
+     "options": [
+      "It returns no rows",
+      "Every customer row",
+      "Only churned rows",
+      "An error message"
+     ],
+     "answer": 0,
+     "why": "Comparing anything to NULL is unknown, so NOT IN with a NULL in the list filters out every row. Use NOT EXISTS, or filter NULLs out of the subquery."
+    },
+    {
+     "id": "de-f3-count",
+     "concept": "COUNT(*) vs COUNT(column)",
+     "stem": "A table has 10 rows. The email column is NULL in 3 of them. What do COUNT(*) and COUNT(email) return?",
+     "options": [
+      "10 rows, 7 emails",
+      "10 rows, 10 emails",
+      "7 rows, 7 emails",
+      "7 rows, 10 emails"
+     ],
+     "answer": 0,
+     "why": "COUNT(*) counts rows; COUNT(column) skips NULLs. The same rule applies to SUM and AVG, which quietly ignore NULLs."
+    },
+    {
+     "id": "de-f3-dedupe",
+     "concept": "Window functions for deduplication",
+     "stem": "A staging table has several rows per customer_id. You want only the latest row for each customer by updated_at. What is the standard approach?",
+     "options": [
+      "ROW_NUMBER over customer, newest first; keep 1",
+      "GROUP BY customer_id and take MAX of each column",
+      "SELECT DISTINCT on every column in the table",
+      "ORDER BY updated_at and LIMIT the result to 1"
+     ],
+     "answer": 0,
+     "why": "ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC) = 1 keeps one whole row. MAX per column can mix values from different rows into one that never existed."
+    },
+    {
+     "id": "de-f3-leftjoin",
+     "concept": "Filters that undo a LEFT JOIN",
+     "stem": "customers LEFT JOIN orders, then WHERE orders.status = 'shipped'. What happens to customers with no orders?",
+     "options": [
+      "They're dropped, like an inner join",
+      "They stay, with NULL order columns",
+      "They're counted once with status NULL",
+      "They cause the query to return an error"
+     ],
+     "answer": 0,
+     "why": "The WHERE clause runs after the join, and NULL = 'shipped' isn't true, so those customers disappear. Put the condition in the ON clause to keep them."
+    },
+    {
+     "id": "de-f3-merge",
+     "concept": "MERGE and upserts",
+     "stem": "A MERGE into a customer table matches on customer_id. An incoming row's ID already exists, and another incoming row's ID does not. What happens in a typical upsert?",
+     "options": [
+      "One updates; the other is inserted",
+      "Both are inserted as brand new rows",
+      "Both update existing rows in place",
+      "One is skipped; the other updates"
+     ],
+     "answer": 0,
+     "why": "WHEN MATCHED THEN UPDATE, WHEN NOT MATCHED THEN INSERT. If the source has two rows for the same key, most engines raise an error, so dedupe the source first."
+    },
+    {
+     "id": "de-f3-avgavg",
+     "concept": "Average of averages",
+     "stem": "Region A's average order is $50 over 900 orders. Region B's is $100 over 100 orders. What is the average order value across both?",
+     "options": [
+      "$55",
+      "$75",
+      "$60",
+      "$50"
+     ],
+     "answer": 0,
+     "why": "Weight by orders: (50 x 900 + 100 x 100) / 1,000 = $55. The simple average of the two averages ($75) ignores that region A has nine times the orders."
+    }
+   ]
   },
   {
    "id": "F4",
    "title": "Pipelines",
    "about": "Incremental loads, idempotency, backfills, orchestration",
-   "soon": true
+   "items": [
+    {
+     "id": "de-f4-eltetl",
+     "concept": "ETL vs ELT",
+     "stem": "What is the main difference between ELT and ETL?",
+     "options": [
+      "ELT loads raw data first, then transforms it",
+      "ELT is only used for streaming data sources",
+      "ELT skips transformation of the data entirely",
+      "ELT transforms data before it leaves the source"
+     ],
+     "answer": 0,
+     "why": "In ELT, raw data lands in the warehouse or lakehouse first and is transformed there. ETL transforms it on the way in. Both still transform; the order and the place differ."
+    },
+    {
+     "id": "de-f4-idempotent",
+     "concept": "Idempotent loads",
+     "stem": "A daily job that appends yesterday's sales fails halfway and is rerun. What makes the rerun safe?",
+     "options": [
+      "Replace that day's data, or MERGE by key",
+      "Run the append twice to be sure it lands",
+      "Add a retry so it can never fail again",
+      "Delete the whole table before every run"
+     ],
+     "answer": 0,
+     "why": "An idempotent job gives the same result no matter how many times it runs. Replacing the day's partition, or merging on a key, means a rerun can't create duplicates."
+    },
+    {
+     "id": "de-f4-watermark",
+     "concept": "Watermarks for incremental loads",
+     "stem": "An incremental job pulls rows WHERE updated_at > last_run_time. Some rows commit late with an earlier updated_at. What happens?",
+     "options": [
+      "Those rows are skipped, never loaded",
+      "Those rows are loaded twice in a row",
+      "The whole job fails with an error",
+      "Those rows are loaded on the next run"
+     ],
+     "answer": 0,
+     "why": "A strict high-water mark misses rows that commit after the cutoff but carry an older timestamp. Use a lookback window plus a MERGE on the key, so overlap is harmless."
+    },
+    {
+     "id": "de-f4-deletes",
+     "concept": "Change data capture and deletes",
+     "stem": "Your incremental load filters the source on updated_at. A customer is hard-deleted in the source. What does the warehouse see?",
+     "options": [
+      "Nothing; the customer stays there",
+      "The row is deleted on the next run",
+      "The row gets updated_at set to NULL",
+      "The next run fails with a key error"
+     ],
+     "answer": 0,
+     "why": "A deleted row has no updated_at to filter on, so timestamp-based loads never see it. Change data capture from the database log, or periodic full compares, catch deletes."
+    },
+    {
+     "id": "de-f4-backfill",
+     "concept": "Backfills",
+     "stem": "You fixed a bug and need to reprocess the last 90 days. What is the safest way?",
+     "options": [
+      "Rerun each day's job, replacing that day",
+      "Append the 90 days on top of what's there",
+      "Truncate everything and reload all history",
+      "Patch the numbers by hand in the gold table"
+     ],
+     "answer": 0,
+     "why": "If daily jobs are idempotent, a backfill is just rerunning them for past dates, each replacing its own partition. No double counting, and other dates aren't touched."
+    },
+    {
+     "id": "de-f4-deps",
+     "concept": "Orchestration dependencies",
+     "stem": "The sales job runs at 2 a.m. and the reporting job at 3 a.m. One night sales runs long. What is the better design?",
+     "options": [
+      "Make reporting depend on sales finishing",
+      "Move the reporting job to 4 a.m. instead",
+      "Run the two jobs in parallel at 2 a.m.",
+      "Have reporting retry every five minutes"
+     ],
+     "answer": 0,
+     "why": "Time offsets just hope the upstream is done. A dependency (a DAG edge or sensor) starts reporting only after sales succeeds, and stops it if sales fails."
+    },
+    {
+     "id": "de-f4-retries",
+     "concept": "Retries",
+     "stem": "Which failure should a pipeline retry automatically?",
+     "options": [
+      "A brief network timeout to the source",
+      "A null in a column that requires values",
+      "A source file with a missing column",
+      "A duplicate key in the incoming data"
+     ],
+     "answer": 0,
+     "why": "Retries fix transient problems: timeouts, throttling, a busy cluster. Bad data fails the same way every time, so it needs an alert, not a retry loop."
+    },
+    {
+     "id": "de-f4-batchstream",
+     "concept": "Batch vs streaming",
+     "stem": "A finance dashboard is reviewed once each morning. Source data changes all day. Which approach usually fits?",
+     "options": [
+      "A scheduled batch load before the morning",
+      "A streaming pipeline with second-level delay",
+      "A manual export whenever someone asks",
+      "Querying the source system live each time"
+     ],
+     "answer": 0,
+     "why": "Streaming adds cost and operational work; it pays off when someone acts on data within minutes. A once-a-morning review needs a reliable batch load before people arrive."
+    },
+    {
+     "id": "de-f4-dupes",
+     "concept": "At-least-once delivery",
+     "stem": "A message queue guarantees at-least-once delivery. What must the consumer handle?",
+     "options": [
+      "The same event arriving twice",
+      "Events that never arrive at all",
+      "Events arriving in perfect order",
+      "Events losing fields in transit"
+     ],
+     "answer": 0,
+     "why": "At-least-once means no loss, but possible repeats. Deduplicate on an event ID (or make writes idempotent), so a redelivered event isn't counted twice."
+    },
+    {
+     "id": "de-f4-eventtime",
+     "concept": "Event time vs processing time",
+     "stem": "Mobile events can arrive hours late. Daily totals should reflect when things happened. Which timestamp drives the daily total?",
+     "options": [
+      "Event time, with late data folded in",
+      "Processing time, when the row arrived",
+      "Load time of the nightly batch job",
+      "Whichever timestamp is the later one"
+     ],
+     "answer": 0,
+     "why": "Group by event time so late events land on the day they happened, and let the job update recent days as stragglers arrive (streaming engines bound this with a watermark)."
+    }
+   ]
   },
   {
    "id": "F5",
    "title": "Storage and the lakehouse",
    "about": "Columnar files, partitioning, Delta, medallion layers",
-   "soon": true
+   "items": [
+    {
+     "id": "de-f5-columnar",
+     "concept": "Row vs columnar storage",
+     "stem": "Analysts usually read 5 columns out of a 200-column table across millions of rows. Which storage layout suits this?",
+     "options": [
+      "Columnar, so only those columns are read",
+      "Row-based, so whole records stay together",
+      "One file per row for fast single lookups",
+      "Compressed CSV files sorted by the date"
+     ],
+     "answer": 0,
+     "why": "Columnar formats (like Parquet) store each column together, so a query reads only the columns it needs, and similar values compress well."
+    },
+    {
+     "id": "de-f5-skipping",
+     "concept": "File statistics and data skipping",
+     "stem": "A query filters on order_date = '2026-10-01'. How can a columnar table avoid reading most of its files?",
+     "options": [
+      "Min/max stats per file let it skip files",
+      "It reads every file and then filters rows",
+      "It caches the full table in memory first",
+      "It asks the analyst which files to read"
+     ],
+     "answer": 0,
+     "why": "Parquet and table formats keep per-file statistics such as min and max per column. Files whose range can't contain the value are skipped without being opened."
+    },
+    {
+     "id": "de-f5-badpartition",
+     "concept": "Over-partitioning",
+     "stem": "A table was partitioned by customer_id (millions of customers) and queries got slower. Why?",
+     "options": [
+      "Millions of tiny files and folders",
+      "Partitions forbid filtering by customer",
+      "Customer IDs can't be stored as columns",
+      "Partitioning always slows tables down"
+     ],
+     "answer": 0,
+     "why": "High-cardinality partitions create huge numbers of small files, and the overhead of listing and opening them swamps the work. Partition on low-cardinality columns, if at all."
+    },
+    {
+     "id": "de-f5-smallfiles",
+     "concept": "The small-files problem",
+     "stem": "A streaming job writes a new small file every few seconds, and reads are getting slow. What is the usual fix?",
+     "options": [
+      "Compact them into fewer, larger files",
+      "Add more partitions to spread the files",
+      "Convert the table back to CSV format",
+      "Delete the oldest files every night"
+     ],
+     "answer": 0,
+     "why": "Compaction (OPTIMIZE in Delta, for example) rewrites many small files into fewer large ones. Reads touch fewer files, and the statistics get more useful."
+    },
+    {
+     "id": "de-f5-acid",
+     "concept": "Transaction logs and ACID",
+     "stem": "A job is rewriting files in a Delta table while an analyst queries it. What does the analyst see?",
+     "options": [
+      "The last committed version",
+      "A mix of old and new files",
+      "An error until the job ends",
+      "Only rows that haven't changed"
+     ],
+     "answer": 0,
+     "why": "The transaction log records which files make up each version. Readers use the latest committed version, so a write in progress is invisible until it commits."
+    },
+    {
+     "id": "de-f5-timetravel",
+     "concept": "Time travel and cleanup",
+     "stem": "You try to query a Delta table as of three months ago and it fails. What is the most likely reason?",
+     "options": [
+      "Cleanup removed that version's old files",
+      "Time travel only works for the current day",
+      "The table was never given a primary key",
+      "Older versions are kept in a separate table"
+     ],
+     "answer": 0,
+     "why": "Time travel reads old versions through the log, but those versions need their data files. Cleanup (VACUUM) deletes files past the retention period, so old versions stop working."
+    },
+    {
+     "id": "de-f5-medallion",
+     "concept": "Medallion layers",
+     "stem": "In a bronze, silver and gold layout, what typically goes in silver?",
+     "options": [
+      "Data that's cleaned and conformed",
+      "Raw data exactly as it was received",
+      "Aggregates built for one dashboard",
+      "Archived data older than one year"
+     ],
+     "answer": 0,
+     "why": "Bronze holds raw data as received, silver holds cleaned and conformed data at a useful grain, and gold holds business-level tables and aggregates built for consumption."
+    },
+    {
+     "id": "de-f5-partcol",
+     "concept": "Choosing a partition column",
+     "stem": "If you partition a large fact table, which column is usually the best choice?",
+     "options": [
+      "A date most queries filter on",
+      "The order ID, which is unique",
+      "A free-text product comment",
+      "A column queries rarely touch"
+     ],
+     "answer": 0,
+     "why": "Good partition columns have low cardinality and appear in most filters, which is why date is the classic choice. Unique or rarely filtered columns give no benefit."
+    },
+    {
+     "id": "de-f5-clustering",
+     "concept": "Clustering for high-cardinality filters",
+     "stem": "Queries often filter on customer_id, which has millions of values. Partitioning on it is a bad idea. What helps instead?",
+     "options": [
+      "Cluster the data by customer_id",
+      "Partition by customer name instead",
+      "Create one table per customer",
+      "Store customer_id as a text column"
+     ],
+     "answer": 0,
+     "why": "Clustering (Z-ordering or liquid clustering in Delta) co-locates similar values within files, so file statistics can skip most files without a folder per customer."
+    },
+    {
+     "id": "de-f5-schema",
+     "concept": "Schema enforcement",
+     "stem": "A job tries to append rows with an extra column the table doesn't have. With default schema enforcement, what happens?",
+     "options": [
+      "The write fails until you change it",
+      "The extra column is silently dropped",
+      "The table quietly adds the new column",
+      "The rows are written to a new table"
+     ],
+     "answer": 0,
+     "why": "Schema enforcement rejects writes that don't match the table. Adding the column has to be deliberate, by evolving the schema, so a surprise from upstream can't slip in."
+    }
+   ]
   },
   {
    "id": "F6",
    "title": "Data quality",
    "about": "Expectations, reconciliation, freshness, contracts",
-   "soon": true
+   "items": [
+    {
+     "id": "de-f6-recon",
+     "concept": "Reconciliation beyond row counts",
+     "stem": "Row counts match between source and target, but total revenue is off by 2%. What do you check next?",
+     "options": [
+      "Compare revenue sums by day and key",
+      "Rerun the job and compare row counts",
+      "Check that the table's columns match",
+      "Count the distinct customer IDs only"
+     ],
+     "answer": 0,
+     "why": "Matching counts don't mean matching values. Reconcile the measure itself, broken down by day or key, to find where the difference starts: rounding, currency, filters, or late changes."
+    },
+    {
+     "id": "de-f6-freshness",
+     "concept": "Freshness checks",
+     "stem": "A dashboard looked fine, but the table behind it hadn't loaded in three days. Which check would have caught it?",
+     "options": [
+      "Alert when the newest data is too old",
+      "Check that every row has a primary key",
+      "Compare the table to last year's totals",
+      "Verify the column types match the source"
+     ],
+     "answer": 0,
+     "why": "A freshness check compares the latest timestamp (or load time) to an expected lag. Stale data often looks perfectly valid, so nothing else catches it."
+    },
+    {
+     "id": "de-f6-volume",
+     "concept": "Volume checks",
+     "stem": "Today's load has 40% fewer rows than any day in the past month, with no errors. What check flags this?",
+     "options": [
+      "A volume check vs a recent baseline",
+      "A not-null check on the key column",
+      "A uniqueness check on the order ID",
+      "A check that the job didn't error out"
+     ],
+     "answer": 0,
+     "why": "A job can succeed and still load half the data. Comparing row counts to a trailing average (allowing for weekly patterns) catches silent drops."
+    },
+    {
+     "id": "de-f6-unique",
+     "concept": "Uniqueness checks",
+     "stem": "After a rerun, revenue doubled for one day. Which test would have stopped it before reaching the dashboard?",
+     "options": [
+      "A uniqueness test on the table's key",
+      "A not-null test on the revenue column",
+      "A freshness test on the load time",
+      "An accepted-values test on status"
+     ],
+     "answer": 0,
+     "why": "The rerun loaded the day twice. A uniqueness test on the grain's key (for example order line ID) fails as soon as duplicates appear."
+    },
+    {
+     "id": "de-f6-orphans",
+     "concept": "Referential integrity",
+     "stem": "Some fact rows have a product key that doesn't exist in the product dimension. What does that cause?",
+     "options": [
+      "Inner-join reports drop those sales",
+      "Reports run more slowly than usual",
+      "The product dimension gets new rows",
+      "The fact table's grain silently changes"
+     ],
+     "answer": 0,
+     "why": "Inner joins drop orphan rows, so totals shrink without warning. Test for orphans, and point unknown keys at an explicit Unknown member instead of leaving them dangling."
+    },
+    {
+     "id": "de-f6-values",
+     "concept": "Accepted-values checks",
+     "stem": "The status column should only be open, shipped or cancelled. A new source release starts sending 'SHIPPED'. Which check catches it?",
+     "options": [
+      "An accepted-values test on status",
+      "A not-null test on the status field",
+      "A row-count test on the whole table",
+      "A freshness test on the status table"
+     ],
+     "answer": 0,
+     "why": "An accepted-values test fails on anything outside the agreed list, including case changes, so a quiet source change doesn't split one status into two in every report."
+    },
+    {
+     "id": "de-f6-where",
+     "concept": "Where checks belong",
+     "stem": "Where should a check for duplicate keys run to do the most good?",
+     "options": [
+      "Right after loading, before it spreads",
+      "Only in the dashboard, where users look",
+      "Once a month, in a separate data audit",
+      "Only in the source, before it's exported"
+     ],
+     "answer": 0,
+     "why": "Catch problems at the boundary where data enters (for example bronze to silver) so bad rows are stopped or quarantined before they spread to every table downstream."
+    },
+    {
+     "id": "de-f6-contract",
+     "concept": "Data contracts",
+     "stem": "What is a data contract between a source team and a data team?",
+     "options": [
+      "An agreed schema, meaning and change plan",
+      "A legal document about who owns the data",
+      "A service-level promise for the dashboard",
+      "A list of the users who can query a table"
+     ],
+     "answer": 0,
+     "why": "A data contract spells out the fields, types, meaning and how breaking changes are announced, so a renamed column becomes a planned change instead of a 2 a.m. failure."
+    },
+    {
+     "id": "de-f6-drift",
+     "concept": "Distribution checks",
+     "stem": "The share of orders with a NULL discount code jumped from 5% to 60% overnight. Every row passed the not-null rules. What kind of check catches this?",
+     "options": [
+      "A check on the column's null rate",
+      "A uniqueness check on the order key",
+      "A schema check on the column types",
+      "A freshness check on the load time"
+     ],
+     "answer": 0,
+     "why": "Row-level rules can all pass while the overall shape changes. Distribution checks (null rates, averages, category mix) catch upstream bugs that each row hides."
+    },
+    {
+     "id": "de-f6-severity",
+     "concept": "Failing vs warning",
+     "stem": "Which test failure should stop the pipeline instead of just sending a warning?",
+     "options": [
+      "Duplicate keys in the main fact",
+      "A minor rise in late-arriving rows",
+      "A rare new value in a comment field",
+      "A small change in average order size"
+     ],
+     "answer": 0,
+     "why": "Fail hard on problems that make the numbers wrong (duplicate grain, missing keys); warn on drift that needs a look. If every check fails the pipeline, people learn to ignore them."
+    }
+   ]
   },
   {
    "id": "F7",
    "title": "Metrics and the semantic layer",
    "about": "One definition per metric, ratio traps, serving BI",
-   "soon": true
+   "items": [
+    {
+     "id": "de-f7-definition",
+     "concept": "Metric definitions",
+     "stem": "Two dashboards show different conversion rates from the same data. What is the most likely first cause to check?",
+     "options": [
+      "They define the denominator differently",
+      "One dashboard tool rounds its numbers",
+      "The data warehouse is out of disk space",
+      "One dashboard uses a different color scale"
+     ],
+     "answer": 0,
+     "why": "Different numbers from the same data usually mean different definitions: sessions vs users in the denominator, different filters, or different time windows."
+    },
+    {
+     "id": "de-f7-ratioofsums",
+     "concept": "Ratio of sums",
+     "stem": "Each region has its own conversion rate. How do you compute the company-wide rate?",
+     "options": [
+      "Total conversions over total visits",
+      "The simple average of region rates",
+      "The median of the regional rates",
+      "The rate of the largest region only"
+     ],
+     "answer": 0,
+     "why": "Compute the ratio from summed parts. Averaging regional rates gives a small region the same weight as a large one."
+    },
+    {
+     "id": "de-f7-segments",
+     "concept": "Distinct counts across segments",
+     "stem": "A user can belong to several customer segments. You add up active users per segment. What is wrong with the total?",
+     "options": [
+      "Users in more than one segment count twice",
+      "Segments with no users are left off it",
+      "The total is correct as long as it's daily",
+      "Distinct counts round down by segment"
+     ],
+     "answer": 0,
+     "why": "Overlapping groups make segment counts sum to more than the real total. Show the true total from a separate distinct count, or make segments mutually exclusive."
+    },
+    {
+     "id": "de-f7-timezone",
+     "concept": "Time zones and day boundaries",
+     "stem": "Your warehouse stores timestamps in UTC; the business reports days in New York time. What happens if reports group by the UTC date?",
+     "options": [
+      "Evening activity lands on the next day",
+      "Every total is exactly the same anyway",
+      "Only weekend totals are affected by it",
+      "The warehouse rejects the query as wrong"
+     ],
+     "answer": 0,
+     "why": "Midnight UTC is 7 or 8 p.m. in New York, so the last hours of a New York evening fall on the next UTC date. Convert to the business time zone before taking the date."
+    },
+    {
+     "id": "de-f7-semantic",
+     "concept": "The semantic layer",
+     "stem": "What is the main job of a semantic layer?",
+     "options": [
+      "Define each metric once for every tool",
+      "Store raw data before it is transformed",
+      "Schedule the warehouse's nightly loads",
+      "Draw charts faster in the BI tool"
+     ],
+     "answer": 0,
+     "why": "A semantic layer holds metric and dimension definitions in one place, so Tableau, notebooks and other tools all compute revenue the same way."
+    },
+    {
+     "id": "de-f7-parts",
+     "concept": "What a metric definition needs",
+     "stem": "Besides the formula, what else must a complete metric definition pin down?",
+     "options": [
+      "Filters, time grain and valid slices",
+      "The chart type and its color palette",
+      "Which analyst wrote the first query",
+      "The size of the table it's built on"
+     ],
+     "answer": 0,
+     "why": "A metric is a measure plus its aggregation, filters (for example excluding test orders), time handling and the dimensions it can be broken down by. Leave any out and two teams will differ."
+    },
+    {
+     "id": "de-f7-simpson",
+     "concept": "Simpson's paradox",
+     "stem": "Conversion rose in every region this month, yet the company-wide rate fell. How is that possible?",
+     "options": [
+      "Traffic shifted toward low-rate regions",
+      "The regional numbers must be miscounted",
+      "The company rate must have a rounding bug",
+      "Conversion always moves in opposite ways"
+     ],
+     "answer": 0,
+     "why": "Mix shift: if more traffic comes from regions with lower rates, the overall rate can fall even while each region improves. Always check mix before reporting a trend."
+    },
+    {
+     "id": "de-f7-pointintime",
+     "concept": "Point-in-time vs period metrics",
+     "stem": "Headcount was 100 on January 1 and 120 on January 31, and it rose steadily. What is January's average headcount?",
+     "options": [
+      "About 110 over the month",
+      "Exactly 220, the two added",
+      "Exactly 120 at month-end",
+      "Exactly 100 at the start"
+     ],
+     "answer": 0,
+     "why": "Headcount is a point-in-time measure. Month-end and average headcount answer different questions; label which one a report uses."
+    },
+    {
+     "id": "de-f7-gold",
+     "concept": "Serving BI from gold tables",
+     "stem": "A Tableau dashboard is slow because it scans an event-level table with billions of rows. What usually helps most?",
+     "options": [
+      "A gold table at the dashboard's grain",
+      "A bigger cluster that runs the same scan",
+      "An extract refreshed every five minutes",
+      "Removing the date filter from the view"
+     ],
+     "answer": 0,
+     "why": "Build a gold table (or aggregate) at the dashboard's grain, such as daily by product and region, with conformed dimensions. The dashboard reads thousands of rows instead of billions."
+    },
+    {
+     "id": "de-f7-restated",
+     "concept": "Restated numbers and as-of reporting",
+     "stem": "Last week's revenue changed after it was presented, because late transactions arrived. What is the best practice?",
+     "options": [
+      "Label numbers with an as-of date",
+      "Hide the late transactions forever",
+      "Never update numbers after Monday",
+      "Report only rounded revenue figures"
+     ],
+     "answer": 0,
+     "why": "Late data is normal. Show when a number was pulled, and decide on purpose whether a period is open or closed, so restated figures don't look like errors."
+    }
+   ]
   }
  ]
 }
