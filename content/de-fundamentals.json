@@ -175,8 +175,195 @@
   {
    "id": "F2",
    "title": "Change over time",
-   "about": "Slowly changing dimensions, late-arriving data",
-   "soon": true
+   "about": "Slowly changing dimensions, late-arriving data, effective dating",
+   "items": [
+    {
+     "id": "de-f2-type1",
+     "concept": "SCD type 1: overwrite",
+     "stem": "A customer moves from the East region to the West region in March. Region is a type 1 attribute. What does a Q1 sales-by-region report show for this customer?",
+     "options": [
+      "All of Q1 rolls up under West",
+      "Jan, Feb East; March under West",
+      "All of Q1 rolls up under East",
+      "Q1 split evenly across both"
+     ],
+     "answer": 0,
+     "why": "Type 1 overwrites the old value, so history is restated: every past sale now rolls up to West, as if the customer had always been there."
+    },
+    {
+     "id": "de-f2-type2",
+     "concept": "SCD type 2: new row per change",
+     "stem": "Same customer, but region is now a type 2 attribute. What does the Q1 sales-by-region report show?",
+     "options": [
+      "Jan and Feb under East, March under West",
+      "All of Q1 under West, the current value",
+      "All of Q1 under East, the original value",
+      "Only March sales; earlier rows are dropped"
+     ],
+     "answer": 0,
+     "why": "Type 2 adds a new row (new surrogate key) when region changes. Sales made before March point to the East version, sales after to the West version, so history stays as it was."
+    },
+    {
+     "id": "de-f2-cols",
+     "concept": "Type 2 housekeeping columns",
+     "stem": "Which columns does a type 2 dimension typically add to manage versions?",
+     "options": [
+      "Effective date, end date and a current flag",
+      "A created-by user and a last-modified user",
+      "A row hash and the source file's name only",
+      "A version number for each column that changes"
+     ],
+     "answer": 0,
+     "why": "Effective and end dates say when each version applied; a current-row flag makes \"latest version\" queries simple. Row hashes help detect changes, but don't manage versions on their own.",
+     "table": {
+      "cols": [
+       "customer_sk",
+       "customer_id",
+       "region",
+       "effective_from",
+       "effective_to",
+       "is_current"
+      ],
+      "rows": [
+       [
+        "101",
+        "C-77",
+        "East",
+        "2024-01-01",
+        "2026-02-28",
+        "N"
+       ],
+       [
+        "245",
+        "C-77",
+        "West",
+        "2026-03-01",
+        "9999-12-31",
+        "Y"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "de-f2-lookup",
+     "concept": "Joining facts to the right version",
+     "stem": "A sale on March 10 is loaded for customer C-77, whose versions are shown here. Which customer key should the fact row get?",
+     "options": [
+      "245, the version in effect then",
+      "101, the customer's first version",
+      "Both keys, one fact row for each",
+      "C-77, the ID from the source"
+     ],
+     "answer": 0,
+     "why": "The fact gets the surrogate key of the version whose effective dates cover the transaction date. That's what keeps type 2 history correct.",
+     "table": {
+      "cols": [
+       "customer_sk",
+       "customer_id",
+       "region",
+       "effective_from",
+       "effective_to",
+       "is_current"
+      ],
+      "rows": [
+       [
+        "101",
+        "C-77",
+        "East",
+        "2024-01-01",
+        "2026-02-28",
+        "N"
+       ],
+       [
+        "245",
+        "C-77",
+        "West",
+        "2026-03-01",
+        "9999-12-31",
+        "Y"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "de-f2-type3",
+     "concept": "SCD type 3: previous value column",
+     "stem": "Sales territories are being redrawn once. For a year, leadership wants to see results under both the old and the new territories. Which approach fits best?",
+     "options": [
+      "Type 3: current and prior territory columns",
+      "Type 1: overwrite territory with the new one",
+      "Type 2: add a new row per changed customer",
+      "Type 0: keep the original territory forever"
+     ],
+     "answer": 0,
+     "why": "Type 3 keeps the current value and one previous value side by side, so every row can be reported both ways. It suits a single, planned reorganization, not ongoing change."
+    },
+    {
+     "id": "de-f2-type0",
+     "concept": "SCD type 0: never changes",
+     "stem": "A customer's credit score at signup should never change, even when the source system updates the current score. How do you treat it?",
+     "options": [
+      "Type 0: keep the original value as is",
+      "Type 1: overwrite it with each update",
+      "Type 2: add a row for each new score",
+      "Type 3: keep the current and prior score"
+     ],
+     "answer": 0,
+     "why": "Type 0 means the attribute is fixed at its original value. The current score, if needed, is a separate attribute with its own type."
+    },
+    {
+     "id": "de-f2-process",
+     "concept": "Dimension history vs process facts",
+     "stem": "A support ticket's status changes several times a day, and the business wants average hours between status changes. Where should status changes be recorded?",
+     "options": [
+      "A fact with one row per status change",
+      "Type 2 history on the ticket dimension",
+      "Type 1 status overwritten on the ticket",
+      "A type 3 column with the previous status"
+     ],
+     "answer": 0,
+     "why": "Events you want to measure belong in a fact table (a transaction or accumulating snapshot), not as dimension versions. Type 2 is for descriptive attributes, not workflow timing."
+    },
+    {
+     "id": "de-f2-latefact",
+     "concept": "Late-arriving facts",
+     "stem": "A sale from 10 days ago arrives today. Since then, the customer changed region (type 2). Which customer version should the sale join to?",
+     "options": [
+      "The version in effect that day",
+      "The current version, as of today",
+      "The first version ever recorded",
+      "Whichever version was loaded last"
+     ],
+     "answer": 0,
+     "why": "Late facts look up the version effective on the event date, not the load date. Using the current version would put the sale in the wrong region."
+    },
+    {
+     "id": "de-f2-latedim",
+     "concept": "Late-arriving dimensions",
+     "stem": "Orders arrive for a customer who isn't in the customer dimension yet; their details come tomorrow. What is the common approach?",
+     "options": [
+      "Add a placeholder row, update it later",
+      "Drop the orders until the customer exists",
+      "Load the orders with a null customer key",
+      "Hold all of today's orders until tomorrow"
+     ],
+     "answer": 0,
+     "why": "An inferred (placeholder) member keeps the facts loaded with a valid key. When the real details arrive, the placeholder is updated in place."
+    },
+    {
+     "id": "de-f2-mini",
+     "concept": "Rapidly changing attributes: mini-dimension",
+     "stem": "Customer age band and income band change often and are making a type 2 customer dimension grow very fast. What is a common fix?",
+     "options": [
+      "Move them into a mini-dimension",
+      "Switch the whole dimension to type 1",
+      "Store the bands as text on each fact",
+      "Rebuild the dimension once a month"
+     ],
+     "answer": 0,
+     "why": "A mini-dimension holds the combinations of fast-changing bands, with its own key on the fact. The main customer dimension stops churning, and history is still kept."
+    }
+   ]
   },
   {
    "id": "F3",
