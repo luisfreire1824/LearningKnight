@@ -1657,7 +1657,7 @@ function diagResult(run) {
 }
 function diagText(res) {
   const T = deTopic(res.topic);
-  const lines = [`Learning Knight data engineering diagnostic: ${P.data.name}, ${res.topic} ${T.title}, ${dayLabel(res.day)}`, `Score: ${res.right}/${res.total} (pass ${Math.round(DE.passMark * 100)}%)`, "", "Missed:"];
+  const lines = [`Learning Knight data engineering diagnostic: ${P.data.name}, ${res.topic} ${T.title}, ${dayLabel(res.day)}${res.mode === "voice" ? " (by voice)" : ""}`, `Score: ${res.right}/${res.total} (pass ${Math.round(DE.passMark * 100)}%)`, "", "Missed:"];
   res.answers.filter(a => !a.ok).forEach(a => { const q = AITEM[a.id]; lines.push(`- ${q.concept}: ${q.stem} Picked "${a.pick || "I don't know"}"; best answer "${q.options[q.answer]}"`); });
   lines.push("", "Right: " + res.answers.filter(a => a.ok).map(a => AITEM[a.id].concept).join("; "));
   return lines.join("\n");
@@ -1671,7 +1671,7 @@ function showDiagResult(res, back) {
     catch (e) { const ta = h("textarea", { readonly: true, style: "min-height:10rem;font-size:.8rem" }); ta.value = diagText(res); copy.replaceWith(ta); ta.select(); }
   });
   frame(h("div", { class: "stack" },
-    h("div", { class: "row between" }, h("span", { class: "label" }, `${res.topic} · ${T.title} · ${dayLabel(res.day)}`), h("button", { class: "btn", onclick: back }, "Back")),
+    h("div", { class: "row between" }, h("span", { class: "label" }, `${res.topic} · ${T.title} · ${dayLabel(res.day)}${res.mode === "voice" ? " · by voice" : ""}`), h("button", { class: "btn", onclick: back }, "Back")),
     h("h1", null, `${res.right} of ${res.total}`),
     h("p", { class: "panel" }, pass ? `Solid. ${T.title} is marked done, so you can skip its lessons.` : `Below ${Math.round(DE.passMark * 100)}%, so ${T.title} stays on your path. The lessons will focus on the ${missed.length} concept${missed.length === 1 ? "" : "s"} below.`),
     missed.length ? h("section", { class: "panel stack-s" }, h("h3", null, pass ? "The one to tidy up" : "Concepts to learn"),
@@ -1684,6 +1684,49 @@ function showDiagResult(res, back) {
     copy,
     continueBtn(back, "Done")));
   screen = "results";
+}
+/* Import results (Luis): a diagnostic taken outside the app, e.g. by voice with Claude, pasted in as a
+   results block. Right and wrong are worked out here from the picks, never taken from the block. */
+const dayFromISO = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? Math.floor(Date.UTC(+m[1], +m[2] - 1, +m[3]) / DAY) : null; };
+function parseImport(text) {
+  let x;
+  try { x = JSON.parse(text.trim()); } catch (e) { throw "That isn't a results block. Copy the whole block, from the first { to the last }."; }
+  if (!x || x.lk !== "import" || x.kind !== "diag") throw "That isn't a Learning Knight results block.";
+  const T = DE && DE.topics.find(t => t.id === x.topic && t.items);
+  if (!T) throw `Unknown topic "${x.topic}".`;
+  const day = dayFromISO(x.day);
+  if (day === null || day > today()) throw "The date in the block isn't valid.";
+  const byId = Object.fromEntries((x.answers || []).map(a => [a.id, a]));
+  const missing = T.items.filter(it => !byId[it.id]);
+  if (missing.length || Object.keys(byId).length !== T.items.length) throw `The block should have all ${T.items.length} questions for ${T.title}, once each.`;
+  const answers = T.items.map(it => {
+    const pick = byId[it.id].pick ?? null;
+    if (pick !== null && !it.options.includes(pick)) throw `An answer for "${it.concept}" doesn't match any of its choices.`;
+    return { id: it.id, ok: pick === it.options[it.answer], pick };
+  });
+  return { topic: T.id, day, at: Date.now(), mode: x.mode === "voice" ? "voice" : "imported", right: answers.filter(a => a.ok).length, total: answers.length, answers };
+}
+function importPanel(d) {
+  if (!DE || isHelper() || !d.tracks.includes("de")) return null;
+  const ta = h("textarea", { id: "import-box", "aria-label": "Results block", placeholder: "Paste a results block here", style: "min-height:6rem;font-size:.85rem" });
+  const out = h("div", { class: "stack-s" });
+  const check = h("button", { class: "btn" }, "Check it");
+  check.addEventListener("click", () => {
+    let res;
+    try { res = parseImport(ta.value); } catch (e) { out.replaceChildren(h("p", { class: "small", style: "color:var(--bad)" }, String(e))); return; }
+    const T = deTopic(res.topic);
+    const dup = deResults(d, res.topic).some(r => r.day === res.day && r.mode === res.mode);
+    const save = h("button", { class: "btn primary" }, "Import");
+    save.addEventListener("click", async () => {
+      d.de = d.de || {}; (d.de[res.topic] = d.de[res.topic] || []).push(res); await persist();
+      showToast(`${T.title} results imported.`); showDiagResult(res, showParent);
+    });
+    out.replaceChildren(h("p", { class: "small" }, h("b", null, `${res.topic} ${T.title}`), ` · ${res.right} of ${res.total} · ${dayLabel(res.day)}${res.mode === "voice" ? " · by voice" : ""}`),
+      dup ? h("p", { class: "small note" }, "A result like this is already saved for that day. Importing adds it again.") : null, save);
+  });
+  return h("section", { class: "panel stack-s" }, h("h3", null, "Import results"),
+    h("p", { class: "small muted" }, "For a diagnostic taken outside the app, like a voice session with Claude. Paste the results block, check it, then import."),
+    ta, check, out);
 }
 function dePanel(d) {
   if (!DE || isHelper()) return null;
@@ -1831,6 +1874,7 @@ async function showParent() {
     h("div", { class: "row between" }, h("h1", null, d.name + (adult ? "'s progress" : "'s week")), h("button", { class: "btn", onclick: helper ? () => showProfiles(true) : showHome }, "Back")),
     helperBanner,
     trackPanel,
+    importPanel(d),
     adult ? null : h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, allDone(d) ? "All ✓" : Object.keys(sessionsIn(d, C)).length + "/" + C.sessions.length), h("span", { class: "small muted" }, allDone(d) ? `${UNITS.length} units` : `Unit ${C.unit} sessions`)),
       h("div", { class: "stat" }, h("b", null, acc === null ? "–" : acc + "%"), h("span", { class: "small muted" }, "meaning right")),
